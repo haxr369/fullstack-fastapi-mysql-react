@@ -1,0 +1,71 @@
+services:
+
+  backend:
+    build:
+      context: .
+      target: builder
+    container_name: livinglab-APIs
+    secrets:
+      - db-password
+    networks:
+      - react-fastapi
+      - fastapi-mysql
+    environment:
+      PORT: 8000
+      MYSQL_HOST: db
+    ports:
+      - '8000:8000'
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    #image: mariadb:10.6.4-focal
+    # If you really want to use MySQL, uncomment the following line
+    image: mysql:8.0.19
+    container_name: livinglab-db
+    environment:
+      - MYSQL_DATABASE=example
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - fastapi-mysql
+
+  frontend:
+    build:
+      context: frontend
+      target: development
+    container_name: livinglab-frontend
+    ports:
+      - 3005:3000
+    volumes:
+      - ./frontend/src:/code/src
+      - /project/node_modules
+    networks:
+      - react-fastapi
+    depends_on:
+      - backend
+    expose:
+      - 3308
+      - 33080
+
+volumes:
+  db-data: {}
+secrets:
+  db-password:
+    file: db/password.txt
+
+networks:
+  react-fastapi: {}
+  fastapi-mysql: {}
