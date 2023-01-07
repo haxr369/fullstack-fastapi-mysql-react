@@ -38,7 +38,7 @@ services:
     secrets:
       - db-password
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/home/solsol/prj/multi-docker/react-fastapi-mysql
     networks:
       - fastapi-mysql
 
