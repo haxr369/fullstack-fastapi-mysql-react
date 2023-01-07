@@ -5,6 +5,8 @@ services:
       context: .
       target: builder
     container_name: livinglab-APIs
+    volumes:
+      - ./app:/home/APIs
     secrets:
       - db-password
     networks:
