@@ -6,7 +6,7 @@ services:
       target: builder
     container_name: livinglab-APIs
     volumes:
-      - ./app:/home/APIs
+      - ./APIs:/home/APIs
     secrets:
       - db-password
     networks:
@@ -14,10 +14,9 @@ services:
       - fastapi-mysql
     environment:
       PORT: 8000
-      MYSQL_HOST: db
+      MYSQL_HOST: '172.20.0.3'
     ports:
-      - '8000:8000'
-    restart: always
+      - '8002:8000'
     depends_on:
       db:
         condition: service_healthy

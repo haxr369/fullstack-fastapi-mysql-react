@@ -85,8 +85,8 @@ def read_user_me(
     """
     Get current user.
     """
-    #return current_user
-    return 'gogogo'
+    return current_user
+
 
 
 @router.post("/open", response_model= user_sch.User)
