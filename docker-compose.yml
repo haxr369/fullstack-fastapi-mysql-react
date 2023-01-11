@@ -10,7 +10,7 @@ services:
       - ./APIs:/code/app
   
   frontend:
-    image: react-image
+    image: dockerized-react
     container_name: livinglab-frontend
     command: npm start
     ports:
