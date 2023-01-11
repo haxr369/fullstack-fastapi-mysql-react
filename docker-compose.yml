@@ -10,11 +10,9 @@ services:
       - ./APIs:/code/app
   
   frontend:
-    build:
-      context: frontend
-      target: development
+    image: react-image
     container_name: livinglab-frontend
-    command: 
+    command: npm start
     ports:
       - 3005:3000
     volumes:
@@ -35,7 +33,6 @@ services:
       interval: 3s
       retries: 5
       start_period: 30s
-    secrets:
-      - db-password
+
     volumes:
       - ./db:/db-data
