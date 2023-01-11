@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  fastapi:
+    image: fastapi-fullstack-react-fastapi
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+    ports:
+      - 8080:8080
+    volumes:
+      - ./APIs:/code/app
+  
+  frontend:
+    build:
+      context: frontend
+      target: development
+    container_name: livinglab-frontend
+    command: 
+    ports:
+      - 3005:3000
+    volumes:
+      - ./frontend:/code/src
+  
+  db:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    #image: mariadb:10.6.4-focal
+    # If you really want to use MySQL, uncomment the following line
+    image: mysql:8.0.19
+    container_name: livinglab-db
+    environment:
+      - MYSQL_DATABASE=example
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password
+    volumes:
+      - ./db:/db-data

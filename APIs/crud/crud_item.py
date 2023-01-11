@@ -3,9 +3,9 @@ from typing import List
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from APIs.crud.base import CRUDBase
-from APIs.models.item import Item
-from APIs.schemas.item_sch import ItemCreate, ItemUpdate
+from crud.base import CRUDBase
+from models.item import Item
+from schemas.item_sch import ItemCreate, ItemUpdate
 
 
 class CRUDItem(CRUDBase[Item, ItemCreate, ItemUpdate]):

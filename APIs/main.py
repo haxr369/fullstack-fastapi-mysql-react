@@ -3,12 +3,12 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from api.api_v1.api import api_router
 from core.config import settings
-templates = Jinja2Templates(directory="templates")
+
 app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
-# Set all CORS enabled origins
+"""# Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -16,9 +16,31 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
-    )
+    )"""
+if settings.BACKEND_CORS_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    ) 
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
-@app.get("/plant")
+@app.get("/")
 async def root():
     return {"message": "/plant 에서 사용자관리"}
+
+
+
+"""from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"hello root"}
+
+@app.get("/world")
+def world():
+    return {"hello world"}"""

@@ -1,3 +1,4 @@
+version: '3.9'
 services:
 
   backend:
@@ -7,19 +8,9 @@ services:
     container_name: livinglab-APIs
     volumes:
       - ./APIs:/home/APIs
-    secrets:
-      - db-password
-    networks:
-      - react-fastapi
-      - fastapi-mysql
-    environment:
-      PORT: 8000
-      MYSQL_HOST: '172.20.0.3'
     ports:
       - '8002:8000'
-    depends_on:
-      db:
-        condition: service_healthy
+
 
   db:
     # We use a mariadb image which supports both amd64 & arm64 architecture
@@ -30,18 +21,11 @@ services:
     environment:
       - MYSQL_DATABASE=example
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
+
     secrets:
       - db-password
     volumes:
-      - db-data:/home/solsol/prj/multi-docker/react-fastapi-mysql
-    networks:
-      - fastapi-mysql
+       - ./db:/home/db-data
 
   frontend:
     build:
@@ -51,12 +35,9 @@ services:
     ports:
       - 3005:3000
     volumes:
-      - ./frontend/src:/code/src
-      - /project/node_modules
+      - ./frontend:/code/src
     networks:
-      - react-fastapi
-    depends_on:
-      - backend
+      - living
     expose:
       - 3308
       - 33080
@@ -68,5 +49,4 @@ secrets:
     file: db/password.txt
 
 networks:
-  react-fastapi: {}
-  fastapi-mysql: {}
+  living: {}

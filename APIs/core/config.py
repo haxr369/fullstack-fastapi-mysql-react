@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = 'react-fastapi-mysql'
     
 
-    MYSQL_HOST: str
+    MYSQL_HOST: str = '172.20.0.3'
     MYSQL_USER: str = 'apiman'
     MYSQL_PASSWORD: str = '0601'
     MYSQL_DB: str = 'plantLab'
