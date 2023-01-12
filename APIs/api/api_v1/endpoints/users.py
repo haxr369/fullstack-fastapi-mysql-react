@@ -32,19 +32,19 @@ def read_users(
 def create_user(
     *,
     db: Session = Depends(deps.get_db),
-    user_in: user_sch.UserCreate,
+    user_in: user_sch.UserCreate,       #이메일과 패스워드를 쿼리객체로 받는다.
     
 ) -> Any:
     """
     Create new user.
     """
     user = crud.user.get_by_email(db, email=user_in.email)
-    if user:
+    if user:    #이미 DB에 이메일이 존재할 경우
         raise HTTPException(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
-    user = crud.user.create(db, obj_in=user_in)
+    user = crud.user.create(db, obj_in=user_in) #user DB에 입력한 이메일과 패스워드를 저장한다.
     
     return user
 
