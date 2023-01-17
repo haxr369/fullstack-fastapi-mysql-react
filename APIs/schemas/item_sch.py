@@ -7,9 +7,6 @@ from pydantic import BaseModel
 class ItemBase(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
-data = {'title': 'ghghghgh','description':'skrke나나러나린야ㅏㅓ' }
-itema = ItemBase(**data)
-print(itema)
 
 # Properties to receive on item creation
 class ItemCreate(ItemBase):

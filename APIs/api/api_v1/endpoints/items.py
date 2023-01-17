@@ -1,31 +1,50 @@
 from typing import Any, List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,File, UploadFile
 from sqlalchemy.orm import Session
-
-import crud
+import os
+from crud import crud_item,crud_img
 import models.user
-from schemas import item_sch
+from schemas import item_sch, img_sch
 from api import deps
-
+from core.config import settings
+import json
 router = APIRouter()
 
-@router.get("/plant")
-async def root():
-    return "plant 에서 사용자관리"
 
-@router.get("/", response_model=List[item_sch.Item])
-def read_items(
-    db: Session = Depends(deps.get_db),
-    skip: int = 0,
-    limit: int = 100,
-) -> Any:
+
+@router.get("/apitest")
+def read_items() -> Any:
     """
     Retrieve items.
     """
-    items = crud.item.get_multi(db, skip=skip, limit=limit)
-
+    items = {'good_job':"아리가토고자이마스!!!!!"}
+    print(items)
     return items
+
+@router.post('/userImgInfo')       #이미지 정보를 받아서 DB에 저장
+async def create_upload_file(
+    *,
+    db: Session = Depends(deps.get_db),
+    file_info : img_sch.ImgCreate
+):
+    crud = crud_img.img
+    item = crud.create_with_ip(db=db, obj_in=file_info)
+    return item 
+
+@router.post('/userImg')            #이미지를 받아서 저장소에 저장
+async def create_upload_file(
+    *,
+    file : UploadFile = File(...)
+):
+    
+    contents = await file.read()
+    print(file.filename)
+    with open(os.path.join(settings.UPLOAD_DIRECTORY, file.filename), "wb") as fp:
+        fp.write(contents)
+
+    return 0
+
 
 
 @router.post("/", response_model=item_sch.Item)
@@ -37,7 +56,7 @@ def create_item(
     """
     Create new item.
     """
-    item = crud.item.create_with_owner(db=db, obj_in=item_in)
+    item = crud_item.create_with_owner(db=db, obj_in=item_in)
     return item
 
 
@@ -51,9 +70,9 @@ def update_item(
     """
     Update an item.
     """
-    item = crud.item.get(db=db, id=id)
+    item = crud_item.get(db=db, id=id)
 
-    item = crud.item.update(db=db, db_obj=item, obj_in=item_in)
+    item = crud_item.update(db=db, db_obj=item, obj_in=item_in)
     return item
 
 
@@ -66,7 +85,7 @@ def read_item(
     """
     Get item by ID.
     """
-    item = crud.item.get(db=db, id=id)
+    item = crud_item.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     return item
@@ -81,8 +100,8 @@ def delete_item(
     """
     Delete an item.
     """
-    item = crud.item.get(db=db, id=id)
+    item = crud_item.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
-    item = crud.item.remove(db=db, id=id)
+    item = crud_item.remove(db=db, id=id)
     return item
