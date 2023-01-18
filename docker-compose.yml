@@ -3,16 +3,16 @@ version: "3.9"
 services:
   fastapi:
     image: fastapi-fullstack-react-fastapi
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - 8080:8080
+      - 8005:8000
     volumes:
       - ./APIs:/code/app
   
   frontend:
     image: dockerized-react
     container_name: livinglab-frontend
-    command: yarn start
+    command: sleep infinity
     ports:
       - 3005:3000
     volumes:

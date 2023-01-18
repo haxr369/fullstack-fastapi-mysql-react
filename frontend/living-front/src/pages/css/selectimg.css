@@ -1,0 +1,36 @@
+.cameraImg{
+    width: 80%; 
+    background-color: transparent;
+}
+
+
+.cameraContain{
+    background-color: transparent;
+    padding-top: 5%;
+    padding-bottom: 10%;
+}
+.cameraButton{
+    background-color: transparent;
+    border:none;
+}
+
+.title{
+    width: 100%;
+}
+
+.subtitle{
+    width: 100%;
+    background-color: rgb(225, 249, 241);
+}
+
+.imgContainer{
+    box-sizing: content-box;
+    text-align: center;
+
+    width : 100vw;
+    height : 80vh;
+    padding: 10px;
+}
+
+
+

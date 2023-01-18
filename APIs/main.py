@@ -4,9 +4,7 @@ from fastapi.templating import Jinja2Templates
 from api.api_v1.api import api_router
 from core.config import settings
 
-app = FastAPI(
-    title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
-)
+app = FastAPI()
 
 """# Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
@@ -17,14 +15,19 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )"""
-if settings.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    ) 
+
+origins = [
+    "http://172.28.0.3:3005",
+    "http://172.28.0.3",
+    "http://192.168.0.203:3005/"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 @app.get("/")
