@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import './css/selectimg.css';
 import axios from "axios";
 import folder from "./statics/img/folderImg.png";
 const SelectImg = () => {
-  
+  const navigate = useNavigate();
 
   const [files, setFiles] =useState('');            //보내는 데이터
   const [imgFile, setImgFile] = useState(folder);   //보여주는 데이터
@@ -50,7 +51,11 @@ const SelectImg = () => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+    }).catch( err => {
+      console.log("보내기 실패");
+      alert("이미지를 선택해주세요.")
     });
+    
 
     
     const file_info = {
@@ -68,13 +73,17 @@ const SelectImg = () => {
     }).then(
       res =>{
         console.log("보내기 성공");
+        navigate("/identyResults?file_name="+files.name);
       }
     ).catch( err => {
       console.log("보내기 실패");
+      alert("이미지를 보내지 못했습니다. 다시 시도해주세요.")
     });
     
 
     setImgFile(folder);
+    
+    
 };
   
   function getExtensionOfFilename(filename) {

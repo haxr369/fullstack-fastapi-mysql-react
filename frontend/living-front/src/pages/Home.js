@@ -8,7 +8,7 @@ const Home =() =>{
             </h2>
             <p>가장 먼저 보여지는 페이지입니다.</p>
             <Link to="/apitest"> API 서버와 연결 테스트</Link><br/>
-            <Link to="/selectimg"> 이미지 전송 테스트</Link>
+            <Link to="/selectimg"> 이미지 전송 테스트</Link><br/>
         </div>
     );
 };
