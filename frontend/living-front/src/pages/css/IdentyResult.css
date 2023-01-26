@@ -1,0 +1,45 @@
+.userContain{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 40vh;
+    text-align: center;
+}
+
+.userImgTitle{
+    flex-shrink: 0;
+    margin:0 ;
+    background-color: beige; 
+    text-align: center;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.userImgContain{
+    flex-grow: 1;
+    margin:0 auto; 
+    text-align: center;
+    overflow:hidden;
+    width: 100vw;
+    background-color: rgb(202, 238, 202);
+}
+
+.userImg{
+    object-fit: cover;
+    width: 80%;
+    height: 100%;
+    object-position: center;
+    
+}   
+
+.resultImgTitle{
+    margin:0 auto;
+    background-color: beige; 
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.imgTable{
+    float: bottum ;
+}

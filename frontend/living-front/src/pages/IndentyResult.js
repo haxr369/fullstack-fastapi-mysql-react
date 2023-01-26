@@ -2,20 +2,34 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {useSearchParams} from 'react-router-dom';
+import './css/IdentyResult.css';
+import ShowImgTable  from './ShowImgTable';
 //사전에 정의한 데이터를 보여주는 방법 = url 파라미터
 
 
 const IdentyResult =() =>{
     const [searchParams, setSearchParams] =useSearchParams();
-    const fileName = searchParams.get('file_name');
-    const [url, setUrl] = useState('');
+    const fileName = searchParams.get('file_name'); 
+    const [user_url, setUerUrl] = useState('');
     const [resultData, setResultData] = useState(null);
 
+
+    // 식물 식별을 요청하고 사진들을 얻는다.
+    // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
     useEffect(() => {
+        // 아래 fetch가 서버에 식별을 요청하는 것.
         fetch('http://192.168.0.203:8005/api/v1/results/identy/${fileName}')
-          .then((response) => response.json())
+          .then((response) => response.json())  //json 형태로 식별 결과가 오면,
           .then((json) => setResultData(json));
         
+          // 사용자 입력 사진을 서버에서 요청한다.
+        axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
+            responseType: 'blob'
+        }).then(response => {
+            const url = URL.createObjectURL(new Blob([response.data]));
+            setUerUrl(url);
+        });
+
       }, []);
 
     if (!resultData) {
@@ -23,42 +37,49 @@ const IdentyResult =() =>{
     }
 
 
-    const onToggleDetail =() => {
-        setSearchParams({"file_name": "바람과 함께 사라지다."});
-        console.log("파라미터 변경!!!!")
-    };
-    
     const getImage = () => {
         axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
             responseType: 'blob'
         }).then(response => {
             console.log("이미지 얻어!!")
             const url = URL.createObjectURL(new Blob([response.data]));
-            setUrl(url);
+            setUerUrl(url);
         });
     };
     
+    /**
+     * 틀을 만들자.!
+     * 이미지 크기 화면에 맞도록.
+     * 컴포넌트 반복을 이용해서 top1 ~ 3까지 요소를 화면에 출력
+     * (추가) 이미지를 누르면 이미지 확대 기능을 가질 수 있을까..?
+     * (추가) 식물 비교 페이지도 만들어 보자..!
+     *  <p>{fileName}</p> 
+     */
 
+    const tops = ["top1","top2","top3"];
+    const topsList = tops.map(top => (
+        <ShowImgTable result = {resultData['results'][top]}
+        />
+    ));
+    
 
     return (
         <div>
-            <img
-            alt="sample"
-            src={url}
-            style={{ margin: "auto" }}
-            />
-            <p>{fileName}</p> 
-            <p>파일명은 위에 있습니다.</p>
-            <button onClick={getImage}>파라미터 바꾸자</button>
-            <div>
-                <h3>아래가 식물 식별 결과입니다.</h3>
-                <div>
-                    <p>{resultData['user_url']}</p> <br/>
-                    <p>{resultData['results']['top1']['percent']}</p>
-                    <p>{resultData['images']['top1']['plantImgs'][0]}</p>
+            <div className='userContain'>
+                <h2 className = 'userImgTitle'>식별 식물</h2>
+                <div className='userImgContain'>
+                    <img className='userImg'  alt="user img" src={user_url} />
                 </div>
-
             </div>
+            
+            <div className='resultTable'>
+                <h4 className = 'resultImgTitle'>가장 유사한 식물들</h4>
+            </div>
+
+            <div className='imgTable'>
+                {topsList}
+            </div>
+        
         </div>
     );
 

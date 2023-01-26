@@ -1,20 +1,10 @@
 {
-    "Input_url" : "/code/app/Uploaded_images/210.125.183.216_1673941783776.png",
     "top3_plants" : {
-        "top1" : {"Family":"느릅나무과","Genus":"느티나무속","Species":"느티나무","percent":89.54},
-        "top2" : {"Family":"느릅나무과","Genus":"느릅나무속","Species":"당느릅나무","percent":8.32},
-        "top3" : {"Family":"느릅나무과","Genus":"느릅나무속","Species":"팽나무","percent":2.28}
-    },
-    "top3_images" : {
-        "top1" : {"plantImgs":["/code/app/Sample_images/느티나무/1234.jpeg",
-                    "/code/app/Sample_images/느티나무/1345.jpeg",
-                    "/code/app/Sample_images/느티나무/1456.jpeg"]},
-        "top2" : {"plantImgs":["/code/app/Sample_images/느티나무/1234.jpeg",
-                    "/code/app/Sample_images/느티나무/1345.jpeg",
-                    "/code/app/Sample_images/느티나무/1456.jpeg"]},
-        "top3" : {"plantImgs":["/code/app/Sample_images/느티나무/1234.jpeg",
-                    "/code/app/Sample_images/느티나무/1345.jpeg",
-                    "/code/app/Sample_images/느티나무/1456.jpeg"]}
-        
+        "top1" : {"Family":"느릅나무과","Genus":"느티나무속","Species":"느티나무","percent":89.54, "plantNo":"0001",
+                "plantImgs":["1234.jpeg","1345.jpeg","1456.jpeg","1678.jpeg"]},
+        "top2" : {"Family":"느릅나무과","Genus":"느릅나무속","Species":"당느릅나무","percent":8.32, "plantNo":"0002",
+                "plantImgs":["1234.jpeg","1345.jpeg","1456.jpeg","2123.jpeg"]},
+        "top3" : {"Family":"느릅나무과","Genus":"느릅나무속","Species":"팽나무","percent":2.28, "plantNo":"0004",
+                "plantImgs":["1234.jpeg","1345.jpeg","1456.jpeg","1567.jpeg"]}
     }
 }

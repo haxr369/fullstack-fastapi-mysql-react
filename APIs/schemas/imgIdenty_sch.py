@@ -9,6 +9,16 @@ class ImgIdentyBase(BaseModel):
     Genus: str
     Species: str
     percent: float
+    plantNo : str
+    plantImgs: list
+   
+    @validator("plantImgs", pre=True)
+    def check_images_path(cls, value):
+        for path in value:
+            if not path.endswith(('.jpeg', '.jpg', '.png')):
+                raise ValueError(f"Invalid image path: {path}")
+        return value
+
 #aa = {"Family":"가사리","Genus": "이건뭐", "Species":"기지니", "percent":83.2}
 #base= ImgIdentyBase(**aa)
 #aa_sh = base(aa)

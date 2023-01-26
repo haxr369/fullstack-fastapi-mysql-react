@@ -47,16 +47,30 @@ async def create_upload_file(
     return 0
 
 
-@router.get('/oneImg/{file_url}')
-async def get_image_with_Url(file_url: str) -> Any:
+@router.get('/oneImg/{file_name}')
+async def get_image_with_name(file_name: str) -> Any:
 
-    std_url = os.path.join("/code/app/Uploaded_images/",file_url)
+    std_url = os.path.join("/code/app/Uploaded_images/",file_name)
     #print(os.path.isfile(std_url))
     if os.path.isfile(std_url):
         return FileResponse(std_url, media_type="image/*")
     else:
         # FileNotFoundError
         return JSONResponse(content={"error": "Image not found."},  status_code=404)
+
+@router.get('/twoImg/{plantNo}/{file_name}')
+async def get_image_with_url(plantNo:str, file_name: str) -> Any:
+
+    std_url ="/code/app/Sample_images"
+    file_url = os.path.join(std_url,plantNo, file_name)
+    print(file_url)
+    print(os.path.isfile(file_url))
+    if os.path.isfile(file_url):
+        return FileResponse(file_url, media_type="image/*")
+    #else:
+        # FileNotFoundError
+    #    return JSONResponse(content={"error": "Image not found."},  status_code=404)
+
 
 
 @router.post("/", response_model=item_sch.Item)

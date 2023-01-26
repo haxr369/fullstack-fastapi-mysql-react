@@ -37,10 +37,9 @@ async def plant_identy(
         result = json.load(json_file)
 
     top3_results = imgIdenty_sch.TopModel(**result['top3_plants'])
-    #print(top3_results)
-    top3_images = imgIdenty_sch.ImagesModel(**result['top3_images'])
 
-    return {"user_url": result["Input_url"], "results":top3_results, "images":top3_images }
+
+    return {"results":top3_results}
 
 @router.get("/{id}", response_model= item_sch.Item)
 def read_item(
