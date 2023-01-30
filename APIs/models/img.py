@@ -2,7 +2,6 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, BLOB
 from sqlalchemy.orm import relationship
-
 from db.base_class import Base
 
 if TYPE_CHECKING:

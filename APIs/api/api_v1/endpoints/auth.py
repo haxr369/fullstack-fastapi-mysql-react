@@ -17,20 +17,21 @@ async def login( db: Session = Depends(deps.get_db)):
     try:
         crud = crud_user.jwtuser
         #DB에 username이 있는지 확인
-        
+        print("계정 생성 중")
         while(1):
             username =  random.randrange(1,100000)      
             exis = crud.get_datetime_by_username(db=db, username=username)
             if(not exis): break # 없는 경우에 while문 탈출
+        print("당신의 계정은 ",username)
         createtime = datetime.now()
 
         #새로운 유저 정보를 저장
-        userinfo = user_sch.JwtUserCreate({"username":username, "createtime":createtime})
+        userinfo = user_sch.JwtUserCreate(username=username, createtime=createtime)
+        print(userinfo)
         
-        
-        jwtUser = crud.create_with_ip(db=db, obj_in=userinfo)
+        jwtUser = crud.create(db=db, obj_in=userinfo)
 
-        token = crud.JWTRepo.generate_token(jwtUser)
+        token = crud_user.JWTRepo.generate_token(jwtUser)
         return user_sch.ResponseSchema(code="200", 
                                 status="OK", 
                                 message="success login!", 

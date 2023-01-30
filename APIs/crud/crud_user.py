@@ -89,8 +89,6 @@ jwtuser = CRUDJwtUser(User)
 T = TypeVar('T')
 
 
-
-
 class JWTRepo():
 
     def generate_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -111,6 +109,7 @@ class JWTRepo():
         except:
             return{}
 
+repository = JWTRepo()
 
 class JWTBearer(HTTPBearer):
 
