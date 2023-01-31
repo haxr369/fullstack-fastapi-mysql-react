@@ -17,7 +17,7 @@ def init_db(db: Session) -> None:
     # the tables un-commenting the next line
 
     #BaseA를 상속받은 모델들은 DB에 자동으로 작성된다.
-    BaseA.metadata.create_all(bind=engine)
+    
 
     user = crud.user.get_by_email(db, email=settings.FIRST_SUPERUSER)
     if not user:

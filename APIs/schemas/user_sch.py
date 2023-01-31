@@ -17,6 +17,8 @@ class UserCreate(UserBase):
     password: str
 
 
+
+
 # Properties to receive via API on update
 class UserUpdate(UserBase):
     password: Optional[str] = None
@@ -55,8 +57,22 @@ class ResponseSchema(BaseModel):
     message: str
     result: Optional[T] = None
 
+"""class TokenResponse(BaseModel) :
+    access_token : str
+    token_type :str"""
+
+
+class JwtUserBase(BaseModel):
+    id: Optional[str] = None
+    access : Optional[int] = 0
+    createtime: Optional[datetime] = None
+
+class JwtUser(JwtUserBase):
+    id: str = None
+
+class JwtUserUpdate(JwtUserBase):
+    access : int
 
 # Properties to receive via API on creation
-class JwtUserCreate(BaseModel):
-    username: str = None
-    createtime: datetime = None
+class JwtUserCreate(JwtUserBase):
+    pass

@@ -12,4 +12,14 @@ class Base:
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
 
-BaseA = declarative_base()
+
+@as_declarative()
+class BaseA:
+    id: Any
+    __name__: str
+    # Generate __tablename__ automatically
+    @declared_attr
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower()
+
+

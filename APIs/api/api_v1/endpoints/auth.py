@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header,HTTPException
 from schemas import user_sch
 from sqlalchemy.orm import Session
 from core.config import settings  #ACCESS_TOKEN_EXPIRE_MINUTES
@@ -22,16 +22,17 @@ async def login( db: Session = Depends(deps.get_db)):
             username =  random.randrange(1,100000)      
             exis = crud.get_datetime_by_username(db=db, username=username)
             if(not exis): break # 없는 경우에 while문 탈출
-        print("당신의 계정은 ",username)
+
         createtime = datetime.now()
 
         #새로운 유저 정보를 저장
-        userinfo = user_sch.JwtUserCreate(username=username, createtime=createtime)
+        userinfo = user_sch.JwtUserCreate(username=username, access=0 , createtime=createtime)
         print(userinfo)
         
         jwtUser = crud.create(db=db, obj_in=userinfo)
-
+        print(jwtUser)
         token = crud_user.JWTRepo.generate_token(jwtUser)
+        print("이건 토큰!! ",token)
         return user_sch.ResponseSchema(code="200", 
                                 status="OK", 
                                 message="success login!", 
@@ -41,3 +42,25 @@ async def login( db: Session = Depends(deps.get_db)):
         error_message = str(error.args)
         print(error_message)
         return user_sch.ResponseSchema(code="500", status="Internal Server Error", message="Internal Server Error").dict(exclude_none=True)
+
+@router.get("/token_info")
+async def getTokenInfo(Authorization: str = Header(None)):
+
+    # Extract the token from the header
+    try:
+        token = Authorization.split(" ")[1]
+    except:
+        raise HTTPException(status_code=400, detail="Invalid Authorization header")
+
+    # Decode the JWT token
+    try:
+        decoded = crud_user.JWTRepo.decode_token(token)
+    except :
+        raise HTTPException(status_code=400, detail="Invalid token")
+
+    # Return the decoded payload
+    return decoded
+
+
+
+

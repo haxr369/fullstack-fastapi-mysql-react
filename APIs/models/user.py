@@ -18,10 +18,11 @@ class User(Base):
     items = relationship("Item", back_populates="owner")
 
 
-class jwtUser(BaseA):
+class JwtUser(BaseA):
     __tablename__ = 'usernumber'
-    username = Column(String(100), primary_key = True)
+    id = Column(String(100), primary_key = True)
+    access = Column(Integer, default =0)
     createtime = Column(DateTime, default=datetime.datetime.now())
 
-#자동으로 DB를 생성하는 것.
-#그래서 실행하면 기존 테이블이 다 지워진다...
+#자동으로 DB의 table을 생성하는 것.
+BaseA.metadata.create_all(bind=engine)

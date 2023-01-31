@@ -3,8 +3,8 @@ from typing import Any, Dict, Optional, Union, TypeVar, Generic, Optional
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models.user import User, jwtUser
-from schemas.user_sch import UserCreate, UserUpdate, JwtUserCreate
+from models.user import User, JwtUser
+from schemas.user_sch import UserCreate, UserUpdate, JwtUserCreate,JwtUserUpdate 
 
 
 from datetime import datetime, timedelta
@@ -63,32 +63,50 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 user = CRUDUser(User)
 
 
-class CRUDJwtUser(CRUDBase[jwtUser, JwtUserCreate, UserUpdate]):
-    def get_datetime_by_username(self, db: Session, *, username: str) -> Optional[jwtUser]:
-        return db.query(jwtUser).filter(jwtUser.username == username).first()
-
-    def create(self, db: Session, *, obj_in: JwtUserCreate) -> jwtUser:
-        db_obj = jwtUser(
-            username = obj_in.username,
+class CRUDJwtUser(CRUDBase[JwtUser, JwtUserCreate, JwtUserUpdate]):
+    
+    #C
+    def create(self, db: Session, *, obj_in: JwtUserCreate) -> JwtUser:
+        db_obj = JwtUser(
+            id = obj_in.id,
+            access = obj_in.access,
             createtime = obj_in.createtime
         )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-        return db_obj
+        return {"id":obj_in.id, 
+                "access":obj_in.access,
+                "createtime": obj_in.createtime.strftime("%Y-%m-%d %H:%M:%S")}
 
+    #R
+    def get_datetime_by_username(self, db: Session, *, id: str) -> Optional[JwtUser]:
+        return db.query(JwtUser).filter(JwtUser.id == id).first()
+
+    #U
+    def update(
+        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
+    ) -> User:
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.dict(exclude_unset=True)
+        updated = super().update(db, db_obj=db_obj, obj_in=update_data)
+        return updated
+
+    #D
     def delete(self, db: Session, *, obj_in: str):
-        db.delete(obj_in.username)
+        db.delete(obj_in.id)
         db.commit()
 
 
 
-jwtuser = CRUDJwtUser(User)
+jwtuser = CRUDJwtUser(JwtUser)
 
 
 T = TypeVar('T')
 
-
+"""
 class JWTRepo():
 
     def generate_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -96,15 +114,17 @@ class JWTRepo():
         if expires_delta:
             expire = datetime.utcnow() + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=15)
+            expire = datetime.utcnow() + timedelta(minutes=15)  #토큰이 15분 후 삭제된다.
         to_encode.update({"exp": expire})
-        encode_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+        token = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
         
-        return encode_jwt
+        return token
 
     def decode_token(token: str):
         try:
+            print("토큰 해독 중")
             decode_token = jwt.decode(token, settings.SECRET_KEY, algorithm=[settings.ALGORITHM])
+            print("토큰 해독 완료", decode_token)
             return decode_token if decode_token["expires"] >= datetime.time() else None
         except:
             return{}
@@ -141,4 +161,4 @@ class JWTBearer(HTTPBearer):
 
         if payload:
             isTokenValid = True
-        return isTokenValid
+        return isTokenValid"""

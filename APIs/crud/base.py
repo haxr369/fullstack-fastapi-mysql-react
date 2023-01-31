@@ -3,7 +3,7 @@ from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
+from models import user
 from db.base_class import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -24,6 +24,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
+        print("찾는 db: ", self.model)
         return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(
