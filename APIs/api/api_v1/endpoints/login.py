@@ -34,7 +34,9 @@ def login_access_token(
     elif not crud.user.is_active(user):
         raise HTTPException(status_code=400, detail="Inactive user")
     """
-    print("로그인 user 이름: ",form_data.username)
+    print("로그인 user 이름: ",{"grant_type":form_data.grant_type,
+                                "username":form_data.username,
+                                "password":form_data.password})
     crud = crud_user.jwtuser
     #DB에 username이 있는지 확인
     print("계정 생성 중")

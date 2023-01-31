@@ -48,7 +48,7 @@ const ShowImgTable = props => {
     
 
     const imgList = imgUrl.map(imgs => 
-        <img className="imgContent" key = {imgs.id} className='sampleImg'  alt={imgs.id} src={imgs.imgurl} />
+        <img className="imgContent" key = {imgs.id}   alt={imgs.id} src={imgs.imgurl} />
     );
 
 /**
