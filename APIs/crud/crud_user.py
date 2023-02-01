@@ -1,12 +1,20 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union, TypeVar, Generic, Optional
 
 from sqlalchemy.orm import Session
 
-from APIs.core.security import get_password_hash, verify_password
-from APIs.crud.base import CRUDBase
-from APIs.models.user import User
-from APIs.schemas.user_sch import UserCreate, UserUpdate
+from crud.base import CRUDBase
+from models.user import User, JwtUser
+from schemas.user_sch import UserCreate, UserUpdate, JwtUserCreate,JwtUserUpdate 
 
+
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
+from core.config import settings #import SECRET_KEY, ALGORITHM
+
+from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import Request, HTTPException
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
@@ -53,3 +61,104 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
 
 user = CRUDUser(User)
+
+
+class CRUDJwtUser(CRUDBase[JwtUser, JwtUserCreate, JwtUserUpdate]):
+    
+    #C
+    def create(self, db: Session, *, obj_in: JwtUserCreate) -> JwtUser:
+        db_obj = JwtUser(
+            id = obj_in.id,
+            access = obj_in.access,
+            createtime = obj_in.createtime
+        )
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return {"id":obj_in.id, 
+                "access":obj_in.access,
+                "createtime": obj_in.createtime.strftime("%Y-%m-%d %H:%M:%S")}
+
+    #R
+    def get_datetime_by_username(self, db: Session, *, id: str) -> Optional[JwtUser]:
+        return db.query(JwtUser).filter(JwtUser.id == id).first()
+
+    #U
+    def update(
+        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
+    ) -> User:
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.dict(exclude_unset=True)
+        updated = super().update(db, db_obj=db_obj, obj_in=update_data)
+        return updated
+
+    #D
+    def delete(self, db: Session, *, obj_in: str):
+        db.delete(obj_in.id)
+        db.commit()
+
+
+
+jwtuser = CRUDJwtUser(JwtUser)
+
+
+T = TypeVar('T')
+
+"""
+class JWTRepo():
+
+    def generate_token(data: dict, expires_delta: Optional[timedelta] = None):
+        to_encode = data.copy()
+        if expires_delta:
+            expire = datetime.utcnow() + expires_delta
+        else:
+            expire = datetime.utcnow() + timedelta(minutes=15)  #토큰이 15분 후 삭제된다.
+        to_encode.update({"exp": expire})
+        token = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+        
+        return token
+
+    def decode_token(token: str):
+        try:
+            print("토큰 해독 중")
+            decode_token = jwt.decode(token, settings.SECRET_KEY, algorithm=[settings.ALGORITHM])
+            print("토큰 해독 완료", decode_token)
+            return decode_token if decode_token["expires"] >= datetime.time() else None
+        except:
+            return{}
+
+repository = JWTRepo()
+
+class JWTBearer(HTTPBearer):
+
+    def __init__(self, auto_error: bool = True):
+        super(JWTBearer, self).__init__(auto_error=auto_error)
+
+    async def __call__(self, request: Request):
+        credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
+
+        if credentials:
+            if not credentials.scheme == "Bearer":
+                raise HTTPException(
+                    status_code=403, detail="Invalid authentication sheme.")
+            if self.verfity_jwt(credentials.credentials):
+                raise HTTPException(
+                    status_code=403, detail="Invalid token or expiredd token.")
+            return credentials.credentials
+        else:
+            raise HTTPException(
+                status=403, detail="Invalid authorization code.")
+
+    def verfity_jwt(Self, jwttoken: str):
+        isTokenValid: bool = False
+
+        try:
+            payload = jwt.decode(jwttoken, settings.SECRET_KEY, algorithm=[settings.ALGORITHM])
+        except:
+            payload = None
+
+        if payload:
+            isTokenValid = True
+        return isTokenValid"""

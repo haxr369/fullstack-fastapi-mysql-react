@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 import crud, schemas
 from core.config import settings
 from db import base  # noqa: F401
+from db.session import engine
+from db.base_class import BaseA
 
 # make sure all SQL Alchemy models are imported (app.db.base) before initializing DB
 # otherwise, SQL Alchemy might fail to initialize relationships properly
@@ -13,7 +15,9 @@ def init_db(db: Session) -> None:
     # Tables should be created with Alembic migrations
     # But if you don't want to use migrations, create
     # the tables un-commenting the next line
-    # Base.metadata.create_all(bind=engine)
+
+    #BaseA를 상속받은 모델들은 DB에 자동으로 작성된다.
+    
 
     user = crud.user.get_by_email(db, email=settings.FIRST_SUPERUSER)
     if not user:

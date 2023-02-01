@@ -1,7 +1,7 @@
-from typing import Optional
+from typing import Optional,TypeVar, Dict
 
-from pydantic import BaseModel, EmailStr
-
+from pydantic import BaseModel, EmailStr, Field
+from datetime import datetime
 
 # Shared properties
 class UserBase(BaseModel):
@@ -15,6 +15,8 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     email: EmailStr
     password: str
+
+
 
 
 # Properties to receive via API on update
@@ -37,3 +39,40 @@ class User(UserInDBBase):
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
     hashed_password: str
+
+T = TypeVar('T')
+
+
+class Parameter(BaseModel):
+    data: Dict[str, str] = None
+
+
+class RequestSchema(BaseModel):
+    parameter: Parameter = Field(...)
+
+
+class ResponseSchema(BaseModel):
+    code: str
+    status: str
+    message: str
+    result: Optional[T] = None
+
+"""class TokenResponse(BaseModel) :
+    access_token : str
+    token_type :str"""
+
+
+class JwtUserBase(BaseModel):
+    id: Optional[str] = None
+    access : Optional[int] = 0
+    createtime: Optional[datetime] = None
+
+class JwtUser(JwtUserBase):
+    id: str = None
+
+class JwtUserUpdate(JwtUserBase):
+    access : int
+
+# Properties to receive via API on creation
+class JwtUserCreate(JwtUserBase):
+    pass

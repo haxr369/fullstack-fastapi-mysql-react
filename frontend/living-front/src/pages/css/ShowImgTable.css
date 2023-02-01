@@ -1,0 +1,37 @@
+.topContain{
+    background-color: rgb(202, 238, 202);
+    height: auto;
+
+}
+
+.topName{
+    align : left;
+    margin-left : 5%;
+    margin-top : 0;
+    margin-bottom : 0;
+    display: inline;
+
+}
+
+.topPercent{
+    margin-left: 5%;
+    display: inline;
+}
+
+
+.topNameFG{
+    align : left;
+    margin : 0;
+    margin-left : 5%;
+}
+
+.imgSlid{
+
+}
+
+.imgContent{
+    object-fit: cover;
+    width: 80%;
+    height: 100%;
+    object-position: center;
+}

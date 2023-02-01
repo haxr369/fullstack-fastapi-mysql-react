@@ -19,6 +19,8 @@ class CRUDImg(CRUDBase[Img_Model, ImgCreate, ImgUpdate]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
+    
+
 
    
 
