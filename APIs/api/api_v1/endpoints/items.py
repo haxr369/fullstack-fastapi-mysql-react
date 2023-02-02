@@ -24,7 +24,7 @@ def read_items() -> Any:
     return items
 
 @router.post('/userImgInfo')       #이미지 정보를 받아서 DB에 저장
-async def create_upload_file(
+async def create_upload_info(
     *,
     db: Session = Depends(deps.get_db),
     file_info : img_sch.ImgCreate
@@ -46,7 +46,7 @@ async def create_upload_file(
 
     return 0
 
-
+#사용자 사진을 전송하는 api
 @router.get('/oneImg/{file_name}')
 async def get_image_with_name(file_name: str) -> Any:
 
@@ -58,6 +58,7 @@ async def get_image_with_name(file_name: str) -> Any:
         # FileNotFoundError
         return JSONResponse(content={"error": "Image not found."},  status_code=404)
 
+#식물 샘플 사진을 전송하는 api
 @router.get('/twoImg/{plantNo}/{file_name}')
 async def get_image_with_url(plantNo:str, file_name: str) -> Any:
 

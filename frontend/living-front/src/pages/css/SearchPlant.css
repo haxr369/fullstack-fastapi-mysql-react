@@ -1,0 +1,59 @@
+
+
+.title{
+    display: inline-block;
+}
+
+.contentSub{
+    margin: 0;
+    margin-top: 2%;
+}
+.contentTitle{
+    margin-bottom: 0;
+    
+}
+.outsideTitle{
+    margin-bottom: 0;
+    
+}
+.outsideWiki{
+    margin: 0;
+    margin-top: 4%;
+}
+.outsideNamu{
+    margin: 0;
+    margin-top: 4%;
+}
+
+.tileContain{
+    float:left;
+    margin-left: 5%;
+}
+
+.outsideContain{
+    float:right;
+    margin-right: 5%;
+}
+
+.plantImg{
+    display: inline-block;
+}
+.overviewTitle{
+    margin-left: 5%;
+}
+.overviewContent{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.lifeTitle{
+    margin-left: 5%;
+}
+.lifeTimeline{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.microTitle{
+    margin-left : 5%;
+}
+

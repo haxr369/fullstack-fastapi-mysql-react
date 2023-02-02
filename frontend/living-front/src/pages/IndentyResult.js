@@ -73,7 +73,7 @@ const IdentyResult =() =>{
             </div>
             
             <div className='resultTable'>
-                <h4 className = 'resultImgTitle'>가장 유사한 식물들</h4>
+                <h4 className = 'resultImgTitle'>가장 유사한 식물들</h4> 
             </div>
 
             <div className='imgTable'>

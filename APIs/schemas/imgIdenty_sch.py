@@ -34,25 +34,6 @@ class TopModel(BaseModel):
 #tops = TopModel(**top123)
 #print(tops)
 
-class ImageSchema(BaseModel):
-    plantImgs: list
-   
-    @validator("plantImgs", pre=True)
-    def check_images_path(cls, value):
-        for path in value:
-            if not path.endswith(('.jpeg', '.jpg', '.png')):
-                raise ValueError(f"Invalid image path: {path}")
-        return value
-
-class ImagesModel(BaseModel):
-    top1 : ImageSchema
-    top2 : ImageSchema
-    top3 : ImageSchema
-
-
-
-
-
 # Properties to receive via API on creation
 class ImgIdentyCreate(ImgIdentyBase):
     pass

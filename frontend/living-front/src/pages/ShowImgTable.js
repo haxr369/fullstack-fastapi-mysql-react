@@ -19,7 +19,6 @@ const ShowImgTable = props => {
       };
   
     const [imgUrl, setImgUrl] = useState([]);
-    const [i,setI] =useState(0);
     useEffect(() => {
         console.log(result['plantNo']);
         for(let i=0; i<result['plantImgs'].length; i++){
@@ -47,6 +46,8 @@ const ShowImgTable = props => {
       }, []);
     
 
+
+      
     const imgList = imgUrl.map(imgs => 
         <img className="imgContent" key = {imgs.id}   alt={imgs.id} src={imgs.imgurl} />
     );

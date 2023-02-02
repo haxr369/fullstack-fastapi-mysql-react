@@ -12,7 +12,8 @@ const Login = () => {
     const handleSubmit = async() => {
         //const res = await axios.post(, {username, password})
 
-        const res = oAuth({username,password});
+        
+        const res = oAuth();
         console.log(res)
 
         const {access_token, id_token, refresh_token} = res.data
