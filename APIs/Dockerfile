@@ -1,4 +1,4 @@
-FROM python:latest
+FROM hukim_torch/1.10:latest
 
 WORKDIR /app/
 

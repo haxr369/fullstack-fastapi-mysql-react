@@ -5,6 +5,7 @@ import {Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import IdentyResult from './pages/IndentyResult';
 import Login from './pages/Login';
+import SearchPlant from './pages/SearchPlant';
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
             <Route path="/selectimg" element={<SelectImg/>}/>
             <Route path ="/identyResults" element={<IdentyResult/>} />
             <Route path ="/login" element={<Login/>} />
+            <Route path ="/searchplant" element={<SearchPlant/>} />
 
         </Routes>
         </>

@@ -2,16 +2,25 @@ version: "3.9"
 
 services:
   fastapi:
-    image: fastapi-fullstack-react-fastapi
+    container_name: backend-livinglab
+    build:
+      context: ./APIs
+      dockerfile : Dockerfile
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - 8005:8000
     volumes:
       - ./APIs:/code/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    
   
   frontend:
     image: dockerized-react
-    container_name: livinglab-frontend
+    container_name: frontend-livinglab
     command: sleep infinity
     ports:
       - 3005:3000

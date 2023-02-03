@@ -15,6 +15,7 @@ const Home =() =>{
             <Link to="/apitest"> API 서버와 연결 테스트</Link><br/>
             <Link to="/selectimg"> 이미지 전송 테스트</Link><br/>
             <Link to="/login"> 로그인</Link><br/>
+            <Link to="/searchplant"> 느티나무</Link><br/>
         </div>
     );
 };
