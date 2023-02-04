@@ -11,6 +11,8 @@ from schemas import item_sch, imgIdenty_sch
 from api import deps
 from core.config import settings
 import json
+from ML.MAE_serve_v1 import MAE_Model, inference
+
 router = APIRouter()
 
 
@@ -27,14 +29,18 @@ async def plant_identy(
     단, 스키마는 똑같이 사용함.
     식별함수의 결과는 딕셔너리 형식으로 나온다.
     result = inference(user_fileName) 딕셔너리 형식
-
-    """
-
     result_url = "/code/app/dummy.json"
-
+    
     with open(result_url, "r") as json_file:
         # Load the JSON data from the file
         result = json.load(json_file)
+    """
+    results = inference(MAE_Model, "/code/app/Uploaded_images/3456.jpeg")
+    for top , value in results.items():
+        PlantNo = value['PlantNo'] #int형
+        
+
+    result = {"top3_plants":results}
 
     top3_results = imgIdenty_sch.TopModel(**result['top3_plants'])
 

@@ -66,7 +66,13 @@ class Inferencer(object):
         return data_transforms
     
     def _path2tensor(self, path): #when single mode
+
         image = Image.open(path)
+        #이미지의 확장자 확인
+        if image.format != "JPEG":
+            print("JPEG 파일이 아닌 것이 확인됨. 컨버트!!!!")
+            image = image.convert('RGB')
+            
         transform=self.transform
         image = transform(image)
         image = image.unsqueeze(0)

@@ -26,8 +26,8 @@ def inference(model, path, k=3, num_samples=5):
     
     infer=Inferencer(model, path, cat_info)
     
-    infer(k, num_samples)
-    print(infer(k, num_samples))
+    return infer(k, num_samples)
+
 #Global model load
 device = torch.device("cuda")
 if(device):

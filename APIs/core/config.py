@@ -9,6 +9,12 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, validator
 
 """
 class Settings(BaseSettings):
+
+    ML_PARMS : str = "/code/app/ML/models/checkpoint.pth"
+    CATEGORY_INFO : str = "/code/app/ML/sample_info/cat_info.json"
+    SAMPLES_V1 : str = "/code/app/Sample_images/livinglab_cp/val/"
+
+
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = "haxr" #secrets.token_urlsafe(32)
 
