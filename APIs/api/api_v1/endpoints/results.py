@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import os
 import shutil
-from crud import crud_item,crud_img
+from crud import crud_img, crud_plant
 import models.user
 from schemas import item_sch, imgIdenty_sch
 from api import deps
@@ -56,7 +56,7 @@ def read_item(
     """
     Get item by ID.
     """
-    item = crud_item.get(db=db, id=id)
+    item = crud_plant.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     return item

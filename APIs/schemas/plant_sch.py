@@ -14,6 +14,8 @@ class SpeciesBase(BaseModel):
 
 class Species(SpeciesBase):
     pass
+class SpeciesCreate(SpeciesBase):
+    pass
 
 class Genus_familyBase(BaseModel):
     id : Optional[int] = None
@@ -22,7 +24,8 @@ class Genus_familyBase(BaseModel):
 
 class Genus_family(Genus_familyBase):
     pass
-
+class Genus_familyCreate(Genus_familyBase):
+    pass
 class LifeCycleBase(BaseModel):
     id : Optional[int] = None
     plantno : Optional[int] = None
@@ -32,6 +35,7 @@ class LifeCycleBase(BaseModel):
 
 class LifeCycle(LifeCycleBase):
     pass
-
+class LifeCycleCreate(LifeCycleBase):
+    pass
 
 

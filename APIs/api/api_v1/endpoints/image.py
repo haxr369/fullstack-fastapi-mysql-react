@@ -4,26 +4,19 @@ from fastapi import APIRouter, Depends, HTTPException,File, UploadFile
 from fastapi.responses import JSONResponse, FileResponse
 from sqlalchemy.orm import Session
 import os
-from crud import crud_img, crud_plant
+from crud import crud_img, crud_user
 import models.user
 from schemas import item_sch, img_sch
 from api import deps
 from core.config import settings
 import json
+
 router = APIRouter()
 
 
 
-@router.get("/apitest")
-def read_items() -> Any:
-    """
-    Retrieve items.
-    """
-    items = {'good_job':"아리가토고자이마스!!!!!"}
-    print(items)
-    return items
 
-@router.post('/userImgInfo')       #이미지 정보를 받아서 DB에 저장
+@router.post('/userimginfo')       #이미지 정보를 받아서 DB에 저장
 async def create_upload_info(
     *,
     db: Session = Depends(deps.get_db),

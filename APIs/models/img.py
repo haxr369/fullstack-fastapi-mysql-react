@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from .user import User  # noqa: F401
 
 
-class user_imgs(Base):
+class User_imgs(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     path = Column(String(100))
