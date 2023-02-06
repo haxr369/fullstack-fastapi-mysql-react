@@ -8,11 +8,11 @@ class ImgIdentyBase(BaseModel):
     Family: str
     Genus: str
     Species: str
-    percent: float
-    plantNo : str
-    plantImgs: list
+    Percent: float
+    PlantNo : str
+    PlantImgs: list
    
-    @validator("plantImgs", pre=True)
+    @validator("PlantImgs", pre=True)
     def check_images_path(cls, value):
         for path in value:
             if not path.endswith(('.jpeg', '.jpg', '.png')):
