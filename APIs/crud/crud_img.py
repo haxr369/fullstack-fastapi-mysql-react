@@ -19,7 +19,7 @@ class CRUDUserImg(CRUDBase[User_imgs, UserImgCreate, UserImgCreate]):
         db.refresh(db_obj)
         return db_obj
 
-crud_user_img = CRUDUserImg()
+crud_user_img = CRUDUserImg(User_imgs)
 
 class CRUDSampleImg(CRUDBase[Sample_imgs, PlantImgCreate, PlantImgCreate]):
     def create(
@@ -31,7 +31,7 @@ class CRUDSampleImg(CRUDBase[Sample_imgs, PlantImgCreate, PlantImgCreate]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
-crud_sample_img = CRUDSampleImg()    
+crud_sample_img = CRUDSampleImg(Sample_imgs)    
 class CRUDMicroImg(CRUDBase[Micro_imgs, PlantImgCreate, PlantImgCreate]):
     def create(
         self, db: Session, *, obj_in: PlantImgCreate
@@ -42,7 +42,7 @@ class CRUDMicroImg(CRUDBase[Micro_imgs, PlantImgCreate, PlantImgCreate]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
-crud_micro_img = CRUDMicroImg()   
+crud_micro_img = CRUDMicroImg(Micro_imgs)   
    
 
 

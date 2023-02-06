@@ -27,7 +27,7 @@ def get_db() -> Generator:
 
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
-) -> user.JwtUser:
+) -> user.User:
     try:
         print("현재 받은 토큰은? ",token)
         payload = jwt.decode(
@@ -43,7 +43,7 @@ def get_current_user(
         )
 
     #int 형의 payload가 DB에 없으면 404가 뜬다.
-    user = crud_user.jwtuser.get(db, id=token_data.sub)
+    user = crud_user.user.get(db, id=token_data.sub)
     print("완성!!!!!!!!!",user)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

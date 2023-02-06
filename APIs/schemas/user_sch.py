@@ -14,6 +14,7 @@ class UserBase(BaseModel):
 # Properties to receive via API on creation
 class UserCreate(UserBase):
     id : int = None
+    is_superuser: bool = False
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
