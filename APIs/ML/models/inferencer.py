@@ -123,7 +123,7 @@ class Inferencer(object):
                 infer_path= settings.SAMPLES_V1 + idx2class[batch_indices[0][n].item()] #추론 카테고리 파일 경로
                 imgs,sample_paths=self.bring_imgs(infer_path, img_num=infer_per_num, size=224) #샘플링
                 infer_imgs+=imgs #추론한 사진
-                result_dict[f'top{n+1}']["plantImgs"]=sample_paths #추론한 사진 경로
+                result_dict[f'top{n+1}']["PlantImgs"]=sample_paths #추론한 사진 경로
             
             #img_table=self.make_table(infer_imgs,(k,infer_per_num))
             #plt.axis("off")

@@ -36,15 +36,15 @@ async def plant_identy(
         result = json.load(json_file)
     """
     results = inference(MAE_Model, "/code/app/Uploaded_images/3456.jpeg")
+    
+
     for top , value in results.items():
         PlantNo = value['PlantNo'] #int형
-        
-
-    result = {"top3_plants":results}
-
-    top3_results = imgIdenty_sch.TopModel(**result['top3_plants'])
-
-
+        #PlantNo로 top1~3의 family, genus를 추가
+        results[top]['Family'] = top+"의_과"
+        results[top]['Genus'] = top+"의_속"
+    print("results test '\n",results)
+    top3_results = imgIdenty_sch.TopModel(**results)
     return {"results":top3_results}
 
 @router.get("/{id}", response_model= item_sch.Item)
