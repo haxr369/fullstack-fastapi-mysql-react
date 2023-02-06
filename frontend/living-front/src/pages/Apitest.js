@@ -1,9 +1,10 @@
 import {useState} from 'react';
 import axios from 'axios';
 
-const Apitest = () => {
-  const [data, setData] = useState('');
+const Apitest = ({token}) => {
 
+  const [data, setData] = useState('');
+  console.log(token);
   //비동기적으로 get요청을 하고 데이터를 받아온다.
   const onClick = async ()=> {
     try{

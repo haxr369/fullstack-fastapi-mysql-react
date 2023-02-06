@@ -4,6 +4,8 @@ import { useState } from "react";
 import './css/selectimg.css';
 import axios from "axios";
 import folder from "./statics/img/folderImg.png";
+import Oath from './Oath';
+
 const SelectImg = () => {
   const navigate = useNavigate();
 
