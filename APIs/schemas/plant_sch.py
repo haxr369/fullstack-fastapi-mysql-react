@@ -3,56 +3,35 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 from schemas.img_sch import ImageSchema
 
-class LifeBase(BaseModel):
-    describe : str = None
-    start : datetime = None
-    end : datetime = None
 
-class Life(LifeBase):
-    pass
 
 # Shared properties
-class PlantBase(BaseModel):
-    plantNo :  Optional[int] = None
+class SpeciesBase(BaseModel):
+    plantno :  Optional[int] = None
     species : Optional[str] = None
+    overview : Optional[str] = None
+    genus_id : Optional[int] = None
+
+class Species(SpeciesBase):
+    pass
+
+class Genus_familyBase(BaseModel):
+    id : Optional[int] = None
     genus : Optional[str] = None
     family : Optional[str] = None
-    samples :  Optional[ImageSchema] = None
-    overview : Optional[str] = None
-    lifetime : Optional[List[Life]] = None
-    micros :  Optional[ImageSchema] = None
 
-class PlantUpdate(PlantBase):
+class Genus_family(Genus_familyBase):
     pass
 
-class PlantCreate(PlantBase):
+class LifeCycleBase(BaseModel):
+    id : Optional[int] = None
+    plantno : Optional[int] = None
+    describe : Optional[str] = None
+    start : Optional[datetime] = None
+    end : Optional[datetime] = None
+
+class LifeCycle(LifeCycleBase):
     pass
-class Plant(PlantBase):
-    pass
-
-class PlantGenus(BaseModel):
-    genus : str 
-    family : str
-
-class PlantSpecies(BaseModel):
-    plantno : int 
-    species : str
-    genus : str 
-
-class PlantSamples(BaseModel):
-    plantno : int
-    samples : ImageSchema
-
-class PlantOverview(BaseModel):
-    plantno : int
-    overview : str
-
-class PlantLifetime(PlantBase):
-    plantno : int
-    lifetime : List[Life]
 
 
-class PlantMicros(PlantBase):
-    plantno : int
-    micros : ImageSchema
 

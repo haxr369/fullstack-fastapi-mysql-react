@@ -5,23 +5,19 @@ from datetime import datetime
 
 # Shared properties
 class UserBase(BaseModel):
-    email: Optional[EmailStr] = None
-    is_active: Optional[bool] = True
+    id : Optional[int] = None
+    createtime : Optional[datetime] = None
+    access : Optional[str] = None
     is_superuser: bool = False
-    full_name: Optional[str] = None
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    email: EmailStr
-    password: str
-
-
-
+    id : int = None
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
-    password: Optional[str] = None
+    pass
 
 
 class UserInDBBase(UserBase):
@@ -35,10 +31,7 @@ class UserInDBBase(UserBase):
 class User(UserInDBBase):
     pass
 
-
-# Additional properties stored in DB
-class UserInDB(UserInDBBase):
-    hashed_password: str
+"""
 
 T = TypeVar('T')
 
@@ -57,9 +50,9 @@ class ResponseSchema(BaseModel):
     message: str
     result: Optional[T] = None
 
-"""class TokenResponse(BaseModel) :
+class TokenResponse(BaseModel) :
     access_token : str
-    token_type :str"""
+    token_type :str
 
 
 class JwtUserBase(BaseModel):
@@ -76,3 +69,4 @@ class JwtUserUpdate(JwtUserBase):
 # Properties to receive via API on creation
 class JwtUserCreate(JwtUserBase):
     pass
+"""
