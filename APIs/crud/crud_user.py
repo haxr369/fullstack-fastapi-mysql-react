@@ -3,19 +3,11 @@ from typing import Any, Dict, Optional, Union, TypeVar, Generic, Optional
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models.user import User, JwtUser
-from schemas.user_sch import UserCreate, UserUpdate, JwtUserCreate,JwtUserUpdate 
+from models.user import User
+from schemas.user_sch import UserCreate, UserUpdate
 
 
-from datetime import datetime, timedelta
-from jose import JWTError, jwt
-from core.config import settings #import SECRET_KEY, ALGORITHM
-
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Request, HTTPException
-
+"""
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
@@ -59,29 +51,24 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
 
+"""
 
-user = CRUDUser(User)
-
-
-class CRUDJwtUser(CRUDBase[JwtUser, JwtUserCreate, JwtUserUpdate]):
-    
+class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
+    def is_superuser(self, user: User) -> bool:
+        return user.is_superuser
     #C
-    def create(self, db: Session, *, obj_in: JwtUserCreate) -> JwtUser:
-        db_obj = JwtUser(
-            id = obj_in.id,
-            access = obj_in.access,
-            createtime = obj_in.createtime
+    def create(self, db: Session, *, obj_in: UserCreate) -> User:
+        db_obj = User(
+            id = obj_in.id
         )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-        return {"id":obj_in.id, 
-                "access":obj_in.access,
-                "createtime": obj_in.createtime.strftime("%Y-%m-%d %H:%M:%S")}
+        return {"id":obj_in.id, 'access':obj_in.access}
 
     #R
-    def get_datetime_by_username(self, db: Session, *, id: str) -> Optional[JwtUser]:
-        return db.query(JwtUser).filter(JwtUser.id == id).first()
+    def get_by_id(self, db: Session, *, id: str) -> Optional[User]:
+        return db.query(User).filter(User.id == id).first()
 
     #U
     def update(
@@ -101,7 +88,7 @@ class CRUDJwtUser(CRUDBase[JwtUser, JwtUserCreate, JwtUserUpdate]):
 
 
 
-jwtuser = CRUDJwtUser(JwtUser)
+user = CRUDUser(User)
 
 
 T = TypeVar('T')

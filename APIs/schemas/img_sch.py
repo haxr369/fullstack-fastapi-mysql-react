@@ -5,30 +5,29 @@ from fastapi import File, UploadFile
 
 # Shared properties
 class ImgBase(BaseModel):
-    ip_name: str = None
-    file_name: str = None
+    id: Optional[int] = None
+    path : Optional[str] =None
+    user_id : Optional[int] = None
+    plantno : Optional[int] = None
+
+class PlantImg(ImgBase):
+    plantno : int = None
+
+class UserImg(ImgBase):
+    user_id : int = None
 
 # Properties to receive on item update
-class ImgCreate(ImgBase):
+class PlantImgCreate(PlantImg):
     pass
-
+# Properties to receive on item update
+class PlantImgUpdate(PlantImg):
+    pass
 
 # Properties to receive on item update
-class ImgUpdate(ImgBase):
+class UserImgCreate(UserImg):
     pass
-
-# Properties shared by models stored in DB
-class ImgInDBBase(ImgBase):
-    ip_name : int
-    file_name : str
-    send_time: datetime = Field(default_factory=datetime.now)
-    
-# Properties to return to client
-class Img(ImgInDBBase):
-    pass
-
-# Properties properties stored in DB
-class ImgInDB(ImgInDBBase):
+# Properties to receive on item update
+class UserImgUpdate(UserImg):
     pass
 
 class ImageSchema(BaseModel):

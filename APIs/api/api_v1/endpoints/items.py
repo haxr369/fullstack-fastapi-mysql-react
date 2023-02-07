@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException,File, UploadFile
 from fastapi.responses import JSONResponse, FileResponse
 from sqlalchemy.orm import Session
 import os
-from crud import crud_item,crud_img
+from crud import crud_img, crud_plant
 import models.user
 from schemas import item_sch, img_sch
 from api import deps
@@ -83,7 +83,7 @@ def create_item(
     """
     Create new item.
     """
-    item = crud_item.create_with_owner(db=db, obj_in=item_in)
+    item = crud_plant.create_with_owner(db=db, obj_in=item_in)
     return item
 
 
@@ -97,9 +97,9 @@ def update_item(
     """
     Update an item.
     """
-    item = crud_item.get(db=db, id=id)
+    item = crud_plant.get(db=db, id=id)
 
-    item = crud_item.update(db=db, db_obj=item, obj_in=item_in)
+    item = crud_plant.update(db=db, db_obj=item, obj_in=item_in)
     return item
 
 
@@ -112,7 +112,7 @@ def read_item(
     """
     Get item by ID.
     """
-    item = crud_item.get(db=db, id=id)
+    item = crud_plant.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     return item
@@ -127,8 +127,8 @@ def delete_item(
     """
     Delete an item.
     """
-    item = crud_item.get(db=db, id=id)
+    item = crud_plant.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
-    item = crud_item.remove(db=db, id=id)
+    item = crud_plant.remove(db=db, id=id)
     return item

@@ -37,43 +37,42 @@ def login_access_token(
     print("로그인 user 이름: ",{"grant_type":form_data.grant_type,
                                 "username":form_data.username,
                                 "password":form_data.password})
-    crud = crud_user.jwtuser
+    crud = crud_user.user
     #DB에 username이 있는지 확인
     print("계정 생성 중")
     while(1):
         id =  random.randrange(1,100000)      
-        exis = crud.get_datetime_by_username(db=db, id=id)
+        exis = crud.get_by_id(db=db, id=id)
         if(not exis): break # 없는 경우에 while문 탈출
 
-    createtime = datetime.now()
 
     #새로운 유저 정보를 저장
-    userinfo = user_sch.JwtUserCreate(id=id, access=0 , createtime=createtime)
+    userinfo = user_sch.UserCreate(id=id)
+    
+    userinfo = crud.create(db=db, obj_in=userinfo)
     print(userinfo)
-    jwtUser = crud.create(db=db, obj_in=userinfo)
-
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         "access_token": security.create_access_token(
-            jwtUser["id"], expires_delta=access_token_expires
+            userinfo["id"], expires_delta=access_token_expires
         ),
         "token_type": "bearer",
     }
 
-@router.post("/usetoken", response_model=user_sch.JwtUser)
-def use_token(db: Session = Depends(deps.get_db), current_user: user.JwtUser = Depends(deps.get_current_user)) -> Any:
+@router.post("/usetoken", response_model=user_sch.User)
+def use_token(db: Session = Depends(deps.get_db), current_user: user.User = Depends(deps.get_current_user)) -> Any:
     """
     Test access token
     """
     print("testing... ", current_user)
     
-    crud = crud_user.jwtuser
+    crud = crud_user.user
 
-    info = crud.get(db=db, id=current_user.id)
+    #info = crud.get(db=db, id=current_user.id)
 
-    jwtUser = crud.update(db=db, db_obj = info ,obj_in= {"access": current_user.access+1})
+    jwtUser = crud.update(db=db, db_obj = current_user ,obj_in= {"access": current_user.access+1})
 
-    response = user_sch.JwtUser(id=jwtUser.id, 
+    response = user_sch.User(id=jwtUser.id, 
                             access=jwtUser.access, 
                             createtime=jwtUser.createtime)
     print(response)
@@ -82,12 +81,12 @@ def use_token(db: Session = Depends(deps.get_db), current_user: user.JwtUser = D
 
 
 
-@router.post("/test-token", response_model=user_sch.JwtUser)
-def test_token(current_user: user.JwtUser = Depends(deps.get_current_user)) -> Any:
+@router.get("/test-token", response_model=user_sch.User)
+def test_token(current_user: user.User = Depends(deps.get_current_user)) -> Any:
     """
     Test access token
     """
-    response = user_sch.JwtUser(id=current_user.id, 
+    response = user_sch.User(id=current_user.id, 
                             access=current_user.access, 
                             createtime=current_user.createtime)
     print(response)

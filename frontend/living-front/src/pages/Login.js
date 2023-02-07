@@ -1,19 +1,31 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import oAuth from "./auth/oAuth"
 
 const Login = () => {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
 
 
+    useEffect( () => {
+        console.log("랜더링!!")
+        const res = localStorage.getItem('access_token')
+        if(res){
+            console.log("현재 내가 가지고 있는 "+res)
+        }
+        else{
+            const res = oAuth(); // token localStorage에 저장.
+        }
+    },[]);
 
+    if(localStorage.getItem('access_token')){
+        console.log(localStorage.getItem('access_token'))
+    }
+
+    
     const handleSubmit = async() => {
-        //const res = await axios.post(, {username, password})
-
         
-        const res = oAuth();
+        /***
+         * 
         console.log(res)
 
         const {access_token, id_token, refresh_token} = res.data
@@ -24,12 +36,8 @@ const Login = () => {
         localStorage.setItem("access_token", access_token)
         localStorage.setItem("refresh_token", refresh_token)
         localStorage.setItem("profile", JSON.stringify(profile))
-
-    }
-
-    return (
-        <div><h2>토큰 테스트!!!</h2>
-            <div>
+         * 
+         * <div>
                 username :
                 <input 
                 type={"text"}
@@ -43,6 +51,16 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
             </div>
+         * 
+         */
+        
+        
+
+    }
+
+    return (
+        <div><h2>토큰 테스트!!!</h2>
+            
             <button onClick={handleSubmit}>Submit</button>
         </div>
     )

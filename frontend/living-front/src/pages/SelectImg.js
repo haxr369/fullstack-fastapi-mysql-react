@@ -4,6 +4,9 @@ import { useState } from "react";
 import './css/selectimg.css';
 import axios from "axios";
 import folder from "./statics/img/folderImg.png";
+import jwtDecode from "jwt-decode";
+import oAuth from "./auth/oAuth"
+
 const SelectImg = () => {
   const navigate = useNavigate();
 
@@ -37,6 +40,15 @@ const SelectImg = () => {
     .then((res) => {
       setIp(res.data.IPv4)
     });
+
+    const token = localStorage.getItem('access_token');
+    if(token){
+      const decodedIdToken = jwtDecode(token);
+      console.log(decodedIdToken);
+    }
+    else{
+      const res = oAuth(); 
+    }
     
   });
 
@@ -52,8 +64,7 @@ const SelectImg = () => {
         'Content-Type': 'multipart/form-data',
       },
     }).catch( err => {
-      console.log("보내기 실패");
-      alert("이미지를 선택해주세요.")
+      console.log("파일 보내기 실패");
     });
     
 
@@ -76,7 +87,7 @@ const SelectImg = () => {
         navigate("/identyResults?file_name="+files.name);
       }
     ).catch( err => {
-      console.log("보내기 실패");
+      console.log("이미지 정보 보내기 실패");
       alert("이미지를 보내지 못했습니다. 다시 시도해주세요.")
     });
     

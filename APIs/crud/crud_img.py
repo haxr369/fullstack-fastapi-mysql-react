@@ -4,25 +4,45 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models.img import Img_Model
-from schemas.img_sch import ImgCreate,ImgUpdate
+from models.img import User_imgs, Sample_imgs, Micro_imgs
+from schemas.img_sch import PlantImgCreate, UserImgCreate
 
 
-class CRUDImg(CRUDBase[Img_Model, ImgCreate, ImgUpdate]):
-    def create_with_ip(
-        self, db: Session, *, obj_in: ImgCreate
-    ) -> Img_Model:
+class CRUDUserImg(CRUDBase[User_imgs, UserImgCreate, UserImgCreate]):
+    def create(
+        self, db: Session, *, obj_in: UserImgCreate
+    ) -> User_imgs:
         obj_in_data = jsonable_encoder(obj_in)
-        print(obj_in_data)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
-    
 
+crud_user_img = CRUDUserImg(User_imgs)
 
+class CRUDSampleImg(CRUDBase[Sample_imgs, PlantImgCreate, PlantImgCreate]):
+    def create(
+        self, db: Session, *, obj_in: PlantImgCreate
+    ) -> Sample_imgs:
+        obj_in_data = jsonable_encoder(obj_in)
+        db_obj = self.model(**obj_in_data)
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+crud_sample_img = CRUDSampleImg(Sample_imgs)    
+class CRUDMicroImg(CRUDBase[Micro_imgs, PlantImgCreate, PlantImgCreate]):
+    def create(
+        self, db: Session, *, obj_in: PlantImgCreate
+    ) -> Micro_imgs:
+        obj_in_data = jsonable_encoder(obj_in)
+        db_obj = self.model(**obj_in_data)
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+crud_micro_img = CRUDMicroImg(Micro_imgs)   
    
 
 
-img = CRUDImg(Img_Model)
