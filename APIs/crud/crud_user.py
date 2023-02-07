@@ -64,7 +64,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-        return {"id":obj_in.id}
+        return {"id":obj_in.id, 'access':obj_in.access}
 
     #R
     def get_by_id(self, db: Session, *, id: str) -> Optional[User]:

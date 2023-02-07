@@ -1,8 +1,24 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
+import jwtDecode from "jwt-decode";
+import oAuth from "./auth/oAuth"
 
 const Apitest = () => {
   const [data, setData] = useState('');
+
+  useEffect(()=>{
+    const token = localStorage.getItem('access_token');
+    if(token){
+      const decodedIdToken = jwtDecode(token);
+      console.log(decodedIdToken);
+    }
+    else{
+      const res = oAuth(); 
+    }
+    
+    
+  },[]);
+
 
   //비동기적으로 get요청을 하고 데이터를 받아온다.
   const onClick = async ()=> {

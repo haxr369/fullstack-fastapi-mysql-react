@@ -7,13 +7,14 @@ from datetime import datetime
 class UserBase(BaseModel):
     id : Optional[int] = None
     createtime : Optional[datetime] = None
-    access : Optional[str] = None
+    access : Optional[int] = 0
     is_superuser: bool = False
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
     id : int = None
+    access : int = 0
     is_superuser: bool = False
 
 # Properties to receive via API on update
