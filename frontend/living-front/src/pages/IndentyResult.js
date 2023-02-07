@@ -18,10 +18,14 @@ const IdentyResult =() =>{
     // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
     useEffect(() => {
         // 아래 fetch가 서버에 식별을 요청하는 것.
-        fetch('http://192.168.0.203:8005/api/v1/results/identy/${fileName}')
-          .then((response) => response.json())  //json 형태로 식별 결과가 오면,
-          .then((json) => setResultData(json));
-        
+        console.log("식별하는 사진 이름 : "+fileName)
+        axios.get(`http://192.168.0.203:8005/api/v1/results/identy/${fileName}`)
+          //.then((response) => response.json())  //json 형태로 식별 결과가 오면,
+          .then((json) => {setResultData(json)
+                            console.log("식별 성공!1")
+                            console.log(resultData)});
+          
+
           // 사용자 입력 사진을 서버에서 요청한다.
         axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
             responseType: 'blob'

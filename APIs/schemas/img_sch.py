@@ -3,17 +3,15 @@ from datetime import datetime
 from pydantic import BaseModel, Field, validator
 from fastapi import File, UploadFile
 
-# Shared properties
-class ImgBase(BaseModel):
+
+class PlantImg(BaseModel):
     id: Optional[int] = None
     path : Optional[str] =None
-    user_id : Optional[int] = None
-    plantno : Optional[int] = None
-
-class PlantImg(ImgBase):
     plantno : int = None
 
-class UserImg(ImgBase):
+class UserImg(BaseModel):
+    id: Optional[int] = None
+    path : Optional[str] =None
     user_id : int = None
 
 # Properties to receive on item update

@@ -23,7 +23,7 @@ async def plant_identy(
     db: Session = Depends(deps.get_db),
     user_fileName: str,
 ) -> Any:
-    
+    print("들어온 file이름: "+user_fileName)
     """
     식별함수를 사용해야하지만 일단은 더미 파일을 사용한다.
     단, 스키마는 똑같이 사용함.
@@ -35,7 +35,9 @@ async def plant_identy(
         # Load the JSON data from the file
         result = json.load(json_file)
     """
-    results = inference(MAE_Model, "/code/app/Uploaded_images/3456.jpeg")
+    std_url = os.path.join("/code/app/Uploaded_images/",user_fileName)
+
+    results = inference(MAE_Model, std_url)
     
 
     for top , value in results.items():

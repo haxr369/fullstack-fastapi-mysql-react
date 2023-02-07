@@ -47,7 +47,7 @@ const SelectImg = () => {
       console.log(decodedIdToken);
     }
     else{
-      const res = oAuth(); 
+      oAuth(); 
     }
     
   });
