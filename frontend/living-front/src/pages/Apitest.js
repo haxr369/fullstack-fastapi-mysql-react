@@ -13,7 +13,7 @@ const Apitest = () => {
       console.log(decodedIdToken);
     }
     else{
-      const res = oAuth(); 
+      oAuth(); 
     }
     
     

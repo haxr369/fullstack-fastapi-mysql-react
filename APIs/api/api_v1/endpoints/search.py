@@ -50,7 +50,7 @@ def get_plant_dictionary(
     *,
     db: Session = Depends(deps.get_db),
     species : str,
-    obj : plant_sch.PlantSpecies
+    obj : plant_sch.Species
 ) -> Any:
     """
     1. 종으로 속과 plantNo를 얻음.

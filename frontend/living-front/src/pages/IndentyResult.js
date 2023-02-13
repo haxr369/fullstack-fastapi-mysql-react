@@ -1,41 +1,79 @@
 //Hook  import 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import {useSearchParams} from 'react-router-dom';
+import {useSearchParams, Redirect} from 'react-router-dom';
 import './css/IdentyResult.css';
 import ShowImgTable  from './ShowImgTable';
 //사전에 정의한 데이터를 보여주는 방법 = url 파라미터
-
+import jwtDecode from "jwt-decode";
+import oAuth from "./auth/oAuth"
+import tokenUse from "./auth/Tokenuse"
 
 const IdentyResult =() =>{
     const [searchParams, setSearchParams] =useSearchParams();
     const fileName = searchParams.get('file_name'); 
     const [user_url, setUerUrl] = useState('');
     const [resultData, setResultData] = useState(null);
-
+    const [token,setToken] = useState(null);
 
     // 식물 식별을 요청하고 사진들을 얻는다.
     // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
-    useEffect(() => {
-        // 아래 fetch가 서버에 식별을 요청하는 것.
-        fetch('http://192.168.0.203:8005/api/v1/results/identy/${fileName}')
-          .then((response) => response.json())  //json 형태로 식별 결과가 오면,
-          .then((json) => setResultData(json));
-        
-          // 사용자 입력 사진을 서버에서 요청한다.
-        axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
+    const fetchData = async () => {
+        const result = await axios.get(`http://192.168.0.203:8005/api/v1/results/identy/${fileName}`)
+          .then((json) => {
+            setResultData(json.data);
+            //console.log(json.data);
+          });
+        await axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
             responseType: 'blob'
         }).then(response => {
             const url = URL.createObjectURL(new Blob([response.data]));
             setUerUrl(url);
         });
+      };
+    
+    const checkAccess = async () => {
+        const token = localStorage.getItem('access_token');
+        if(token){
+            const decodedIdToken = jwtDecode(token);
+            //console.log("디코드 토큰"+decodedIdToken);
+            const tokenUse_result = await tokenUse(token);
+            setToken(tokenUse_result)
+            console.log("토큰 확인 결과 "+tokenUse_result);
+            /**if(tokenUse_result === null){
+                console.log(tokenUse_result);
+                return (
+                    <div>
+                        너무 많이 GPU 서비스를 사용했습니다.<p/>
+                        잠시만 기다려주세요.
+                    </div>
+                );
+            }**/
+        }
+        else{
+            return (
+                <>
+                <Redirect to={{
+                                    pathname: '/selectimg'
+                                  }}
+                    />
+                </>
+            );
+        }
+    };
 
-      }, []);
+    useEffect(() => {
+        fetchData();
+        checkAccess();
+        
+        
+      },[]);
+    
 
     if (!resultData) {
         return <div>Loading...</div>;
     }
-
+    
 
     const getImage = () => {
         axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
@@ -62,26 +100,37 @@ const IdentyResult =() =>{
         />
     ));
     
-
-    return (
-        <div>
-            <div className='userContain'>
-                <h2 className = 'userImgTitle'>식별 식물</h2>
-                <div className='userImgContain'>
-                    <img className='userImg'  alt="user img" src={user_url} />
-                </div>
-            </div>
-            
-            <div className='resultTable'>
-                <h4 className = 'resultImgTitle'>가장 유사한 식물들</h4> 
-            </div>
-
-            <div className='imgTable'>
-                {topsList}
-            </div>
+    if(token){
+        return (
         
-        </div>
-    );
+            <div>
+                <div className='userContain'>
+                    <h2 className = 'userImgTitle'>식별 식물</h2>
+                    <div className='userImgContain'>
+                        <img className='userImg'  alt="user img" src={user_url} />
+                    </div>
+                </div>
+                
+                <div className='resultTable'>
+                    <h4 className = 'resultImgTitle'>가장 유사한 식물들</h4> 
+                </div>
+    
+                <div className='imgTable'>
+                    {topsList}
+                </div>
+            
+            </div>
+        );
+    }
+    else{
+        return (
+            <div>
+                너무 많이 GPU 서비스를 사용했습니다.<p/>
+                잠시만 기다린 후에 새로고침 해주세요.
+            </div>
+        );
+    }
+    
 
 };
 

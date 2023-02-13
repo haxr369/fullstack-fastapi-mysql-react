@@ -27,10 +27,10 @@ def read_items() -> Any:
 async def create_upload_info(
     *,
     db: Session = Depends(deps.get_db),
-    file_info : img_sch.ImgCreate
+    file_info : img_sch.UserImg
 ):
-    crud = crud_img.img
-    item = crud.create_with_ip(db=db, obj_in=file_info)
+    crud = crud_img.user_img
+    item = crud.create(db=db, obj_in=file_info)
     return item 
 
 @router.post('/userImg')            #이미지를 받아서 저장소에 저장
@@ -59,18 +59,19 @@ async def get_image_with_name(file_name: str) -> Any:
         return JSONResponse(content={"error": "Image not found."},  status_code=404)
 
 #식물 샘플 사진을 전송하는 api
-@router.get('/twoImg/{plantNo}/{file_name}')
-async def get_image_with_url(plantNo:str, file_name: str) -> Any:
+@router.get('/twoImg/{Species}/{file_name}')
+async def get_image_with_url(Species:str, file_name: str) -> Any:
 
-    std_url ="/code/app/Sample_images"
-    file_url = os.path.join(std_url,plantNo, file_name)
+    std_url = settings.SAMPLES_V1
+    
+    file_url = os.path.join(std_url,Species, file_name)
     print(file_url)
     print(os.path.isfile(file_url))
     if os.path.isfile(file_url):
         return FileResponse(file_url, media_type="image/*")
-    #else:
-        # FileNotFoundError
-    #    return JSONResponse(content={"error": "Image not found."},  status_code=404)
+    else:
+        FileNotFoundError
+        return JSONResponse(content={"error": "Image not found."},  status_code=404)
 
 
 

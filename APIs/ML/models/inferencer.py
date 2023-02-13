@@ -121,9 +121,10 @@ class Inferencer(object):
                 result_dict[f'top{n+1}']["PlantNo"] = self.cat_info[result_dict[f'top{n+1}']["Species"]] #라벨의 인덱스
                                                             
                 infer_path= settings.SAMPLES_V1 + idx2class[batch_indices[0][n].item()] #추론 카테고리 파일 경로
-                imgs,sample_paths=self.bring_imgs(infer_path, img_num=infer_per_num, size=224) #샘플링
-                infer_imgs+=imgs #추론한 사진
-                result_dict[f'top{n+1}']["PlantImgs"]=sample_paths #추론한 사진 경로
+                #imgs,sample_paths=self.bring_imgs(infer_path, img_num=infer_per_num, size=224) #샘플링
+                sample_indxs=self.bring_imgs(infer_path, img_num=infer_per_num, size=224) #샘플링
+                #infer_imgs+=imgs #추론한 사진
+                result_dict[f'top{n+1}']["PlantImgs"]=list(sample_indxs) #추론한 사진 경로
             
             #img_table=self.make_table(infer_imgs,(k,infer_per_num))
             #plt.axis("off")
@@ -156,7 +157,7 @@ class Inferencer(object):
             print('이미지의 갯수가 입력값보다 적어서 폴더 내 모든 사진을 받아옵니다. 사진 갯수: {0}'.format(len(img_list)))
             img_num=len(img_list)
         sampling_list = np.array(random.sample(img_list,img_num)) # 해당 카테고리 사진들중 랜덤하게 img_num개 뽑아옴
-        images=[0]*img_num
+        """images=[0]*img_num
         img_path=[]
         for i in range(img_num):
             images[i]=os.path.join(path,sampling_list[i])
@@ -175,9 +176,10 @@ class Inferencer(object):
             for i in range(margin_num):
                 white_pic=np.ones(img.shape)
 
-                images.append(white_pic)
+                images.append(white_pic)"""
         
-        return images, img_path #(224,224,3) 인 이미지들들을 리스트로 묶어서 반환시킴 / image path 리스트 반환 추가
+        #return images, img_path #(224,224,3) 인 이미지들들을 리스트로 묶어서 반환시킴 / image path 리스트 반환 추가
+        return sampling_list
             
     def make_table(self,images:list,shape:tuple): #images 는 이미지들 담겨있는 리스트임
         """1. 행개수씩 이미지 리스트를 뽑아서 image들 hstack 해줌 (가로사이즈가 5면 인덱스를 0~4, 5~9 ... 가져옴)
