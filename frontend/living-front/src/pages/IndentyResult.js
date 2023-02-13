@@ -14,7 +14,7 @@ const IdentyResult =() =>{
     const fileName = searchParams.get('file_name'); 
     const [user_url, setUerUrl] = useState('');
     const [resultData, setResultData] = useState(null);
-    const [token,setToken] = useState(null);
+    const [tokenCheck,setTokenCheck] = useState(null);
 
     // 식물 식별을 요청하고 사진들을 얻는다.
     // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
@@ -38,7 +38,7 @@ const IdentyResult =() =>{
             const decodedIdToken = jwtDecode(token);
             //console.log("디코드 토큰"+decodedIdToken);
             const tokenUse_result = await tokenUse(token);
-            setToken(tokenUse_result)
+            setTokenCheck(tokenUse_result)
             console.log("토큰 확인 결과 "+tokenUse_result);
             /**if(tokenUse_result === null){
                 console.log(tokenUse_result);
@@ -100,7 +100,7 @@ const IdentyResult =() =>{
         />
     ));
     
-    if(token){
+    if(tokenCheck){
         return (
         
             <div>
@@ -123,6 +123,7 @@ const IdentyResult =() =>{
         );
     }
     else{
+        setTimeout(() => oAuth(), 30000);
         return (
             <div>
                 너무 많이 GPU 서비스를 사용했습니다.<p/>
