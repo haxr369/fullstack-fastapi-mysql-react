@@ -17,21 +17,26 @@ const ShowImgTable = props => {
         autoplaySpeed: 2000,
         pauseOnHover: true
       };
-  
+      
     const [imgUrl, setImgUrl] = useState([]);
-    useEffect(() => {
-        console.log(result['plantNo']);
-        for(let i=0; i<result['plantImgs'].length; i++){
-            axios.get(`http://192.168.0.203:8005/api/v1/items/twoImg/${result['plantNo']}/${result['plantImgs'][i]}`, {
+
+    const getImages = async () => {
+        for(let i=0; i<result['PlantImgs'].length; i++){
+            await axios.get(`http://192.168.0.203:8005/api/v1/items/twoImg/${result['Species']}/${result['PlantImgs'][i]}`, {
                 responseType: 'blob'
                 }).then(response => {
                     console.log("이미지 얻어!!");
                     const newurl = URL.createObjectURL(new Blob([response.data]));
                     setImgUrl(imgUrl => [...imgUrl, {id:i, imgurl:newurl}]);
-                    console.log(imgUrl.length);
+                    //console.log(imgUrl.length);
                 });
     
         }
+
+    }
+    useEffect(() => {
+        //console.log(result);
+        getImages();
        
         
     //useEffect는 의존성 배열안의 값이 변하면 항상 재생성된다.
@@ -45,9 +50,6 @@ const ShowImgTable = props => {
  */
       }, []);
     
-
-
-      
     const imgList = imgUrl.map(imgs => 
         <img className="imgContent" key = {imgs.id}   alt={imgs.id} src={imgs.imgurl} />
     );
@@ -57,7 +59,7 @@ const ShowImgTable = props => {
  */
     return (
         <div className='topContain'>
-            <h3 className='topName'> {result["Species"]}</h3> <h2 className="topPercent"> {result["percent"]}</h2>
+            <h3 className='topName'> {result["Species"]}</h3> <h2 className="topPercent"> {result["Percent"].toFixed(2)*100}%</h2>
             <h5 className= 'topNameFG'> {result["Family"]} {result["Genus"]} </h5>
             <div className = "imgSlid">
                     <Slider {...settings}>

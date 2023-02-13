@@ -39,6 +39,8 @@ const SelectImg = () => {
     axios.get('https://geolocation-db.com/json/')
     .then((res) => {
       setIp(res.data.IPv4)
+      
+      //console.log(ip);
     });
 
     const token = localStorage.getItem('access_token');
@@ -50,7 +52,7 @@ const SelectImg = () => {
       oAuth(); 
     }
     
-  });
+  },[]);
 
   const handleClick = async (e) => {
 

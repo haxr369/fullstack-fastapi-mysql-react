@@ -62,7 +62,8 @@ async def get_image_with_name(file_name: str) -> Any:
 @router.get('/twoImg/{Species}/{file_name}')
 async def get_image_with_url(Species:str, file_name: str) -> Any:
 
-    std_url ="/code/app/Sample_images"
+    std_url = settings.SAMPLES_V1
+    
     file_url = os.path.join(std_url,Species, file_name)
     print(file_url)
     print(os.path.isfile(file_url))
