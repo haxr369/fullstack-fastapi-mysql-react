@@ -78,6 +78,7 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.User,
         print(response)
         
         return response
+        
     else: #만료된 토큰을 가진 user인 경우
         response = user_sch.User(id=-1, 
                                 access=0)
@@ -88,15 +89,22 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.User,
 
 
 
-@router.get("/test-token", response_model=user_sch.User)
-def test_token(current_user: user.User = Depends(deps.get_current_user)) -> Any:
+@router.get("/testToken", response_model=user_sch.User)
+def test_token(current_user: Union[user.User, None] = Depends(deps.get_current_user)) -> Any:
     """
     Test access token
     """
-    response = user_sch.User(id=current_user.id, 
-                            access=current_user.access, 
-                            createtime=current_user.createtime)
-    print(response)
-    
-    return response
+    if(current_user):
+        response = user_sch.User(id=current_user.id, 
+                                access=current_user.access, 
+                                createtime=current_user.createtime)
+        print(response)
+        
+        return response
+    else: #만료된 토큰을 가진 user인 경우
+        response = user_sch.User(id=-1, 
+                                access=0)
+        print(response)
+        
+        return response
 

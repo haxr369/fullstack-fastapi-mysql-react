@@ -41,7 +41,7 @@ const tokenUse = async () => {
         else if(resp.data['access'] * 1 > 0){
             console.log(resp.data['access']+"번 요청함");
             console.log("GPU 제한 안함");
-            return "ok";
+            return 'ok';
         }
 
     } catch (error) {

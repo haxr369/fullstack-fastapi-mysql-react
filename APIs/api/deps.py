@@ -40,9 +40,11 @@ def get_current_user(
         #print("해독한 결과? ",payload)
         token_data = token_sch.TokenPayload(**payload)
         #print("완성!")
+        
     except (jwt.JWTError,ExpiredSignatureError):
         print("유효기간 만료")
         return None
+
     except (jwt.JWTError,  ValidationError): #유효기간을 초과한 토큰을 받은 경우.
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -54,5 +56,6 @@ def get_current_user(
     user = crud_user.user.get(db, id=token_data.sub)
     print("완성!!!!!!!!!",user)
     if not user:
+        print("문제 발생!! "+token_data )
         raise HTTPException(status_code=404, detail="User not found")
     return user

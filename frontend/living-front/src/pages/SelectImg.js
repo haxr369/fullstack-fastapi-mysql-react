@@ -4,8 +4,7 @@ import { useState } from "react";
 import './css/selectimg.css';
 import axios from "axios";
 import folder from "./statics/img/folderImg.png";
-import jwtDecode from "jwt-decode";
-import oAuth from "./auth/oAuth"
+import checkToken from "./auth/checkToken";
 
 const SelectImg = () => {
   const navigate = useNavigate();
@@ -43,14 +42,7 @@ const SelectImg = () => {
       //console.log(ip);
     });
 
-    const token = localStorage.getItem('access_token');
-    if(token){
-      const decodedIdToken = jwtDecode(token);
-      console.log(decodedIdToken);
-    }
-    else{
-      oAuth(); 
-    }
+    checkToken();
     
   },[]);
 
