@@ -28,16 +28,25 @@ const tokenUse = async () => {
             headers
         });
 
+        if(resp.data['id']===-1){
+            console.log("토큰 유효기간 만료");
+            return "tokenExpiration"
+        }
+
+
         if (resp.data['access'] * 1 > limit_access) {
             console.log("GPU 제한 페이지");
-            return null;
-        } else {
+            return "gpuWating";
+        } 
+        else if(resp.data['access'] * 1 > 0){
+            console.log(resp.data['access']+"번 요청함");
             console.log("GPU 제한 안함");
-            return resp;
+            return 'ok';
         }
+
     } catch (error) {
         console.error(error);
-        return null;
+        return error;
     }
 };
 

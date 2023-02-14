@@ -1,20 +1,12 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import jwtDecode from "jwt-decode";
-import oAuth from "./auth/oAuth"
+import checkToken from "./auth/checkToken";
 
 const Apitest = () => {
   const [data, setData] = useState('');
 
   useEffect(()=>{
-    const token = localStorage.getItem('access_token');
-    if(token){
-      const decodedIdToken = jwtDecode(token);
-      console.log(decodedIdToken);
-    }
-    else{
-      oAuth(); 
-    }
+    checkToken();
     
     
   },[]);

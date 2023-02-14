@@ -8,69 +8,83 @@ import ShowImgTable  from './ShowImgTable';
 import jwtDecode from "jwt-decode";
 import oAuth from "./auth/oAuth"
 import tokenUse from "./auth/Tokenuse"
+import { useNavigate } from "react-router-dom";
 
 const IdentyResult =() =>{
     const [searchParams, setSearchParams] =useSearchParams();
     const fileName = searchParams.get('file_name'); 
     const [user_url, setUerUrl] = useState('');
     const [resultData, setResultData] = useState(null);
-    const [token,setToken] = useState(null);
+    const [tokenCheck,setTokenCheck] = useState(null);
+    const navigate = useNavigate();
 
     // 식물 식별을 요청하고 사진들을 얻는다.
     // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
     const fetchData = async () => {
-        const result = await axios.get(`http://192.168.0.203:8005/api/v1/results/identy/${fileName}`)
-          .then((json) => {
-            setResultData(json.data);
-            //console.log(json.data);
+        if(fileName){
+            console.log("filename : "+fileName);
+            const result = await axios.get(`http://192.168.0.203:8005/api/v1/results/identy/${fileName}`)
+            .then((json) => {
+              setResultData(json.data);
+              //console.log(json.data);
+            });
+          await axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
+              responseType: 'blob'
+          }).then(response => {
+              const url = URL.createObjectURL(new Blob([response.data]));
+              setUerUrl(url);
           });
-        await axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
-            responseType: 'blob'
-        }).then(response => {
-            const url = URL.createObjectURL(new Blob([response.data]));
-            setUerUrl(url);
-        });
-      };
-    
-    const checkAccess = async () => {
-        const token = localStorage.getItem('access_token');
-        if(token){
-            const decodedIdToken = jwtDecode(token);
-            //console.log("디코드 토큰"+decodedIdToken);
-            const tokenUse_result = await tokenUse(token);
-            setToken(tokenUse_result)
-            console.log("토큰 확인 결과 "+tokenUse_result);
-            /**if(tokenUse_result === null){
-                console.log(tokenUse_result);
-                return (
-                    <div>
-                        너무 많이 GPU 서비스를 사용했습니다.<p/>
-                        잠시만 기다려주세요.
-                    </div>
-                );
-            }**/
         }
         else{
-            return (
-                <>
-                <Redirect to={{
-                                    pathname: '/selectimg'
-                                  }}
-                    />
-                </>
-            );
+            console.log("filename : "+fileName);
+            navigate("/selectimg");
         }
+        
+      };
+    
+    const checkAccess =  async () => {
+        const token = localStorage.getItem('access_token');
+        if(token){
+            const tokenUse_result = await tokenUse(token);
+            setTokenCheck(tokenUse_result)
+            console.log("토큰 확인 결과 "+tokenUse_result);
+            
+            return tokenUse_result;
+        }
+        else return null;
+    };
+
+    const resetToken = async () =>{
+        console.log("리셋 토큰!!");
+        localStorage.removeItem('access_token');
+        setTokenCheck(null);
+        await oAuth();
+        navigate("/selectimg");
     };
 
     useEffect(() => {
-        fetchData();
-        checkAccess();
-        
-        
-      },[]);
+        if(tokenCheck){ //tokenCheck가 null이 아닌 경우. checkAccess가 수행된 것.
+            console.log(tokenCheck);
+            if(tokenCheck === "tokenExpiration"){ //토큰 유효기간 만료
+                resetToken();}
+            else if(tokenCheck === "ok"){ //유효한 토큰이 들어온 경우.
+                fetchData();}  
+        }    
+        else{
+            checkAccess();
+        }
+      },[tokenCheck]);
     
-
-    if (!resultData) {
+    if(tokenCheck === "gpuWating"){
+        setTimeout(() => resetToken(), 60000*2);
+        return (
+            <div>
+                너무 많이 GPU 서비스를 사용했습니다.<p/>
+                2분간 기다린 후에 새로고침 해주세요.
+            </div>
+        );
+    }
+    else if (!resultData) {
         return <div>Loading...</div>;
     }
     
@@ -100,7 +114,6 @@ const IdentyResult =() =>{
         />
     ));
     
-    if(token){
         return (
         
             <div>
@@ -121,15 +134,7 @@ const IdentyResult =() =>{
             
             </div>
         );
-    }
-    else{
-        return (
-            <div>
-                너무 많이 GPU 서비스를 사용했습니다.<p/>
-                잠시만 기다린 후에 새로고침 해주세요.
-            </div>
-        );
-    }
+
     
 
 };

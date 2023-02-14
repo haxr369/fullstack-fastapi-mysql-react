@@ -1,18 +1,12 @@
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
-import oAuth from "./auth/oAuth"
+import checkToken from "./auth/checkToken";
 
 const Home =() =>{
 
     useEffect( () => {
         console.log("홈페이지")
-        const res = localStorage.getItem('access_token')
-        if(res){
-            console.log("현재 내가 가지고 있는 "+res)
-        }
-        else{
-            oAuth(); // token localStorage에 저장.
-        }
+        checkToken();
     },[]);
 
     if(localStorage.getItem('access_token')){
