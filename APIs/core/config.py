@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "haxr" #secrets.token_urlsafe(32)
 
     ALGORITHM = "HS256"
-    # 60 minutes * 24 hours * 8 days = 8 days
-    ACCESS_TOKEN_EXPIRE_MINUTES = 60*24
+    # 60 minutes * 24 hours * 8 days = 8 days 토큰 유효기간 = 2분
+    ACCESS_TOKEN_EXPIRE_MINUTES = 2
     SERVER_NAME: str = 'livinglab-with-fastapi'
     SERVER_HOST: AnyHttpUrl = 'http://172.28.0.2:8005'
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
