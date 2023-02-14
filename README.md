@@ -1,4 +1,4 @@
-# fastapi-fullstack-react
+# fullstack-fastapi-mysql-react
 University of Seoul CVLAB's Livinglab
 
 ## 개발목표
