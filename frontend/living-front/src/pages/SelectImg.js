@@ -9,7 +9,7 @@ import checkToken from "./auth/checkToken";
 const SelectImg = () => {
   const navigate = useNavigate();
 
-  const [files, setFiles] =useState('');            //보내는 데이터
+  const [files, setFiles] =useState(null);            //보내는 데이터
   const [imgFile, setImgFile] = useState(folder);   //보여주는 데이터
 
   //받은 이미지를 file state에 저장하기
@@ -46,8 +46,8 @@ const SelectImg = () => {
     
   },[]);
 
-  const handleClick = async (e) => {
 
+  const sendImg = async () => {
     const formData = new FormData();
     formData.append('file', files);   
     await axios({
@@ -57,39 +57,56 @@ const SelectImg = () => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+    }).then( () => {
+
+      const file_info = {
+        ip_name : ip,
+        file_name : files.name,
+      }; 
+      
+      axios({
+        method: 'post',
+        url: 'http://192.168.0.203:8005/api/v1/items/userImgInfo',
+        data: file_info,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(
+        res =>{
+          console.log("보내기 성공");
+          navigate("/identyResults?file_name="+files.name);
+        }
+      ).catch( err => {
+        console.log("이미지 정보 보내기 실패");
+        
+      });
+
     }).catch( err => {
-      console.log("파일 보내기 실패");
+      console.log("이미지 파일 보내기 실패");
+      alert("이미지를 보내지 못했습니다. 다시 시도해주세요.");
+      navigate("/selectimg");
     });
     
 
     
-    const file_info = {
-      ip_name : ip,
-      file_name : files.name,
-    }; 
     
-    await axios({
-      method: 'post',
-      url: 'http://192.168.0.203:8005/api/v1/items/userImgInfo',
-      data: file_info,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(
-      res =>{
-        console.log("보내기 성공");
-        navigate("/identyResults?file_name="+files.name);
-      }
-    ).catch( err => {
-      console.log("이미지 정보 보내기 실패");
-      alert("이미지를 보내지 못했습니다. 다시 시도해주세요.")
-    });
-    
+  }
+  
 
+
+  const handleClick = async (e) => {
+
+
+    if(files){
+      sendImg();
+    }
+    else{
+      alert("이미지를 보내지 못했습니다. 다시 시도해주세요.");
+    }
     setImgFile(folder);
     
     
-};
+  };
   
   function getExtensionOfFilename(filename) {
   
