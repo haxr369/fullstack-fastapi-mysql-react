@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
 
     API_V1_STR: str = "/api/v1"
-    SECRET_KEY: str = "haxr" #secrets.token_urlsafe(32)
+    SECRET_KEY: str = secrets.token_urlsafe(32)
 
     ALGORITHM = "HS256"
     # 60 minutes * 24 hours * 8 days = 8 days 토큰 유효기간 = 2분
