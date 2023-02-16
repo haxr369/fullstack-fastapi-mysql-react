@@ -4,6 +4,7 @@ FROM node:16
 WORKDIR /code/living-front
 # package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
 COPY package.json .
+COPY yarn.lock ./
 # 명령어 실행 (의존성 설치)
 RUN npm install
 
@@ -18,7 +19,7 @@ COPY . .
 
 # 3000번 포트 노출
 EXPOSE 3000
-
+CMD ["yarn", "start"]
 
 # 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
 # $ docker build .

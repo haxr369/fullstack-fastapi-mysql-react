@@ -19,9 +19,10 @@ services:
     
   
   frontend:
-    image: dockerized-react
+    build: 
+      context: ./frontend
+      dockerfile : Dockerfile
     container_name: frontend-livinglab
-    command: sleep infinity
     ports:
       - 3005:3000
     volumes:
