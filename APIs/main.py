@@ -6,7 +6,7 @@ from core.config import settings
 
 app = FastAPI()
 
-"""# Set all CORS enabled origins
+# Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -14,9 +14,10 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
-    )"""
+        disallow_unlisted_origins =True
+    )
 
-origins = [
+"""origins = [
     "http://172.28.0.3:3005",
     "http://172.28.0.3",
     "http://192.168.0.203:3005/"
@@ -27,7 +28,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+)"""
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 @app.get("/")
