@@ -1,4 +1,4 @@
-FROM hukim_torch/1.10:latest
+FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-devel
 
 WORKDIR /app/
 

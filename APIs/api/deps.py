@@ -50,8 +50,6 @@ def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-
-
     #int 형의 payload가 DB에 없으면 404가 뜬다.
     user = crud_user.user.get(db, id=token_data.sub)
     print("완성!!!!!!!!!",user)

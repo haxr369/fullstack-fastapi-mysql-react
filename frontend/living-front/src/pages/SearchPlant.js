@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
-
+import logo from './statics/img/logo512.png';
 
 const SearchPlant = props => {
     const {result} = props;
@@ -64,8 +64,8 @@ const SearchPlant = props => {
                 </div>
             </div>
             <hr/>
-            <div className='plantImg'>
-                <img src='/logo512.png' alt='Description of image' />
+            <div className='plantContain'>
+                <img className ='plantImg' src={logo} alt='Description of plant' />
                 
             </div>
             <div className='overviewContain'>
@@ -80,9 +80,9 @@ const SearchPlant = props => {
                     여기에 식물의 timeline을 그릴 것
                 </div>
             </div>
-            <div className='microImgContain'>
+            <div className='microContain'>
                 <h3 className = 'microTitle'>잎의 초미세 구조</h3>
-                    <img src='/logo512.png' alt='Description of image' />
+                    <img className='microImg' src='/logo512.png' alt='Description of image' />
                 
             </div>
 
