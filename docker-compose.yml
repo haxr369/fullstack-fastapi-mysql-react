@@ -6,9 +6,9 @@ services:
     build:
       context: ./APIs
       dockerfile : Dockerfile
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - 8005:8000
+      - 8005:8000 #HOST_PORT:CONTAINER_PORT -> Networked service-to-service는 CONTAINER_PORT를 사용한다.
     volumes:
       - ./APIs:/code/app
     deploy:
@@ -23,6 +23,7 @@ services:
       context: ./frontend
       dockerfile : Dockerfile
     container_name: frontend-livinglab
+    command: yarn start
     ports:
       - 3005:3000
     volumes:
@@ -37,7 +38,8 @@ services:
     environment:
       - MYSQL_DATABASE=example
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
-
+    ports:
+      - 3306:3306
     secrets:
       - db-password
 

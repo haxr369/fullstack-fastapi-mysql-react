@@ -22,13 +22,13 @@ class Settings(BaseSettings):
     # 60 minutes * 24 hours * 8 days = 8 days 토큰 유효기간 = 2분
     ACCESS_TOKEN_EXPIRE_MINUTES = 2
     SERVER_NAME: str = 'livinglab-with-fastapi'
-    SERVER_HOST: AnyHttpUrl = 'http://172.28.0.2:8005'
+    SERVER_HOST: str = 'backend-livinglab://fastapi:8000'  #AnyHttpUrl = 'http://172.28.0.2:8005'
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
 
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost", "http://192.168.0.203:3005",
-                                              "http://192.168.0.203:8005", 
+    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost", "http://192.168.0.203:3005",
+                                              "frontend-livinglab://frontend:3000", 
                                               "http://local.dockertoolbox.tiangolo.com"]
 
     UPLOAD_DIRECTORY : str = '/code/app/Uploaded_images'
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = 'react-fastapi-mysql'
     
 
-    MYSQL_HOST: str = '172.28.0.4'
+    MYSQL_HOST: str = 'livinglab-db://db'
     MYSQL_USER: str = 'apiman'
     MYSQL_PASSWORD: str = '0601'
     MYSQL_DB: str = 'plantLab'

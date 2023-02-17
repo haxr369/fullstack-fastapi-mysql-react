@@ -7,4 +7,4 @@ pymysql
 httpcore==0.15 
 pydantic[email]
 python-multipart
-pyjwt
+python-jose
