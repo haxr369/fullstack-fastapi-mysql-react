@@ -11,23 +11,31 @@ services:
       - 8005:8000 #HOST_PORT:CONTAINER_PORT -> Networked service-to-service는 CONTAINER_PORT를 사용한다.
     volumes:
       - ./APIs:/code/app
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=apiman
+      - MYSQL_PASSWORD=0601
+      - MYSQL_DB=plantlab
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [gpu]
-    
-  
+            
+
+
   frontend:
     build: 
       context: ./frontend
       dockerfile : Dockerfile
     container_name: frontend-livinglab
-    command: yarn start
+    command: sh -c "yarn start"
     ports:
       - 3005:3000
+    working_dir: /code/living-front
     volumes:
       - ./frontend:/code
+
   
   db:
     # We use a mariadb image which supports both amd64 & arm64 architecture
@@ -36,7 +44,7 @@ services:
     image: mysql:8.0.19
     container_name: livinglab-db
     environment:
-      - MYSQL_DATABASE=example
+      - MYSQL_DATABASE=plantlab
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
     ports:
       - 3306:3306
