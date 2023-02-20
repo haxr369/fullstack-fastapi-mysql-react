@@ -2,7 +2,6 @@ import torch
 import numpy as np
 from PIL import Image
 import cv2
-from matplotlib import pyplot as plt
 from torch import nn
 import os
 from torchvision import transforms,datasets
@@ -84,13 +83,6 @@ class Inferencer(object):
         dataset = datasets.ImageFolder(path, transform=transform)
     
         return dataset
-    
-    def _visualize(self,path, shape:tuple=(224,224)):
-        img = np.array(Image.open(path))
-        img = cv2.resize(img, shape)
-        img = np.float32(img) / 255
-        plt.imshow(img)
-        return
 
     def __call__(self,k:int=1, infer_per_num=5, batch_size=32): 
         #single mode

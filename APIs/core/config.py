@@ -10,8 +10,8 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, validator
 """
 class Settings(BaseSettings):
 
-    ML_PARMS : str = "/code/app/ML/models/checkpoint.pth"
-    CATEGORY_INFO : str = "/code/app/ML/sample_info/cat_info.json"
+    ML_PARMS : str = "/code/app/ML/outside/checkpoint.pth"
+    CATEGORY_INFO : str = "/code/app/ML/outside/cat_info.json"
     SAMPLES_V1 : str = "/code/app/Sample_images/livinglab_cp/val/"
 
 
@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # 60 minutes * 24 hours * 8 days = 8 days 토큰 유효기간 = 2분
     ACCESS_TOKEN_EXPIRE_MINUTES = 2
     SERVER_NAME: str = 'livinglab-with-fastapi'
-    SERVER_HOST: str = 'backend-livinglab://fastapi:8000'  #AnyHttpUrl = 'http://172.28.0.2:8005'
+    SERVER_HOST: str = 'backend-livinglab'  #AnyHttpUrl = 'http://172.28.0.2:8005'
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = 'react-fastapi-mysql'
     
 
-    MYSQL_HOST: str = 'livinglab-db://db'
+    MYSQL_HOST: str = 'livinglab-db'
     MYSQL_USER: str = 'apiman'
     MYSQL_PASSWORD: str = '0601'
     MYSQL_DB: str = 'plantLab'
@@ -57,13 +57,12 @@ class Settings(BaseSettings):
         user_name = values.get("MYSQL_USER")
         user_pwd = values.get("MYSQL_PASSWORD")
         db_host = values.get("MYSQL_HOST")
-        db_port = '3306'
+        #db_port = '3306'
         db_name = values.get('MYSQL_DB')
-        DATABASE = 'mysql+pymysql://%s:%s@%s:%s/%s?charset=utf8'%( #DB를 선언하기 위한 표준 사용법. DB url 선언
+        DATABASE = 'mysql+pymysql://%s:%s@%s/%s?charset=utf8'%( #DB를 선언하기 위한 표준 사용법. DB url 선언
             user_name,
             user_pwd,
             db_host,
-            db_port,
             db_name,
         )
         return DATABASE
