@@ -10,7 +10,7 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, validator
 """
 class Settings(BaseSettings):
 
-    ML_PARMS : str = "/code/app/ML/outside/checkpoint.pth"
+    ML_PARMS : str = "/code/app/ML/outside/checkpoint-27.pth"
     CATEGORY_INFO : str = "/code/app/ML/outside/cat_info.json"
     SAMPLES_V1 : str = "/code/app/Sample_images/livinglab_cp/val/"
 

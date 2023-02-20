@@ -6,7 +6,7 @@ import json
 
     
 def load_model(device="cuda", pretrained=True):
-    model=vit_large_patch16(num_classes=44,
+    model=vit_large_patch16(num_classes=116,
             drop_path_rate=0.1,
             global_pool=False).to(device)
     

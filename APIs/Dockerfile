@@ -7,5 +7,7 @@ COPY ./requirements.txt /app/
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN sh requirements.sh
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install libgl1-mesa-glx
+RUN apt-get install libglib2.0-0
