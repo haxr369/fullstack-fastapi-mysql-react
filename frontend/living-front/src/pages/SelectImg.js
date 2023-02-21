@@ -52,7 +52,7 @@ const SelectImg = () => {
     formData.append('file', files);   
     await axios({
       method: 'post',
-      url: 'http://192.168.0.203:8005/api/v1/items/userImg',
+      url: 'http://211.188.69.4:8005/api/v1/items/userImg',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -66,7 +66,7 @@ const SelectImg = () => {
       
       axios({
         method: 'post',
-        url: 'http://192.168.0.203:8005/api/v1/items/userImgInfo',
+        url: 'http://211.188.69.4:8005/api/v1/items/userImgInfo',
         data: file_info,
         headers: {
           'Content-Type': 'application/json',

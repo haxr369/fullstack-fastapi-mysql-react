@@ -22,7 +22,7 @@ const ShowImgTable = props => {
 
     const getImages = async () => {
         for(let i=0; i<result['PlantImgs'].length; i++){
-            await axios.get(`http://192.168.0.203:8005/api/v1/items/twoImg/${result['Species']}/${result['PlantImgs'][i]}`, {
+            await axios.get(`backend-livinglab/api/v1/items/twoImg/${result['Species']}/${result['PlantImgs'][i]}`, {
                 responseType: 'blob'
                 }).then(response => {
                     console.log("이미지 얻어!!");

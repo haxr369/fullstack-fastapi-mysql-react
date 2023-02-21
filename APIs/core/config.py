@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     ML_PARMS : str = "/code/app/ML/outside/checkpoint-27.pth"
     CATEGORY_INFO : str = "/code/app/ML/outside/cat_info.json"
-    SAMPLES_V1 : str = "/code/app/Sample_images/livinglab_cp/val/"
+    SAMPLES_V1 : str = "/code/app/Sample_images/test/"
 
 
     API_V1_STR: str = "/api/v1"
@@ -27,8 +27,8 @@ class Settings(BaseSettings):
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
 
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost", "http://192.168.0.203:3005",
-                                              "frontend-livinglab://frontend:3000", 
+    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost", "http://211.188.69.4:3000/",
+                                              "frontend-livinglab", 
                                               "http://local.dockertoolbox.tiangolo.com"]
 
     UPLOAD_DIRECTORY : str = '/code/app/Uploaded_images'

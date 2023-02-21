@@ -10,7 +10,7 @@ const checkToken = async () => {
       console.log(decodedIdToken);
     }
 
-    const TEST_TOKEN_ENDPOINT = "http://192.168.0.203:8005/api/v1/login/testToken"
+    const TEST_TOKEN_ENDPOINT = "http://211.188.69.4:8005/api/v1/login/testToken"
 
     const headers = {
         'accept': 'application/json',

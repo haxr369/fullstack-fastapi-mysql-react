@@ -23,12 +23,12 @@ const IdentyResult =() =>{
     const fetchData = async () => {
         if(fileName){
             console.log("filename : "+fileName);
-            const result = await axios.get(`http://192.168.0.203:8005/api/v1/results/identy/${fileName}`)
+            const result = await axios.get(`http://211.188.69.4:8005/api/v1/results/identy/${fileName}`)
             .then((json) => {
               setResultData(json.data);
               //console.log(json.data);
             });
-          await axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
+          await axios.get(`http://211.188.69.4:8005/api/v1/items/oneImg/${fileName}`, {
               responseType: 'blob'
           }).then(response => {
               const url = URL.createObjectURL(new Blob([response.data]));
@@ -51,7 +51,10 @@ const IdentyResult =() =>{
             
             return tokenUse_result;
         }
-        else return null;
+        else{
+            console.log("토큰부터 받으세요.")
+            navigate("/selectimg");
+        }
     };
 
     const resetToken = async () =>{
@@ -63,6 +66,7 @@ const IdentyResult =() =>{
     };
 
     useEffect(() => {
+
         if(tokenCheck){ //tokenCheck가 null이 아닌 경우. checkAccess가 수행된 것.
             console.log(tokenCheck);
             if(tokenCheck === "tokenExpiration"){ //토큰 유효기간 만료
@@ -90,7 +94,7 @@ const IdentyResult =() =>{
     
 
     const getImage = () => {
-        axios.get(`http://192.168.0.203:8005/api/v1/items/oneImg/${fileName}`, {
+        axios.get(`http://211.188.69.4:8005/api/v1/items/oneImg/${fileName}`, {
             responseType: 'blob'
         }).then(response => {
             console.log("이미지 얻어!!")

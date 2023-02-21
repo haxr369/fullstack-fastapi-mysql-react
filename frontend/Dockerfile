@@ -5,9 +5,11 @@ WORKDIR /code/living-front
 # package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
 COPY package.json .
 COPY yarn.lock ./
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+RUN nvm install --lts
 # 명령어 실행 (의존성 설치)
-RUN npm install
-
+RUN npm install --global yarn
+RUN npm update
 # 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
 COPY . .
 
@@ -19,7 +21,7 @@ COPY . .
 
 # 3000번 포트 노출
 EXPOSE 3000
-CMD ["yarn", "start"]
+RUN yarn start
 
 # 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
 # $ docker build .

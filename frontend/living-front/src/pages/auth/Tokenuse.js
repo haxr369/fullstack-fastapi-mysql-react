@@ -9,7 +9,7 @@ const tokenUse = async () => {
       console.log(decodedIdToken);
     }
 
-    const USE_TOKEN_ENDPOINT = "http://192.168.0.203:8005/api/v1/login/usetoken"
+    const USE_TOKEN_ENDPOINT = "http://211.188.69.4:8005/api/v1/login/usetoken"
 
     const headers = {
         accept: 'application/json',

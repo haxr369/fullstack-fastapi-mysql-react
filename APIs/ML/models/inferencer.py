@@ -40,7 +40,7 @@ class Inferencer(object):
 
         if mode=='single':
             self.img_tensor=self._path2tensor(path)
-            self._visualize(path)
+            #self._visualize(path)
             if label!=None: #해당 사진에 대한 라벨정보 따로 주면 그 라벨이라고 표시
                 self.label=label
             else:

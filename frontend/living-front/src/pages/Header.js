@@ -11,7 +11,6 @@ const Header = () =>{
         <hr  className="header-bar"/>
         <ul className="nav-menu"> 
             <li className="nav-item"><Link to="/">홈</Link></li>
-            <li className="nav-item"><Link to="/login">로그인</Link></li>
             <li className="nav-item"><Link to="/selectimg">식물 식별</Link></li>
             <li className="nav-item"><Link to="/apitest">API 테스트</Link></li>
         </ul>

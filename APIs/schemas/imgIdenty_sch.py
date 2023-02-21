@@ -15,7 +15,7 @@ class ImgIdentyBase(BaseModel):
     @validator("PlantImgs", pre=True)
     def check_images_path(cls, value):
         for path in value:
-            if not path.endswith(('.jpeg', '.jpg', '.png')):
+            if not path.endswith(('.jpeg', '.jpg', '.png','.JPG','.JPEG','PNG')):
                 raise ValueError(f"Invalid image path: {path}")
         return value
 
