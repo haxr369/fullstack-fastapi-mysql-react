@@ -23,12 +23,12 @@ const IdentyResult =() =>{
     const fetchData = async () => {
         if(fileName){
             console.log("filename : "+fileName);
-            const result = await axios.get(`http://211.188.69.4:8005/api/v1/results/identy/${fileName}`)
+            const result = await axios.get(`/api/v1/results/identy/${fileName}`)
             .then((json) => {
               setResultData(json.data);
               //console.log(json.data);
             });
-          await axios.get(`http://211.188.69.4:8005/api/v1/items/oneImg/${fileName}`, {
+          await axios.get(`/api/v1/items/oneImg/${fileName}`, {
               responseType: 'blob'
           }).then(response => {
               const url = URL.createObjectURL(new Blob([response.data]));
@@ -94,7 +94,7 @@ const IdentyResult =() =>{
     
 
     const getImage = () => {
-        axios.get(`http://211.188.69.4:8005/api/v1/items/oneImg/${fileName}`, {
+        axios.get(`/api/v1/items/oneImg/${fileName}`, {
             responseType: 'blob'
         }).then(response => {
             console.log("이미지 얻어!!")

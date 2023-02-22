@@ -18,7 +18,7 @@ const Apitest = () => {
     try{
       console.log("test...");
       //비동기적으로 get한 데이터를 response에 입력
-      const response = await axios.get('http://211.188.69.4:8005/api/v1/items/apitest')
+      const response = await axios.get('/api/v1/items/apitest')
       .then((result) =>{
         console.log(result);
       }) 

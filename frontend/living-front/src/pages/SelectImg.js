@@ -46,13 +46,14 @@ const SelectImg = () => {
     
   },[]);
 
-
+/** 
   const sendImg = async () => {
     const formData = new FormData();
     formData.append('file', files);   
+
     await axios({
       method: 'post',
-      url: 'http://211.188.69.4:8005/api/v1/items/userImg',
+      url: '/api/v1/items/userImg',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -66,7 +67,7 @@ const SelectImg = () => {
       
       axios({
         method: 'post',
-        url: 'http://211.188.69.4:8005/api/v1/items/userImgInfo',
+        url: '/api/v1/items/userImgInfo',
         data: file_info,
         headers: {
           'Content-Type': 'application/json',
@@ -83,16 +84,35 @@ const SelectImg = () => {
 
     }).catch( err => {
       console.log("이미지 파일 보내기 실패");
+      alert(err);
       alert("이미지를 보내지 못했습니다. 다시 시도해주세요.");
       navigate("/selectimg");
     });
-    
-
-    
-    
   }
   
+**/
+const sendImg = async () => {
+  const formData = new FormData();
+  formData.append('file', files);
+  formData.append('metadata', JSON.stringify({ ip_name: ip }));
 
+  await axios({
+    method: 'post',
+    url: '/api/v1/items/userImg',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }).then(() => {
+    console.log('이미지 업로드 성공');
+    navigate(`/identyResults?file_name=${files.name}`);
+  }).catch((err) => {
+    console.log('이미지 업로드 실패');
+    alert(err);
+    alert('이미지를 보내지 못했습니다. 다시 시도해주세요.');
+    navigate('/selectimg');
+  });
+};
 
   const handleClick = async (e) => {
 

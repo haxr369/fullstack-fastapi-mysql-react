@@ -1,6 +1,6 @@
 from typing import Any, List
 
-from fastapi import APIRouter, Depends, HTTPException,File, UploadFile
+from fastapi import APIRouter,Form, Body, Depends, HTTPException,File, UploadFile
 from fastapi.responses import JSONResponse, FileResponse
 from sqlalchemy.orm import Session
 import os
@@ -12,7 +12,11 @@ from core.config import settings
 import json
 router = APIRouter()
 
-
+"""
+사용자 입력 사진이 1Mbyte가 넘는 경우 header 사이즈가 제한돼기 때문에 서버가 클라이언트의 요청을 받을 수 없다.
+따라서 아래 설정으로 요청 헤더의 제한 크기를 4Mbyte로 늘릴 수 있다.
+"""
+MAX_SIZE = 5 * 1024 * 1024  # 5MB
 
 @router.get("/apitest")
 def read_items() -> Any:
@@ -23,20 +27,12 @@ def read_items() -> Any:
     print(items)
     return items
 
-@router.post('/userImgInfo')       #이미지 정보를 받아서 DB에 저장
-async def create_upload_info(
-    *,
-    db: Session = Depends(deps.get_db),
-    file_info : img_sch.UserImg
-):
-    crud = crud_img.user_img
-    item = crud.create(db=db, obj_in=file_info)
-    return item 
-
 @router.post('/userImg')            #이미지를 받아서 저장소에 저장
 async def create_upload_file(
     *,
-    file : UploadFile = File(...)
+    file: UploadFile = File(...),
+    metadata: str = Form(None),
+    db: Session = Depends(deps.get_db)
 ):
     
     contents = await file.read()
@@ -44,7 +40,11 @@ async def create_upload_file(
     with open(os.path.join(settings.UPLOAD_DIRECTORY, file.filename), "wb") as fp:
         fp.write(contents)
 
-    return 0
+    # 이미지 정보를 DB에 저장
+    img_info = img_sch.UserImg(file_name=file.filename, metadata=metadata)
+    item = crud_img.user_img.create(db=db, obj_in=img_info)
+
+    return item
 
 #사용자 사진을 전송하는 api
 @router.get('/oneImg/{file_name}')
