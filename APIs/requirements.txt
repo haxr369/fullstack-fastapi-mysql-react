@@ -8,3 +8,6 @@ httpcore==0.15
 pydantic[email]
 python-multipart
 python-jose
+PyJWT
+timm==0.5.4
+opencv-python
