@@ -34,11 +34,14 @@ async def create_upload_file(
     metadata: str = Form(None),
     db: Session = Depends(deps.get_db)
 ):
-    
-    contents = await file.read()
-    print(file.filename)
-    with open(os.path.join(settings.UPLOAD_DIRECTORY, file.filename), "wb") as fp:
-        fp.write(contents)
+    try:
+        contents = await file.read()
+        #print(file.filename)
+        print(file.content_type)
+        with open(os.path.join(settings.UPLOAD_DIRECTORY, file.filename), "wb") as fp:
+            fp.write(contents)
+    except Exception as e:
+        print(f"Failed to read file: {e}")
 
     # 이미지 정보를 DB에 저장
     img_info = img_sch.UserImg(file_name=file.filename, metadata=metadata)

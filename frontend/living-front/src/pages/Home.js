@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
-import checkToken from "./auth/checkToken";
+import checkToken from './auth/checkToken';
 
 const Home =() =>{
 

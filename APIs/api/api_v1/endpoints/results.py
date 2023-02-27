@@ -15,6 +15,15 @@ from ML.MAE_serve_v1 import MAE_Model, inference
 
 router = APIRouter()
 
+def convert_size(size_bytes):
+    import math
+    if size_bytes == 0:
+        return "0B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return "%s %s" % (s, size_name[i])
 
 
 @router.get("/identy/{user_fileName}")
@@ -38,7 +47,9 @@ async def plant_identy(
     std_url = os.path.join("/code/app/Uploaded_images/",user_fileName)
 
     results = inference(MAE_Model, std_url)
-    
+
+    file_size = os.path.getsize(std_url)
+    print('File Size:', convert_size(file_size), 'bytes')
 
     for top , value in results.items():
         PlantNo = value['PlantNo'] #int형

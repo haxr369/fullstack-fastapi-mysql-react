@@ -1,13 +1,12 @@
 //Hook  import 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import {useSearchParams, Redirect} from 'react-router-dom';
+import {useSearchParams} from 'react-router-dom';
 import './css/IdentyResult.css';
 import ShowImgTable  from './ShowImgTable';
 //사전에 정의한 데이터를 보여주는 방법 = url 파라미터
-import jwtDecode from "jwt-decode";
-import oAuth from "./auth/oAuth"
-import tokenUse from "./auth/Tokenuse"
+//import jwtDecode from "jwt-decode";
+import {oAuth,tokenUse} from "../auth";
 import { useNavigate } from "react-router-dom";
 
 const IdentyResult =() =>{
@@ -21,7 +20,11 @@ const IdentyResult =() =>{
     // 식물 식별을 요청하고 사진들을 얻는다.
     // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
     const fetchData = async () => {
-        if(fileName){
+        if(fileName=="undefined"){
+            console.log("Identy Result filename : "+fileName);
+            navigate("/selectimg");
+        }
+        else if(fileName){
             console.log("filename : "+fileName);
             const result = await axios.get(`/api/v1/results/identy/${fileName}`)
             .then((json) => {
@@ -36,7 +39,7 @@ const IdentyResult =() =>{
           });
         }
         else{
-            console.log("filename : "+fileName);
+            console.log("Identy Result filename : "+fileName);
             navigate("/selectimg");
         }
         

@@ -3,30 +3,64 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import './css/selectimg.css';
 import axios from "axios";
-import folder from "./statics/img/folderImg.png";
-import checkToken from "./auth/checkToken";
+import folder from "../statics/img/folderImg.png";
+import checkToken from "../auth/checkToken";
+import imageCompression from 'browser-image-compression';
+
 
 const SelectImg = () => {
   const navigate = useNavigate();
-
   const [files, setFiles] =useState(null);            //보내는 데이터
   const [imgFile, setImgFile] = useState(folder);   //보여주는 데이터
 
+  async function handleImage(imageFile) {
+
+  
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 1000
+    }
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+      //const objectURL = URL.createObjectURL(compressedFile)
+      return compressedFile;
+
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  
+  }
+  
+
   //받은 이미지를 file state에 저장하기
-  const onLoadFile = (e) => {
-      const file = e.target.files;
-      console.log(file[0].name)
-      console.log(file)
-      const file_ext = getExtensionOfFilename(file[0].name)
+  const onLoadFile = async(e) => {
+      
+      const file = e.target.files[0];
+      console.log(file.name);
+      const file_ext = getExtensionOfFilename(file.name)
       const date = Date.now()
       const ch_name = ip+'_'+date+file_ext;
-      const new_file = createFile([file[0]],ch_name);
-
+      const new_file = new File([file], ch_name, { type: file.type });
       console.log(new_file.name);
-      setFiles(new_file);
+
+      try {
+        const compressedFile = await handleImage(new_file);
+        if(compressedFile === 0){
+          console.log("압축 못함");
+        } else {
+          setFiles(compressedFile);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      //console.log(files.size/1024/1024);
+      //console.log(file)
       
+      //setFiles(new_file);
+
       const reader = new FileReader();
-      reader.readAsDataURL(file[0]);
+      reader.readAsDataURL(file);
       reader.onloadend =() =>{
         setImgFile(reader.result);
       }
@@ -46,57 +80,15 @@ const SelectImg = () => {
     
   },[]);
 
-/** 
-  const sendImg = async () => {
-    const formData = new FormData();
-    formData.append('file', files);   
 
-    await axios({
-      method: 'post',
-      url: '/api/v1/items/userImg',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then( () => {
-
-      const file_info = {
-        ip_name : ip,
-        file_name : files.name,
-      }; 
-      
-      axios({
-        method: 'post',
-        url: '/api/v1/items/userImgInfo',
-        data: file_info,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(
-        res =>{
-          console.log("보내기 성공");
-          navigate("/identyResults?file_name="+files.name);
-        }
-      ).catch( err => {
-        console.log("이미지 정보 보내기 실패");
-        
-      });
-
-    }).catch( err => {
-      console.log("이미지 파일 보내기 실패");
-      alert(err);
-      alert("이미지를 보내지 못했습니다. 다시 시도해주세요.");
-      navigate("/selectimg");
-    });
-  }
-  
-**/
 const sendImg = async () => {
   const formData = new FormData();
-  formData.append('file', files);
+  console.log("보내는 파일 크기 : "+files.size/1024);
+  console.log("보내는 파일 이름"+files.name);
+  formData.append('file', files,files.name);
   formData.append('metadata', JSON.stringify({ ip_name: ip }));
-
-  await axios({
+  
+  const item = await axios({
     method: 'post',
     url: '/api/v1/items/userImg',
     data: formData,
@@ -105,13 +97,15 @@ const sendImg = async () => {
     },
   }).then(() => {
     console.log('이미지 업로드 성공');
-    navigate(`/identyResults?file_name=${files.name}`);
   }).catch((err) => {
     console.log('이미지 업로드 실패');
     alert(err);
     alert('이미지를 보내지 못했습니다. 다시 시도해주세요.');
     navigate('/selectimg');
   });
+  navigate(`/identyResults?file_name=${files.name}`);
+
+  
 };
 
   const handleClick = async (e) => {
