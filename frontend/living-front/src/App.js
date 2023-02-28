@@ -5,7 +5,8 @@ import {Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import IdentyResult from './pages/identify/IndentyResult';
 import Login from './pages/Login';
-import SearchPlant from './pages/SearchPlant';
+import SearchPlant from './pages/dictionary/SearchPlant';
+import Plants from './pages/dictionary/Plants';
 
 const App = () => {
     return (
@@ -18,7 +19,7 @@ const App = () => {
             <Route path ="/identyResults" element={<IdentyResult/>} />
             <Route path ="/login" element={<Login/>} />
             <Route path ="/searchplant" element={<SearchPlant/>} />
-
+            <Route path ="/plantList" element={<Plants/>} />
         </Routes>
         </>
     );

@@ -12,6 +12,7 @@ const Header = () =>{
         <ul className="nav-menu"> 
             <li className="nav-item"><Link to="/">홈</Link></li>
             <li className="nav-item"><Link to="/selectimg">식물 식별</Link></li>
+            <li className="nav-item"><Link to="/plantList">식물 검색</Link></li>
             <li className="nav-item"><Link to="/apitest">API 테스트</Link></li>
         </ul>
         <hr className="header-bar2"/>

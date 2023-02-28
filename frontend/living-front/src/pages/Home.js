@@ -7,6 +7,7 @@ const Home =() =>{
     useEffect( () => {
         console.log("홈페이지")
         checkToken();
+
     },[]);
 
     if(localStorage.getItem('access_token')){
