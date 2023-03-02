@@ -15,18 +15,18 @@ router = APIRouter()
 @router.post('/login')
 async def login( db: Session = Depends(deps.get_db)):
     try:
-        crud = crud_user.jwtuser
+        crud = crud_user.user
         #DB에 username이 있는지 확인
         print("계정 생성 중")
         while(1):
-            username =  random.randrange(1,100000)      
-            exis = crud.get_datetime_by_username(db=db, username=username)
+            userid =  random.randrange(1,100000)      
+            exis = crud.get_by_id(db=db, id = userid)
             if(not exis): break # 없는 경우에 while문 탈출
 
         createtime = datetime.now()
 
         #새로운 유저 정보를 저장
-        userinfo = user_sch.JwtUserCreate(username=username, access=0 , createtime=createtime)
+        userinfo = user_sch.UserListSCHCreate(user_id = username, access=0 , createtime=createtime)
         print(userinfo)
         
         jwtUser = crud.create(db=db, obj_in=userinfo)

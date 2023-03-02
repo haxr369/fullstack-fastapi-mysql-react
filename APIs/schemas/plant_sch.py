@@ -6,36 +6,30 @@ from schemas.img_sch import ImageSchema
 
 
 # Shared properties
-class SpeciesBase(BaseModel):
-    plantno :  Optional[int] = None
-    species : Optional[str] = None
-    overview : Optional[str] = None
-    genus_id : Optional[int] = None
+class SimpleSpeciesSCHBase(BaseModel):
+    plant_id :  Optional[int] = None
+    species_name : Optional[str] = None
+    genus_name : Optional[str] = None
+    family_name : Optional[str] = None
 
-class Species(SpeciesBase):
-    pass
-class SpeciesCreate(SpeciesBase):
+class SimpleSpeciesSCH(SimpleSpeciesSCHBase):
     pass
 
-class Genus_familyBase(BaseModel):
-    id : Optional[int] = None
-    genus : Optional[str] = None
-    family : Optional[str] = None
+class SimpleSpeciesSCHCreate(SimpleSpeciesSCHBase):
+    pass
 
-class Genus_family(Genus_familyBase):
-    pass
-class Genus_familyCreate(Genus_familyBase):
-    pass
-class LifeCycleBase(BaseModel):
-    id : Optional[int] = None
-    plantno : Optional[int] = None
+
+class DetailSpeciesSCHBase(BaseModel):
+    plant_id : Optional[int] = None
     describe : Optional[str] = None
-    start : Optional[datetime] = None
-    end : Optional[datetime] = None
+    blossom : Optional[str] = None
+    flowers_fail : Optional[str] = None
+    Bear_fruit : Optional[str] = None
+    Bear_fail : Optional[str] = None
 
-class LifeCycle(LifeCycleBase):
+class DetailSpeciesSCH(DetailSpeciesSCHBase):
     pass
-class LifeCycleCreate(LifeCycleBase):
+class DetailSpeciesSCHCreate(DetailSpeciesSCHBase):
     pass
 
 

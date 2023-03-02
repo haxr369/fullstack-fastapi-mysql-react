@@ -4,14 +4,14 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models.plant import Species, Genus_family, Lifecycle
-from schemas.plant_sch import SpeciesCreate, Genus_familyCreate, LifeCycleCreate
+from models.plant import SimpleSpecies, DetailSpecies,
+from schemas.plant_sch import SimpleSpeciesCreate, DetailSpeciesCreate
 
 #누가 넣었는지 알 필요가 있을까?...
-class CRUDSpecies(CRUDBase[Species, SpeciesCreate, SpeciesCreate]):
+class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesCreate, SimpleSpeciesCreate]):
     def create_with_species(
         self, db: Session, *, obj_in: SpeciesCreate
-    ) -> Species:
+    ) -> SimpleSpecies:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
@@ -19,29 +19,19 @@ class CRUDSpecies(CRUDBase[Species, SpeciesCreate, SpeciesCreate]):
         db.refresh(db_obj)
         return db_obj
 
-    def get_by_plantno(
+    def get_by_Plant_id(
         self, db: Session,*, species : str
     ) -> Species:
-        species = db.query(Species).filter(Species.species == species).first()
+        species = db.query(SimpleSpecies).filter(Species.Species_name == species).first()
         return species
 
-class CRUDGenus_family(CRUDBase[Genus_family, Genus_familyCreate, Genus_familyCreate]):
-    def create_with_genus(
-        self, db: Session, *, obj_in: Genus_familyCreate
-    ) -> Genus_family:
-        obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
-        
-crud_genus_family = CRUDGenus_family(Genus_family)
 
-class CRUDLifecycle(CRUDBase[Lifecycle, LifeCycleCreate, LifeCycleCreate]):
+crud_SimpleSpecies= CRUDSimpleSpecies(SimpleSpecies)
+
+class CRUDDetailSpecies(CRUDBase[DetailSpecies, DetailSpeciesCreate, DetailSpeciesCreate]):
     def create_with_lifecycle(
         self, db: Session, *, obj_in: LifeCycleCreate
-    ) -> Lifecycle:
+    ) -> DetailSpecies:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
@@ -49,6 +39,4 @@ class CRUDLifecycle(CRUDBase[Lifecycle, LifeCycleCreate, LifeCycleCreate]):
         db.refresh(db_obj)
         return db_obj
 
-    
-
-crud_lifecycle= CRUDLifecycle(Lifecycle)
+crud_DetailSpecies= CRUDDetailSpecies(DetailSpecies)

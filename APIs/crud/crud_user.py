@@ -3,8 +3,8 @@ from typing import Any, Dict, Optional, Union, TypeVar, Generic, Optional
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models.user import User
-from schemas.user_sch import UserCreate, UserUpdate
+from models.user import UserList
+from schemas.user_sch import UserListSCHCreate, UserListSCHUpdate
 
 
 """
@@ -53,27 +53,28 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
 """
 
-class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def is_superuser(self, user: User) -> bool:
-        return user.is_superuser
+class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
+    def is_superuser(self, user: UserList) -> bool:
+        return UserList.Is_Superuser
+
     #C
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
-        db_obj = User(
-            id = obj_in.id
+    def create(self, db: Session, *, obj_in: UserListSCHCreate) -> UserList:
+        db_obj = UserList(
+            User_id = obj_in.id
         )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-        return {"id":obj_in.id, 'access':obj_in.access}
+        return {"User_id":obj_in.User_id, 'Access_count':obj_in.Access_count}
 
     #R
-    def get_by_id(self, db: Session, *, id: str) -> Optional[User]:
-        return db.query(User).filter(User.id == id).first()
+    def get_by_id(self, db: Session, *, id: int) -> Optional[UserList]:
+        return db.query(UserList).filter(UserList.User_id == id).first()
 
     #U
     def update(
-        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
-    ) -> User:
+        self, db: Session, *, db_obj: User, obj_in: Union[UserListUpdate, Dict[str, Any]]
+    ) -> UserList:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -88,12 +89,12 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
 
 
-user = CRUDUser(User)
-
-
-T = TypeVar('T')
+user = CRUDUserList(UserList)
 
 """
+T = TypeVar('T')
+
+
 class JWTRepo():
 
     def generate_token(data: dict, expires_delta: Optional[timedelta] = None):

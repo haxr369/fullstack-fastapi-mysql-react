@@ -2,28 +2,38 @@ from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel, Field, validator
 from fastapi import File, UploadFile
-
+from datetime import datetime
 
 class PlantImg(BaseModel):
-    id: Optional[int] = None
-    path : Optional[str] =None
-    plantno : int = None
+    image_id: Optional[int] = None
+    image_url : Optional[str] =None
+    plant_id : Optional[int] = None
 
 class UserImg(BaseModel):
-    id: Optional[int] = None
-    path : Optional[str] =None
-    user_id : int = None
+    user_id: Optional[int] = None
+    image_id : Optional[int] = None
+    image_url : Optional[str] =None
+    createtime : Optional[datetime] = None
 
 # Properties to receive on item update
 class PlantImgCreate(PlantImg):
-    pass
+    image_id: int = None
+    image_url : str =None
+    plant_id : int = None
+    
+
 # Properties to receive on item update
-class PlantImgUpdate(PlantImg):
+class PlantImgUpdate(PlantImgCreate):
     pass
 
 # Properties to receive on item update
 class UserImgCreate(UserImg):
-    pass
+    user_id: int = None
+    image_id : int = None
+    image_url : str =None
+
+    
+
 # Properties to receive on item update
 class UserImgUpdate(UserImg):
     pass

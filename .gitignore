@@ -1,3 +1,4 @@
 APIs/Sample_images/
 APIs/Uploaded_images/
 APIs/ML/models/outside
+APIs/api/api_v1/endpoints/auth.py

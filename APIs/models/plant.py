@@ -6,24 +6,20 @@ from db.session import engine
 from db.base_class import Base
 
 
-class Genus_family(Base):
-    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    genus = Column(String(50))
-    family = Column(String(50))
-
-class Species(Base):
-    plantno = Column(Integer, primary_key=True, index=True)
-    species = Column(String(50))
-    overview = Column(TEXT)
-    genus_id = Column(Integer,ForeignKey('genus_family.id')  )
 
 
-class Lifecycle(Base):
-    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    plantno = Column(Integer,ForeignKey('species.plantno') )
-    describe = Column(String(50))       #잎이 있는 기간, 꽃이 있는 기간 등등 규칙에 맞게 설명을 쓴다.
-    start = Column(DateTime)    # 기간의 시작 월, 일.
-    end = Column(DateTime)      # 기간의 끝 월, 일.
+class SimpleSpecies(Base):
+    Plant_id = Column(Integer, autoincrement=True, primary_key=True, index=True)
+    Species_name = Column(String(50))
+    Genus_name = Column(TEXT)
+    Family_name = Column(Integer,ForeignKey('genus_family.id'))
 
-#자동으로 DB의 table을 생성하는 것.
-Base.metadata.create_all(bind=engine)
+class DetailSpecies(Base):
+    Plant_id = Column(Integer,  primary_key=True, ForeignKey('SimpleSpecies.Plant_id'),  index=True)
+    Blossom = Column(Integer, default =0)
+    Flowers_fail = Column(Integer, default =0)
+    Bear_fruit = Column(Integer, default =0)
+    Bear_fail = Column(Integer, default =0)
+
+
+

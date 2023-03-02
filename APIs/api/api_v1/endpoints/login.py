@@ -19,7 +19,7 @@ router = APIRouter()
 
 #사용자에게 access token을 준다.
 @router.post("/access-token", response_model=token_sch.Token)
-def login_access_token(
+def give_access_token(
     db: Session = Depends(deps.get_db) , form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
     """
@@ -44,23 +44,23 @@ def login_access_token(
         id =  random.randrange(1,100000)      
         exis = crud.get_by_id(db=db, id=id)
         if(not exis): break # 없는 경우에 while문 탈출
-
+    createtime = datetime.now()
 
     #새로운 유저 정보를 저장
-    userinfo = user_sch.UserCreate(id=id)
+    userinfo = user_sch.UserListSCHCreate(user_id=id)
     
     userinfo = crud.create(db=db, obj_in=userinfo)
     print(userinfo)
     
     return {
         "access_token": security.create_access_token(
-            userinfo["id"]
+            userinfo["User_id"]
         ),
         "token_type": "bearer",
     }
 
 @router.post("/usetoken", response_model=user_sch.User)
-def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.User, None] = Depends(deps.get_current_user)) -> Any:
+def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserList, None] = Depends(deps.get_current_user)) -> Any:
     """
     Test access token
     """
@@ -70,17 +70,17 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.User,
 
         #info = crud.get(db=db, id=current_user.id)
 
-        jwtUser = crud.update(db=db, db_obj = current_user ,obj_in= {"access": current_user.access+1})
+        jwtUser = crud.update(db=db, db_obj = current_user ,obj_in= {"access_count": current_user.access+1})
 
-        response = user_sch.User(id=jwtUser.id, 
-                                access=jwtUser.access, 
+        response = user_sch.User(user_id=jwtUser.id, 
+                                access_count=jwtUser.access, 
                                 createtime=jwtUser.createtime)
         print(response)
         
         return response
         
     else: #만료된 토큰을 가진 user인 경우
-        response = user_sch.User(id=-1, 
+        response = user_sch.User(user_id=-1, 
                                 access=0)
         print(response)
         

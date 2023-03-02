@@ -4,14 +4,14 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models.img import User_imgs, Sample_imgs, Micro_imgs
+from models.img import UserImage, SampleImage, MicroImage
 from schemas.img_sch import PlantImgCreate, UserImgCreate
 
 
-class CRUDUserImg(CRUDBase[User_imgs, UserImgCreate, UserImgCreate]):
+class CRUDUserImg(CRUDBase[UserImage, UserImgCreate, UserImgCreate]):
     def create(
         self, db: Session, *, obj_in: UserImgCreate
-    ) -> User_imgs:
+    ) -> UserImage:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
@@ -19,30 +19,33 @@ class CRUDUserImg(CRUDBase[User_imgs, UserImgCreate, UserImgCreate]):
         db.refresh(db_obj)
         return db_obj
 
-user_img = CRUDUserImg(User_imgs)
+user_img = CRUDUserImg(UserImage)
 
-class CRUDSampleImg(CRUDBase[Sample_imgs, PlantImgCreate, PlantImgCreate]):
+class CRUDSampleImg(CRUDBase[SampleImage, PlantImgCreate, PlantImgCreate]):
     def create(
         self, db: Session, *, obj_in: PlantImgCreate
-    ) -> Sample_imgs:
+    ) -> SampleImage:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
-sample_img = CRUDSampleImg(Sample_imgs)    
-class CRUDMicroImg(CRUDBase[Micro_imgs, PlantImgCreate, PlantImgCreate]):
+
+sample_img = CRUDSampleImg(SampleImage)   
+
+class CRUDMicroImg(CRUDBase[MicroImage, PlantImgCreate, PlantImgCreate]):
     def create(
         self, db: Session, *, obj_in: PlantImgCreate
-    ) -> Micro_imgs:
+    ) -> MicroImage:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
-micro_img = CRUDMicroImg(Micro_imgs)   
+        
+micro_img = CRUDMicroImg(MicroImage)   
    
 
 

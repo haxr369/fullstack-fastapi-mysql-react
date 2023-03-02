@@ -4,25 +4,27 @@ from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 
 # Shared properties
-class UserBase(BaseModel):
-    id : Optional[int] = None
+class UserListSCHBase(BaseModel):
+    user_id : Optional[int] = None
     createtime : Optional[datetime] = None
-    access : Optional[int] = 0
+    access_count : Optional[int] = 0
     is_superuser: bool = False
 
 
 # Properties to receive via API on creation
-class UserCreate(UserBase):
-    id : int = None
-    access : int = 0
+class UserListSCHCreate(UserListSCHBase):
+    user_id : int = None
+    createtime : datetime = None
+    access_count : int = 0
     is_superuser: bool = False
 
 # Properties to receive via API on update
-class UserUpdate(UserBase):
-    pass
+class UserListSCHUpdate(UserListSCHBase):
+    access_count : int = 0
 
 
-class UserInDBBase(UserBase):
+
+class UserInDBBase(UserListSCHBase):
     id: Optional[int] = None
 
     class Config:
