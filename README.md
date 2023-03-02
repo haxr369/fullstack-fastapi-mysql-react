@@ -10,7 +10,8 @@ University of Seoul CVLAB's Livinglab
 프록시는 Nginx를, Frontend는 React를 사용하고, Backend는 Fastapi를, 그리고 DB는 Mysql을 사용한다.
 
 ## 개념적 데이터 모델링
-![스크린샷 2023-02-06 13-24-38](https://user-images.githubusercontent.com/53365713/216883463-dfee1c94-ef1e-4492-9cd2-ca551afc5b6e.png)
+![ER다이어그램 drawio](https://user-images.githubusercontent.com/53365713/222315523-9e87d12a-1c07-4027-9a35-2dcb5cb64165.png)
+
 
 <p/>
 웹크롤러로 모은 사진과 서울숲 답사를 하면서 찍은 사진을 Sample image DB에 넣었다.<p/> 
