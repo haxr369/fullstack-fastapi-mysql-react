@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import logo from '../statics/img/nuti.jpeg';
 
-const SearchPlant = props => {
+const DetailPlant = props => {
     const {result} = props;
     /**
      * const settings = {
@@ -99,4 +99,4 @@ const SearchPlant = props => {
 
 };
 
-export default SearchPlant;
+export default DetailPlant;

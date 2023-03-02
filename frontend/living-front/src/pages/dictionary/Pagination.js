@@ -1,29 +1,14 @@
 import React,{useState, useEffect} from "react";
 import './css/Pagination.css'
-const Pagination = ({ currentPage, totalPlants, onPageChange }) => {
-  let totalPlants =0;
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  //let totalPlants =0;
   const pageNumbers = [];
   let showPages = 0;
   //let showPages =0;
-  
-  console.log("현재 토탈 페이지는? "+totalPages);
-  if(totalPages > 5){
-    if(totalPages > currentPage >3){
-      for (let i = currentPage-2; i <= currentPage+2; i++) {
-        pageNumbers.push( i);
-      }
-    }
-    else{
-      for (let i = 1; i <= 5; i++) {
-        pageNumbers.push( i);
-      }
-    }
-    
-  }
-  else{
-    for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i);
-    }
+
+  console.log("전체 페이지 수는? "+totalPages);
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
   }
   
   

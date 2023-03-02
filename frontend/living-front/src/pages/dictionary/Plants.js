@@ -17,17 +17,28 @@ const Plants = () => {
                                         'dfhfbh','abc','bcd','기본 값','dfv','dfgs','dsfs','dfhfbh',
                                         'dfhfbh','abc','bcd','기본 값','dfv','기본 값','dfgs','dsfs','dfhdsfds']); // 식물 데이터
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+  const [searchTemp, setSearchTemp] = useState(''); // 임시 검색어
   const [searchQuery, setSearchQuery] = useState(''); // 검색어
 
-  async function getPlantList(query) {
+  
+  async function getPlantList(page, query) {
+    //서버로 검색어와 현재 페이지를 전송해서 총 페이지와 현재 페이지의 데이터를 받아온다.
     //console.log("현재 검색어 :"+query+" 현재 페이지 :"+page);
-      const ll =['검색',query];
-      return ll;
+    const ll =['검색',"검색어"+query,"페이지"+page];
+    return ll;
   }
 
 
   useEffect(() => {
     console.log("현재 페이지 "+currentPage);
+
+    getPlantList(currentPage,searchQuery)
+        .then((data) =>{
+            console.log(data);
+        setPlants(data);
+    }).catch((err) =>{
+        console.log(err);
+    })
   }, [currentPage,searchQuery]);
 
   //화면 하단에 페이지 번호를 누르면 현재 페이지 번호를 바꾸는 함수.
@@ -39,20 +50,12 @@ const Plants = () => {
   //query는 검색어
   const handleSearch = () => { 
     //alert(searchQuery);
-    getPlantList(searchQuery)
-        .then((data) =>{
-            console.log(data);
-        setPlants(data);
-    }).catch((err) =>{
-        console.log(err);
-    })
-
-    setSearchQuery('');
+    setSearchQuery(searchTemp);
   };
 
-  const handleWord = e => {
+  const handleWord = e => { //검색어를 입력하는 과정
     const query = e.target.value
-    setSearchQuery(query);
+    setSearchTemp(query);
   }
 
   /**
@@ -79,7 +82,7 @@ const Plants = () => {
         {plants.length > 0 && (
             <Pagination
                 itemsPerPage={10}
-                totalPlants={plants.length}
+                totalPages={parseInt(plants.length/10)}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
             />)}
