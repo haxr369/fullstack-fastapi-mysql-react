@@ -12,6 +12,9 @@ University of Seoul CVLAB's Livinglab
 ## 개념적 데이터 모델링
 ![ER다이어그램 drawio](https://user-images.githubusercontent.com/53365713/222315523-9e87d12a-1c07-4027-9a35-2dcb5cb64165.png)
 
+## 관계형 데이터 모델링
+![RDB_model drawio](https://user-images.githubusercontent.com/53365713/222414405-2779ca10-f2a0-48d5-95c0-69f237585482.png)
+
 
 <p/>
 웹크롤러로 모은 사진과 서울숲 답사를 하면서 찍은 사진을 Sample image DB에 넣었다.<p/> 
