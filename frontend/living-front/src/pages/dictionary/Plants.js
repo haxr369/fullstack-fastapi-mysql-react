@@ -17,6 +17,7 @@ const Plants = () => {
                                         'dfhfbh','abc','bcd','기본 값','dfv','dfgs','dsfs','dfhfbh',
                                         'dfhfbh','abc','bcd','기본 값','dfv','기본 값','dfgs','dsfs','dfhdsfds']); // 식물 데이터
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+  const [totalPage, setTotalPage] = useState(1); // 현재 페이지 번호
   const [searchTemp, setSearchTemp] = useState(''); // 임시 검색어
   const [searchQuery, setSearchQuery] = useState(''); // 검색어
 
@@ -82,7 +83,7 @@ const Plants = () => {
         {plants.length > 0 && (
             <Pagination
                 itemsPerPage={10}
-                totalPages={parseInt(plants.length/10)}
+                totalPages={totalPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
             />)}
