@@ -5,6 +5,7 @@ from core.config import settings
 
 print("DSN:",settings.SQLALCHEMY_DATABASE_URI)
 
+
 engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
 ins = inspect(engine)
 for _t in ins.get_table_names():

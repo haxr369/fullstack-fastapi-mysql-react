@@ -15,12 +15,14 @@ class SimpleSpecies(Base):
     Family_name = Column(String(50))
 
 class DetailSpecies(Base):
-    Plant_id = Column(Integer,  ForeignKey('SimpleSpecies.Plant_id'), primary_key=True , index=True)
+    Plant_id = Column(Integer,  ForeignKey('simplespecies.Plant_id'), primary_key=True , index=True)
     #Detail_id =  Column(Integer, primary_key=True, autoincrement=True, index=True)
     Blossom = Column(Integer, default =0)
     Flowers_fail = Column(Integer, default =0)
     Bear_fruit = Column(Integer, default =0)
     Bear_fail = Column(Integer, default =0)
     Describe = Column(TEXT)
+
+Base.metadata.create_all(bind=engine)
 
 

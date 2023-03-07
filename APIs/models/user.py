@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 import datetime
-from db.base_class import Base#자동으로 테이블을 만들어 준다.!!
+from db.base_class import Base #자동으로 테이블을 만들어 준다.!!
 from db.session import engine
 if TYPE_CHECKING:
     from .item import Item  # noqa: F401
@@ -23,3 +23,5 @@ class UserList(Base):
     Is_superuser = Column(Boolean(), default=False)
     Create_time = Column(DateTime, default=datetime.datetime.now())
     Access_count = Column(Integer, default =0)
+
+Base.metadata.create_all(bind=engine)

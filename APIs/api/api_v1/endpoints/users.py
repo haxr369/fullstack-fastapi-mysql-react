@@ -1,4 +1,4 @@
-from typing import Any, List
+"""from typing import Any, List
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -9,7 +9,7 @@ import crud
 from models import user
 from schemas import user_sch
 from api import deps
-from core.config import settings
+from core.config import settings"""
 """
 router = APIRouter()
 
