@@ -51,7 +51,7 @@ def get_current_user(
             detail="Could not validate credentials",
         )
     #int 형의 payload가 DB에 없으면 404가 뜬다.
-    user = crud_user.user.get(db, id=token_data.sub)
+    user = crud_user.user.get_by_id(db, id=token_data.sub)
     print("완성!!!!!!!!!",user)
     if not user:
         print("문제 발생!! "+token_data )

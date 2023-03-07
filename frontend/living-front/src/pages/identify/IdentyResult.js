@@ -6,7 +6,7 @@ import './css/IdentyResult.css';
 import ShowImgTable  from './ShowImgTable';
 //사전에 정의한 데이터를 보여주는 방법 = url 파라미터
 //import jwtDecode from "jwt-decode";
-import {oAuth,tokenUse} from "../auth";
+import {checkToken, oAuth,tokenUse} from "../auth";
 import { useNavigate } from "react-router-dom";
 
 const IdentyResult =() =>{
@@ -31,12 +31,19 @@ const IdentyResult =() =>{
               setResultData(json.data);
               //console.log(json.data);
             });
-          await axios.get(`/api/v1/items/userImg/${fileName}`, {
-              responseType: 'blob'
-          }).then(response => {
-              const url = URL.createObjectURL(new Blob([response.data]));
-              setUerUrl(url);
-          });
+
+            try{
+                await axios.get(`/api/v1/items/userImg/${fileName}`, {
+                    responseType: 'blob'
+                }).then(response => {
+                    const url = URL.createObjectURL(new Blob([response.data]));
+                    setUerUrl(url);
+                });
+            } catch (ex){
+                console.log("유저 이미지를 받을 수 없다."+fileName);
+                navigate("/selectimg");
+            }
+            
         }
         else{
             console.log("Identy Result filename : "+fileName);
@@ -68,9 +75,9 @@ const IdentyResult =() =>{
         navigate("/selectimg");
     };
 
-    useEffect(() => {
-
-        if(tokenCheck){ //tokenCheck가 null이 아닌 경우. checkAccess가 수행된 것.
+    useEffect(async () => {
+        /**
+         * if(tokenCheck){ //tokenCheck가 null이 아닌 경우. checkAccess가 수행된 것.
             console.log(tokenCheck);
             if(tokenCheck === "tokenExpiration"){ //토큰 유효기간 만료
                 resetToken();}
@@ -80,7 +87,25 @@ const IdentyResult =() =>{
         else{
             checkAccess();
         }
-      },[tokenCheck]);
+         * 
+         */
+        
+        const oatu = await checkToken();
+        console.log(oatu);
+        if(oatu==="ok"){
+            console.log("gpu 서비스 허가");
+            const fet = fetchData(); // 파일 이름 체크. 에러나면 뒤로 가기.
+        }
+        else if(oatu==="gpuWating"){
+            alert("서비스를 너무 많이 요청하셨습니다. 잠시만 기다려 주세요.");
+            navigate("/selectimg");
+        }
+        else {
+            alert("문제가 발생했습니다. 새로고침 해주세요.");
+            navigate("/");
+        }
+        
+      },[]);
     
     if(tokenCheck === "gpuWating"){
         setTimeout(() => resetToken(), 60000*2);

@@ -1,4 +1,4 @@
-import IdentyResult from "./IndentyResult";
+import IdentyResult from "./IdentyResult";
 import SelectImg from "./SelectImg";
 import ShowImgTable from "./ShowImgTable";
 

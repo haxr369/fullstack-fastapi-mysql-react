@@ -3,7 +3,7 @@ import Header from './pages/Header';
 import Apitest from './pages/Apitest';
 import {Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
-import IdentyResult from './pages/identify/IndentyResult';
+import IdentyResult from './pages/identify/IdentyResult';
 import Login from './pages/Login';
 import DetailPlant from './pages/detail/DetailPlant';
 import Plants from './pages/dictionary/Plants';

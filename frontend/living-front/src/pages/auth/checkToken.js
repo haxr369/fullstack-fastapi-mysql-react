@@ -27,7 +27,7 @@ const checkToken = async () => {
         })
         //const decodedJson = jwtDecode(resp);
         console.log(resp);
-        if(resp.data['User_id']==-1){
+        if(resp.data['User_id']===-1){
             console.log("토큰 유효기간 만료");
             console.log("리셋 토큰!!");
             localStorage.removeItem('access_token');
@@ -35,10 +35,15 @@ const checkToken = async () => {
             return "ok"
         }
 
-        if(resp.data['Access_count'] * 1 > 0){
+        if(resp.data['Access_count']  < limit_access){
             console.log(resp.data['Access_count']+"번 요청함");
             console.log("GPU 제한 안함");
             return "ok";
+        }
+        else{
+            console.log(resp.data['Access_count']+"번 요청함");
+            console.log("GPU 서비스 중지");
+            return "gpuWating";
         }
 
     } catch (error) {

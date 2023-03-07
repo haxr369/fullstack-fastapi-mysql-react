@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 class UserList(Base):
     User_id = Column(Integer, primary_key = True)
     Is_superuser = Column(Boolean(), default=False)
-    Create_time = Column(DateTime, default=datetime.datetime.now())
+    Createtime = Column(DateTime, default=datetime.datetime.now())
     Access_count = Column(Integer, default =0)
 
 Base.metadata.create_all(bind=engine)
