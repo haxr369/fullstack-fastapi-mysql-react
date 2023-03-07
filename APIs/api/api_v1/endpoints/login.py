@@ -73,7 +73,7 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserL
         jwtUser = crud.update(db=db, db_obj = current_user ,obj_in= {"access_count": current_user.access+1})
 
         response = user_sch.User(user_id=jwtUser.id, 
-                                access_count=jwtUser.access, 
+                                access_count=jwtUser.access_count, 
                                 createtime=jwtUser.createtime)
         print(response)
         
@@ -81,7 +81,7 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserL
         
     else: #만료된 토큰을 가진 user인 경우
         response = user_sch.User(user_id=-1, 
-                                access=0)
+                                access_count=0)
         print(response)
         
         return response
@@ -90,20 +90,20 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserL
 
 
 @router.get("/testToken", response_model=user_sch.User)
-def test_token(current_user: Union[user.User, None] = Depends(deps.get_current_user)) -> Any:
+def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_current_user)) -> Any:
     """
     Test access token
     """
     if(current_user):
-        response = user_sch.User(id=current_user.id, 
-                                access=current_user.access, 
-                                createtime=current_user.createtime)
+        response = user_sch.User(user_id = current_user.user_id, 
+                                access_count = current_user.access_count, 
+                                createtime = current_user.createtime)
         print(response)
         
         return response
     else: #만료된 토큰을 가진 user인 경우
-        response = user_sch.User(id=-1, 
-                                access=0)
+        response = user_sch.User(user_id=-1, 
+                                access_count=0)
         print(response)
         
         return response

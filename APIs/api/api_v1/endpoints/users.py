@@ -10,7 +10,7 @@ from models import user
 from schemas import user_sch
 from api import deps
 from core.config import settings
-
+"""
 router = APIRouter()
 
 
@@ -21,9 +21,9 @@ def read_users(
     limit: int = 100,
     
 ) -> Any:
-    """
-    Retrieve users.
-    """
+    
+    #Retrieve users.
+    
     users = crud.user.get_multi(db, skip=skip, limit=limit)
     return users
 
@@ -35,9 +35,9 @@ def create_user(
     user_in: user_sch.UserCreate,       #이메일과 패스워드를 쿼리객체로 받는다.
     
 ) -> Any:
-    """
-    Create new user.
-    """
+   
+    #Create new user.
+   
     user = crud.user.get_by_email(db, email=user_in.email)
     if user:    #이미 DB에 이메일이 존재할 경우
         raise HTTPException(
@@ -63,9 +63,9 @@ def read_user_by_id(
     user_id: int,
     db: Session = Depends(deps.get_db),
 ) -> Any:
-    """
-    Get a specific user by id.
-    """
+    
+    #Get a specific user by id.
+   
     user = crud.user.get(db, id=user_id)
 
     return user
@@ -78,9 +78,9 @@ def update_user(
     user_id: int,
     user_in: user_sch.UserUpdate,
 ) -> Any:
-    """
-    Update a user.
-    """
+    
+    #Update a user.
+    
     user = crud.user.get(db, id=user_id)
     if not user:
         raise HTTPException(
@@ -88,4 +88,4 @@ def update_user(
             detail="The user with this username does not exist in the system",
         )
     user = crud.user.update(db, db_obj=user, obj_in=user_in)
-    return user
+    return user"""

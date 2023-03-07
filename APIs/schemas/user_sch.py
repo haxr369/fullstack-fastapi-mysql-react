@@ -25,7 +25,7 @@ class UserListSCHUpdate(UserListSCHBase):
 
 
 class UserInDBBase(UserListSCHBase):
-    id: Optional[int] = None
+    user_id: Optional[int] = None
 
     class Config:
         orm_mode = True

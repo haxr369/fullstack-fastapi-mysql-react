@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 import os
 import shutil
 from crud.base import CRUDBase
-from models import plant
+from models.plant import SimpleSpecies, DetailSpecies
 from schemas import plant_sch
 from api import deps
 from core.config import settings
@@ -15,36 +15,57 @@ router = APIRouter()
 
 
 
-@router.get("/search/{plantspecies}") #, response_model= item_sch.Item)
-def read_hierarchy(
+@router.get("/search/{query}") #, response_model= item_sch.Item)
+def search_with_query(
     *,
     db: Session = Depends(deps.get_db),
-    plantspecies : str,
+    query : str,
 ) -> Any:
     """
-    식물 종을 입력
-    여러 정보를 출력
+    검색어를 입력
+    -> 연관 식물들을 리스트로 전송.
     """
     
     return 0
 
-@router.get("/info/{species}")
-def get_plant_dictionary(
+@router.get("/simpleinfo/{species}")
+def get_plant_simple(
     *,
     db: Session = Depends(deps.get_db),
     species : str
 ) -> Any:
     """
-    1. 종으로 속과 plantNo를 얻음.
-    2. 속으로 과를 얻음.
-    3. plantNo로 samples, overview, lifetime, 그리고 micros를 얻음.
+    식물 종 입력
+    -> 식물의 간단 정보 전송.
     """
     print(species," 검색!!!")
-    result = db.query(plant.Species).filter(plant.Species.species == species).first()
-    print(result.plantno, result.genus)
+    result = db.query(SimpleSpecies).filter(SimpleSpecies.Species_name == species).first()
+    print(result.Plant_id, result.Genus_name)
 
     return 0
 
+@router.get("/simpleinfo/{species}")
+def get_plant_detail(
+    *,
+    db: Session = Depends(deps.get_db),
+    species : str
+) -> Any:
+    """
+    식물 종 입력
+    -> 식물의 구체적 정보 전송.
+    """
+    print(species," 검색!!!")
+    simpleInfo = db.query(SimpleSpecies).filter(SimpleSpecies.Species_name == species).first()
+    result = db.query(DetailSpecies).filter(DetailSpecies.Plant_id == simpleInfo.Plant_id).first()
+
+    #q = session.query(User).join(Address, User.addresses)
+    q = db.query(SimpleSpecies).join(DetailSpecies, SimpleSpecies.Plant_id)
+
+    print(result.Plant_id, result.Genus_name)
+
+    return 0
+
+"""
 @router.post("/info/species")
 def get_plant_dictionary(
     *,
@@ -52,16 +73,12 @@ def get_plant_dictionary(
     species : str,
     obj : plant_sch.Species
 ) -> Any:
-    """
-    1. 종으로 속과 plantNo를 얻음.
-    2. 속으로 과를 얻음.
-    3. plantNo로 samples, overview, lifetime, 그리고 micros를 얻음.
-    """
+
     crud = CRUDBase(plant.Species)
     db_obj = crud.create(db=db, obj_in=obj)
     
     return db_obj
-
+"""
 
 
 

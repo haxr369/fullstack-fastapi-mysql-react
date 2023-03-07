@@ -5,21 +5,21 @@ from fastapi import File, UploadFile
 from datetime import datetime
 
 class PlantImg(BaseModel):
-    image_id: Optional[int] = None
-    image_url : Optional[str] =None
-    plant_id : Optional[int] = None
+    Image_id: Optional[int] = None
+    Image_url : Optional[str] =None
+    Plant_id : Optional[int] = None
 
 class UserImg(BaseModel):
-    user_id: Optional[int] = None
-    image_id : Optional[int] = None
-    image_url : Optional[str] =None
-    createtime : Optional[datetime] = None
+    User_id: Optional[int] = None
+    Image_id : Optional[int] = None
+    Image_url : Optional[str] =None
+    Send_time : Optional[datetime] = None
 
 # Properties to receive on item update
 class PlantImgCreate(PlantImg):
-    image_id: int = None
-    image_url : str =None
-    plant_id : int = None
+    Image_id: int = None
+    Image_url : str =None
+    Plant_id : int = None
     
 
 # Properties to receive on item update
@@ -28,9 +28,9 @@ class PlantImgUpdate(PlantImgCreate):
 
 # Properties to receive on item update
 class UserImgCreate(UserImg):
-    user_id: int = None
-    image_id : int = None
-    image_url : str =None
+    User_id: int = None
+    Image_id : int = None
+    Image_url : str =None
 
     
 

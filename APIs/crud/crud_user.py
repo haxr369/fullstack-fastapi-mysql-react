@@ -60,7 +60,7 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
     #C
     def create(self, db: Session, *, obj_in: UserListSCHCreate) -> UserList:
         db_obj = UserList(
-            User_id = obj_in.id
+            User_id = obj_in.user_id
         )
         db.add(db_obj)
         db.commit()
@@ -73,7 +73,7 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
 
     #U
     def update(
-        self, db: Session, *, db_obj: User, obj_in: Union[UserListUpdate, Dict[str, Any]]
+        self, db: Session, *, db_obj: UserList, obj_in: Union[UserListSCHUpdate, Dict[str, Any]]
     ) -> UserList:
         if isinstance(obj_in, dict):
             update_data = obj_in
@@ -89,7 +89,7 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
 
 
 
-user = CRUDUserList(UserList)
+user = CRUDUser(UserList)
 
 """
 T = TypeVar('T')

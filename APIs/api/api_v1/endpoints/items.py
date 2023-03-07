@@ -43,14 +43,19 @@ async def create_upload_file(
     except Exception as e:
         print(f"Failed to read file: {e}")
 
-    # 이미지 정보를 DB에 저장
-    img_info = img_sch.UserImg(file_name=file.filename, metadata=metadata)
-    item = crud_img.user_img.create(db=db, obj_in=img_info)
+    # 이미지 정보를 DB에 저장 
+    # metadata에 유저 id를 포함하도록 수정 요청 일단은 999로 하드코딩.
+    print("metadata : ",metadata)
+    img_info = img_sch.UserImg(Image_url=file.filename, User_id = 999)
+    #User_id=999 Image_id=None Image_url='210.125.183.216_1678099295390.jpg' Send_time=None
+    print(img_info)
+    crud = crud_img.user_img
+    item = crud.create(db=db, obj_in=img_info)
 
     return item
 
 #사용자 사진을 전송하는 api
-@router.get('/oneImg/{file_name}')
+@router.get('/userImg/{file_name}')
 async def get_image_with_name(file_name: str) -> Any:
 
     std_url = os.path.join("/code/app/Uploaded_images/",file_name)
@@ -62,7 +67,7 @@ async def get_image_with_name(file_name: str) -> Any:
         return JSONResponse(content={"error": "Image not found."},  status_code=404)
 
 #식물 샘플 사진을 전송하는 api
-@router.get('/twoImg/{Species}/{file_name}')
+@router.get('/sampleImg/{Species}/{file_name}')
 async def get_image_with_url(Species:str, file_name: str) -> Any:
 
     std_url = settings.SAMPLES_V1
@@ -78,61 +83,61 @@ async def get_image_with_url(Species:str, file_name: str) -> Any:
 
 
 
-@router.post("/", response_model=item_sch.Item)
+"""@router.post("/", response_model=item_sch.Item)
 def create_item(
     *,
     db: Session = Depends(deps.get_db),
     item_in: item_sch.ItemCreate,
 ) -> Any:
-    """
-    Create new item.
-    """
+    
+    #Create new item.
+    
     item = crud_plant.create_with_owner(db=db, obj_in=item_in)
-    return item
+    return item"""
 
 
-@router.put("/{id}", response_model=item_sch.Item)
+"""@router.put("/{id}", response_model=item_sch.Item)
 def update_item(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
     item_in: item_sch.ItemUpdate,
 ) -> Any:
-    """
-    Update an item.
-    """
+    
+    #Update an item.
+    
     item = crud_plant.get(db=db, id=id)
 
     item = crud_plant.update(db=db, db_obj=item, obj_in=item_in)
-    return item
+    return item"""
 
 
-@router.get("/{id}", response_model= item_sch.Item)
+"""@router.get("/{id}", response_model= item_sch.Item)
 def read_item(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
 ) -> Any:
-    """
-    Get item by ID.
-    """
+    
+    #Get item by ID.
+    
     item = crud_plant.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
-    return item
+    return item"""
 
 
-@router.delete("/{id}", response_model= item_sch.Item)
+"""@router.delete("/{id}", response_model= item_sch.Item)
 def delete_item(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
 ) -> Any:
-    """
-    Delete an item.
-    """
+    
+    #Delete an item.
+    
     item = crud_plant.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     item = crud_plant.remove(db=db, id=id)
-    return item
+    return item"""

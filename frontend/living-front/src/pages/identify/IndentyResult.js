@@ -31,7 +31,7 @@ const IdentyResult =() =>{
               setResultData(json.data);
               //console.log(json.data);
             });
-          await axios.get(`/api/v1/items/oneImg/${fileName}`, {
+          await axios.get(`/api/v1/items/userImg/${fileName}`, {
               responseType: 'blob'
           }).then(response => {
               const url = URL.createObjectURL(new Blob([response.data]));
@@ -97,7 +97,7 @@ const IdentyResult =() =>{
     
 
     const getImage = () => {
-        axios.get(`/api/v1/items/oneImg/${fileName}`, {
+        axios.get(`/api/v1/items/userImg/${fileName}`, {
             responseType: 'blob'
         }).then(response => {
             console.log("이미지 얻어!!")
