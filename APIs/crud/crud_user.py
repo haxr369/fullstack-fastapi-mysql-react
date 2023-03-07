@@ -60,12 +60,12 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
     #C
     def create(self, db: Session, *, obj_in: UserListSCHCreate) -> UserList:
         db_obj = UserList(
-            User_id = obj_in.user_id
+            User_id = obj_in.User_id
         )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-        return {"User_id":obj_in.User_id, 'Access_count':obj_in.Access_count}
+        return db_obj
 
     #R
     def get_by_id(self, db: Session, *, id: int) -> Optional[UserList]:

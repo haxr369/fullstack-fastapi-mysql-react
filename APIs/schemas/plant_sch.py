@@ -7,10 +7,10 @@ from schemas.img_sch import ImageSchema
 
 # Shared properties
 class SimpleSpeciesSCHBase(BaseModel):
-    plant_id :  Optional[int] = None
-    species_name : Optional[str] = None
-    genus_name : Optional[str] = None
-    family_name : Optional[str] = None
+    Plant_id :  Optional[int] = None
+    Species_name : Optional[str] = None
+    Genus_name : Optional[str] = None
+    Family_name : Optional[str] = None
 
 class SimpleSpeciesSCH(SimpleSpeciesSCHBase):
     pass
@@ -20,10 +20,10 @@ class SimpleSpeciesSCHCreate(SimpleSpeciesSCHBase):
 
 
 class DetailSpeciesSCHBase(BaseModel):
-    plant_id : Optional[int] = None
-    describe : Optional[str] = None
-    blossom : Optional[str] = None
-    flowers_fail : Optional[str] = None
+    Plant_id : Optional[int] = None
+    Describe : Optional[str] = None
+    Blossom : Optional[str] = None
+    Flowers_fail : Optional[str] = None
     Bear_fruit : Optional[str] = None
     Bear_fail : Optional[str] = None
 

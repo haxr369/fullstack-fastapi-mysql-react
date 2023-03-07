@@ -21,11 +21,13 @@ const checkToken = async () => {
     
 
     try {
+        console.log("토큰 테스트 시작!!")
         const resp = await axios.get(TEST_TOKEN_ENDPOINT,  {
             headers
-        });
-
-        if(resp.data['id']===-1){
+        })
+        //const decodedJson = jwtDecode(resp);
+        console.log(resp);
+        if(resp.data['User_id']==-1){
             console.log("토큰 유효기간 만료");
             console.log("리셋 토큰!!");
             localStorage.removeItem('access_token');
@@ -33,18 +35,16 @@ const checkToken = async () => {
             return "ok"
         }
 
-
-        if(resp.data['access'] * 1 > 0){
-            console.log(resp.data['access']+"번 요청함");
+        if(resp.data['Access_count'] * 1 > 0){
+            console.log(resp.data['Access_count']+"번 요청함");
             console.log("GPU 제한 안함");
             return "ok";
         }
 
     } catch (error) {
-        console.log(error);
-        //oAuth();
+        console.error(error);
         return error;
-    }
-};
+    };
+}
 
 export default checkToken;

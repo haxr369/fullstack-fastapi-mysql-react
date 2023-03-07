@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {useSearchParams} from 'react-router-dom';
-import './css/SearchPlant.css';
+import './css/DetailPlant.css';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

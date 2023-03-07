@@ -60,16 +60,16 @@ async def plant_identy(
     top3_results = imgIdenty_sch.TopModel(**results)
     return {"results":top3_results}
 
-@router.get("/{id}", response_model= item_sch.Item)
+"""@router.get("/{id}", response_model= item_sch.Item)
 def read_item(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
 ) -> Any:
-    """
-    Get item by ID.
-    """
+    
+    #Get item by ID.
+   
     item = crud_plant.get(db=db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
-    return item
+    return item"""

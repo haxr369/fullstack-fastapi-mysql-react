@@ -6,7 +6,7 @@ import axios from "axios";
 import folder from "../statics/img/folderImg.png";
 import checkToken from "../auth/checkToken";
 import imageCompression from 'browser-image-compression';
-
+import jwtDecode from "jwt-decode";
 
 const SelectImg = () => {
   const navigate = useNavigate();
@@ -82,11 +82,15 @@ const SelectImg = () => {
 
 
 const sendImg = async () => {
+  const token = localStorage.getItem('access_token');
+  
+  const decodedIdToken = jwtDecode(token);
+
   const formData = new FormData();
   console.log("보내는 파일 크기 : "+files.size/1024);
   console.log("보내는 파일 이름"+files.name);
   formData.append('file', files,files.name);
-  formData.append('metadata', JSON.stringify({ ip_name: ip }));
+  formData.append('metadata', JSON.stringify({ ip_name: ip, user_id:decodedIdToken['sub'] }));
   
   const item = await axios({
     method: 'post',

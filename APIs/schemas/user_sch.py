@@ -5,27 +5,27 @@ from datetime import datetime
 
 # Shared properties
 class UserListSCHBase(BaseModel):
-    user_id : Optional[int] = None
-    createtime : Optional[datetime] = None
-    access_count : Optional[int] = 0
-    is_superuser: bool = False
+    User_id : Optional[int] = None
+    Createtime : Optional[datetime] = None
+    Access_count : Optional[int] = 0
+    Is_superuser: bool = False
 
 
 # Properties to receive via API on creation
 class UserListSCHCreate(UserListSCHBase):
-    user_id : int = None
+    User_id : int = None
     createtime : datetime = None
-    access_count : int = 0
-    is_superuser: bool = False
+    Access_count : int = 0
+    Is_superuser: bool = False
 
 # Properties to receive via API on update
 class UserListSCHUpdate(UserListSCHBase):
-    access_count : int = 0
+    Access_count : int = 0
 
 
 
 class UserInDBBase(UserListSCHBase):
-    user_id: Optional[int] = None
+    User_id: Optional[int] = None
 
     class Config:
         orm_mode = True
