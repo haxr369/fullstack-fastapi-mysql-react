@@ -3,6 +3,10 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from api.api_v1.api import api_router
 from core.config import settings
+import pandas as pd
+
+from crud import crud_plant
+from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate
 
 app = FastAPI()
 
@@ -36,4 +40,42 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 async def root():
     return {"message": "/plant 에서 사용자관리"}
 
+
+#엑셀 내용 DB에 입력
+def DB_setup():
+    filname = plant_149_DB.xlsx
+    df = pd.read_excel(filename, engine='openpyxl')
+
+    crud_simple = crud_plant.crud_SimpleSpecies
+    crud_detail = crud_plant.crud_DetailSpecies
+
+    print(df.shape[0]+"개의 식물 발견!!")
+
+    #필요한 열은 1~8열 값.
+    for i in range(df.shape[0]):
+        Sname = df.iloc[i, 1]
+        Gname = df.iloc[i, 2]
+        Fname = df.iloc[i, 3]
+        blossom = df.iloc[i, 4]
+        Ffail = df.iloc[i, 5]
+        Bfruit = df.iloc[i, 6]
+        Bfail = df.iloc[i, 7]
+        Describe = df.iloc[i, 8]
+
+        simpleSCH = SimpleSpeciesSCHCreate(Species_name= Sname,
+                                            Genus_name=Gname,
+                                            Family_name=Fname)
+
+        detailSCH = DetailSpeciesSCHCreate(Species_name = Sname,
+                                            Describe = Describe,
+                                            Blossom=blossom,
+                                            Flowers_fail =Ffail,
+                                            Bear_fruit =  Bfruit,
+                                            Bear_fail = Bfail)
+        try :
+            simple_result = crud_simple.create_with_species(simpleSCH)
+            detail_result = crud_detail.create_with_species(detailSCH)
+            
+        except:
+            print("crud 실패!!!")
 

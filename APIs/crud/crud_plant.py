@@ -41,7 +41,7 @@ class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSp
 
     # 쿼리로 식물 검색하는 함수 넣을 예정
 
-    def delete(self, db: Session, *, species_name: str) -> ModelType:
+    def delete(self, db: Session, *, species_name: str) -> SimpleSpecies:
             obj = db.query(self.model).get(species_name)
             db.delete(obj)
             db.commit()
@@ -69,7 +69,7 @@ class CRUDDetailSpecies(CRUDBase[DetailSpecies, DetailSpeciesSCHCreate, DetailSp
         return species
 
 
-    def delete(self, db: Session, *, species_name: str) -> ModelType:
+    def delete(self, db: Session, *, species_name: str) -> DetailSpecies:
         obj = db.query(self.model).get(species_name)
         db.delete(obj)
         db.commit()
