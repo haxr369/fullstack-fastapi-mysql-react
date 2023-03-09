@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import os
 import shutil
+from crud import crud_plant
 from crud.base import CRUDBase
 from models.plant import SimpleSpecies, DetailSpecies
 from schemas import plant_sch
@@ -20,11 +21,23 @@ def search_with_query(
     *,
     db: Session = Depends(deps.get_db),
     query : str,
-) -> Any:
+#) -> List[plant_sch.SearchSCH]:
+)->Any:
+
     """
     검색어를 입력
     -> 연관 식물들을 리스트로 전송.
+
+    plants = crud.get_plants_by_query(db, query=query)
+    if not plants:
+        raise HTTPException(status_code=404, detail="검색 결과가 없습니다.")
+    return plants
     """
+    crud  = crud_plant.crud_SimpleSpecies
+
+    results = crud.get_plants_by_query(query = query)
+
+    print(results)
     
     return 0
 
@@ -44,7 +57,7 @@ def get_plant_simple(
 
     return 0
 
-@router.get("/simpleinfo/{species}")
+@router.get("/detailinfo/{species}")
 def get_plant_detail(
     *,
     db: Session = Depends(deps.get_db),

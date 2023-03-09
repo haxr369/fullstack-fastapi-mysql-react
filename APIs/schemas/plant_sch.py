@@ -13,10 +13,17 @@ class SimpleSpeciesSCHBase(BaseModel):
     Family_name : Optional[str] = None
 
 class SimpleSpeciesSCH(SimpleSpeciesSCHBase):
+    Plant_id :  int = 0
+    Species_name : str = None
+    Genus_name : str = None
+    Family_name : str = None
+
+class SimpleSpeciesSCHCreate(SimpleSpeciesSCH):
     pass
 
-class SimpleSpeciesSCHCreate(SimpleSpeciesSCHBase):
-    pass
+
+class SearchSCH(SimpleSpeciesSCHBase):
+    Plant_sample : str
 
 
 class DetailSpeciesSCHBase(BaseModel):
@@ -28,8 +35,15 @@ class DetailSpeciesSCHBase(BaseModel):
     Bear_fail : Optional[str] = None
 
 class DetailSpeciesSCH(DetailSpeciesSCHBase):
-    pass
-class DetailSpeciesSCHCreate(DetailSpeciesSCHBase):
+    Plant_id : int = 0
+    Describe : str = None
+    Blossom : str = None
+    Flowers_fail : str = None
+    Bear_fruit : str = None
+    Bear_fail : str = None
+
+
+class DetailSpeciesSCHCreate(DetailSpeciesSCH):
     pass
 
 

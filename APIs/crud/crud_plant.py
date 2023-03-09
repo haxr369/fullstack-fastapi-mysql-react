@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
 from models.plant import SimpleSpecies, DetailSpecies
-from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate
+from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate, SearchSCH
 
 #누가 넣었는지 알 필요가 있을까?...
 class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSpeciesSCHCreate]):
@@ -19,6 +19,19 @@ class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSp
         db.refresh(db_obj)
         return db_obj
 
+    def get_plants_by_query(
+        self, db: Session, query: str
+    ) -> List[SimpleSpecies]:
+
+        searchResult = db.query(SimpleSpecies).filter(
+            or_(
+                SimpleSpecies.Species_name.like(f"%{query}%"),
+                SimpleSpecies.Genus_name.like(f"%{query}%"),
+                SimpleSpecies.Family_name.like(f"%{query}%")
+            )
+        ).all()
+        return searchResult 
+        
     # 식물의 간단 정보 조회
     def get_by_Plant_id(
         self, db: Session,*, species : str
