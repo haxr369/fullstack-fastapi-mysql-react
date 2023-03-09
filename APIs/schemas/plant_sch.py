@@ -13,7 +13,6 @@ class SimpleSpeciesSCHBase(BaseModel):
     Family_name : Optional[str] = None
 
 class SimpleSpeciesSCH(SimpleSpeciesSCHBase):
-    Plant_id :  int = 0
     Species_name : str = None
     Genus_name : str = None
     Family_name : str = None
@@ -28,6 +27,7 @@ class SearchSCH(SimpleSpeciesSCHBase):
 
 class DetailSpeciesSCHBase(BaseModel):
     Plant_id : Optional[int] = None
+    Species_name : Optional[str] = None
     Describe : Optional[str] = None
     Blossom : Optional[str] = None
     Flowers_fail : Optional[str] = None
@@ -35,8 +35,8 @@ class DetailSpeciesSCHBase(BaseModel):
     Bear_fail : Optional[str] = None
 
 class DetailSpeciesSCH(DetailSpeciesSCHBase):
-    Plant_id : int = 0
     Describe : str = None
+    Species_name : str = None
     Blossom : str = None
     Flowers_fail : str = None
     Bear_fruit : str = None

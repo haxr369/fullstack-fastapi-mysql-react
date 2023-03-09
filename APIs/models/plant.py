@@ -15,8 +15,8 @@ class SimpleSpecies(Base):
     Family_name = Column(String(50))
 
 class DetailSpecies(Base):
-    Plant_id = Column(Integer,  ForeignKey('simplespecies.Plant_id'), primary_key=True , index=True)
-    #Detail_id =  Column(Integer, primary_key=True, autoincrement=True, index=True)
+    Plant_id = Column(Integer, autoincrement=True, primary_key=True, index=True)
+    Species_name = Column(String(50),  ForeignKey('simplespecies.Species_name'), primary_key=True)
     Blossom = Column(Integer, default =0)
     Flowers_fail = Column(Integer, default =0)
     Bear_fruit = Column(Integer, default =0)

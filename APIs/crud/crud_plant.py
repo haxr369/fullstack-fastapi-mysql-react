@@ -33,13 +33,19 @@ class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSp
         return searchResult 
         
     # 식물의 간단 정보 조회
-    def get_by_Plant_id(
+    def get_by_plant_species(
         self, db: Session,*, species : str
     ) -> SimpleSpecies:
         species = db.query(SimpleSpecies).filter(SimpleSpecies.species_name == species).first()
         return species
 
     # 쿼리로 식물 검색하는 함수 넣을 예정
+
+    def delete(self, db: Session, *, species_name: str) -> ModelType:
+            obj = db.query(self.model).get(species_name)
+            db.delete(obj)
+            db.commit()
+            return obj
 
 
 crud_SimpleSpecies= CRUDSimpleSpecies(SimpleSpecies)
@@ -55,4 +61,19 @@ class CRUDDetailSpecies(CRUDBase[DetailSpecies, DetailSpeciesSCHCreate, DetailSp
         db.refresh(db_obj)
         return db_obj
 
+    # 식물의 간단 정보 조회
+    def get_by_plant_species(
+        self, db: Session,*, species : str
+    ) -> DetailSpecies:
+        species = db.query(DetailSpecies).filter(DetailSpecies.species_name == species).first()
+        return species
+
+
+    def delete(self, db: Session, *, species_name: str) -> ModelType:
+        obj = db.query(self.model).get(species_name)
+        db.delete(obj)
+        db.commit()
+        return obj
+
+        
 crud_DetailSpecies= CRUDDetailSpecies(DetailSpecies)

@@ -31,7 +31,7 @@ const Plants = () => {
 
 
   useEffect(() => {
-    console.log("현재 페이지 "+currentPage);
+    console.log("현재 검색어 : "+searchQuery);
 
     const getPlantList = async () =>{
       /**getPlantList(currentPage,searchQuery)

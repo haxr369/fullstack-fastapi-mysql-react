@@ -5,10 +5,10 @@ import checkToken from "./auth/checkToken";
 const Apitest = () => {
   
   const [data, setData] = useState('');
+  const [searchData, setSearchData] = useState('');
 
   useEffect(()=>{
     checkToken();
-    
     
   },[]);
 
@@ -30,6 +30,21 @@ const Apitest = () => {
     
   };//{data && <textarea rows={7} value={JSON.stringify(data,null,2)} readOnly={true}/>}
 
+  const onSearchClick = async () =>{
+    try{
+      console.log("search...");
+
+      const response = await axios.get('/api/v1/search/느릅나무')
+      .then((result) =>{
+        console.log(result);
+      }) 
+      setSearchData(response);
+      
+    } catch(e){
+      console.log(e);
+    }
+  }
+
   return (
     <div>
       <div>
@@ -38,6 +53,15 @@ const Apitest = () => {
         </button>
       </div>
       {data}
+      <div>
+        <div>
+          <button onClick={onSearchClick}>
+          검색
+          </button>
+        </div>
+        {searchData}
+        
+      </div>
     </div>
   );
 
