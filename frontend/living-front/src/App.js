@@ -1,7 +1,7 @@
 import SelectImg from './pages/identify/SelectImg';
 import Header from './pages/Header';
 import Apitest from './pages/Apitest';
-import {Route, Routes } from 'react-router-dom';
+import { Routes, Route }  from 'react-router-dom';
 import Home from './pages/Home';
 import IdentyResult from './pages/identify/IdentyResult';
 import Login from './pages/Login';
@@ -20,6 +20,7 @@ const App = () => {
             <Route path ="/login" element={<Login/>} />
             <Route path ="/detailplant" element={<DetailPlant/>} />
             <Route path ="/plantList" element={<Plants/>} />
+            <Route path="*" element={<Home/>}/>
         </Routes>
         </>
     );

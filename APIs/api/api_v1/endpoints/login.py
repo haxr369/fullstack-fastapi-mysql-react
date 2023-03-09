@@ -63,7 +63,7 @@ def give_access_token(
 @router.post("/usetoken", response_model=user_sch.User)
 def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserList, None] = Depends(deps.get_current_user)) -> Any:
     """
-    Test access token
+    유효한 토큰을 가져오면 유저의 Access_count를 늘림.
     """
     print("testing... ", current_user)
     if(current_user): #정상적인 토큰을 가진 user인 경우

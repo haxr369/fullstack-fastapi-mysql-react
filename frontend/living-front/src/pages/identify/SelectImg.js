@@ -108,8 +108,8 @@ const sendImg = async () => {
     alert('이미지를 보내지 못했습니다. 다시 시도해주세요.');
     navigate('/selectimg');
   });
-  navigate(`/identyResults?file_name=${files.name}`);
-
+  //navigate(`/identyResults?file_name=${files.name}`);
+  navigate('/identyResults', {state: {file_name: files.name}});
   
 };
 

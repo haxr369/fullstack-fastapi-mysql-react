@@ -1,10 +1,10 @@
 import oAuth from "./oAuth";
-import tokenUse from "./Tokenuse";
+import gpuUse from "./GpuUse";
 import checkToken from "./checkToken";
 
 export {
     oAuth,
-    tokenUse,
+    gpuUse,
     checkToken
 
 };

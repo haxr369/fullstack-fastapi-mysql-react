@@ -1,17 +1,23 @@
 //Hook  import 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import {useSearchParams} from 'react-router-dom';
 import './css/IdentyResult.css';
 import ShowImgTable  from './ShowImgTable';
 //사전에 정의한 데이터를 보여주는 방법 = url 파라미터
 //import jwtDecode from "jwt-decode";
-import {checkToken, oAuth,tokenUse} from "../auth";
-import { useNavigate } from "react-router-dom";
+import {checkToken, oAuth, gpuUse} from "../auth";
+import { useNavigate,useLocation, useSearchParams } from "react-router-dom";
+
+
+import { Link } from 'react-router-dom';
 
 const IdentyResult =() =>{
-    const [searchParams, setSearchParams] =useSearchParams();
-    const fileName = searchParams.get('file_name'); 
+    //const [searchParams, setSearchParams] =useSearchParams();
+    //const fileName = searchParams.get('file_name'); 
+
+    const location = useLocation();
+    const fileName = location.state.file_name;
+
     const [user_url, setUerUrl] = useState('');
     const [resultData, setResultData] = useState(null);
     const [tokenCheck,setTokenCheck] = useState(null);
@@ -20,17 +26,27 @@ const IdentyResult =() =>{
     // 식물 식별을 요청하고 사진들을 얻는다.
     // 유저 입력 사진, 샘플 이미지 3x3  총 10개 이미지들.
     const fetchData = async () => {
+        
+    
         if(fileName=="undefined"){
             console.log("Identy Result filename : "+fileName);
             navigate("/selectimg");
         }
         else if(fileName){
-            console.log("filename : "+fileName);
-            const result = await axios.get(`/api/v1/results/identy/${fileName}`)
-            .then((json) => {
-              setResultData(json.data);
-              //console.log(json.data);
-            });
+            try{
+                console.log("filename : "+fileName);
+                const result = await axios.get(`/api/v1/results/identy/${fileName}`)
+                .then((json) => {
+                setResultData(json.data);
+                gpuUse(); // 서버에 gpu 사용한다고 말함
+                //console.log(json.data);
+                });
+            }
+            catch (ex){
+                alert("식물을 식별할 수 없는 상황입니다."+fileName);
+                navigate("/selectimg");
+            }  
+            
 
             try{
                 await axios.get(`/api/v1/items/userImg/${fileName}`, {
@@ -51,7 +67,7 @@ const IdentyResult =() =>{
         }
         
       };
-    
+    /**
     const checkAccess =  async () => {
         const token = localStorage.getItem('access_token');
         if(token){
@@ -74,53 +90,6 @@ const IdentyResult =() =>{
         await oAuth();
         navigate("/selectimg");
     };
-
-    useEffect(async () => {
-        /**
-         * if(tokenCheck){ //tokenCheck가 null이 아닌 경우. checkAccess가 수행된 것.
-            console.log(tokenCheck);
-            if(tokenCheck === "tokenExpiration"){ //토큰 유효기간 만료
-                resetToken();}
-            else if(tokenCheck === "ok"){ //유효한 토큰이 들어온 경우.
-                fetchData();}  
-        }    
-        else{
-            checkAccess();
-        }
-         * 
-         */
-        
-        const oatu = await checkToken();
-        console.log(oatu);
-        if(oatu==="ok"){
-            console.log("gpu 서비스 허가");
-            const fet = fetchData(); // 파일 이름 체크. 에러나면 뒤로 가기.
-        }
-        else if(oatu==="gpuWating"){
-            alert("서비스를 너무 많이 요청하셨습니다. 잠시만 기다려 주세요.");
-            navigate("/selectimg");
-        }
-        else {
-            alert("문제가 발생했습니다. 새로고침 해주세요.");
-            navigate("/");
-        }
-        
-      },[]);
-    
-    if(tokenCheck === "gpuWating"){
-        setTimeout(() => resetToken(), 60000*2);
-        return (
-            <div>
-                너무 많이 GPU 서비스를 사용했습니다.<p/>
-                2분간 기다린 후에 새로고침 해주세요.
-            </div>
-        );
-    }
-    else if (!resultData) {
-        return <div>Loading...</div>;
-    }
-    
-
     const getImage = () => {
         axios.get(`/api/v1/items/userImg/${fileName}`, {
             responseType: 'blob'
@@ -130,6 +99,39 @@ const IdentyResult =() =>{
             setUerUrl(url);
         });
     };
+     */
+    useEffect(() => {
+
+        const runAsync = async () =>{
+            const oatu = await checkToken();
+            console.log(oatu);
+            if(oatu==="ok"){
+                console.log("gpu 서비스 허가");
+                const fet = fetchData(); // 파일 이름 체크. 에러나면 뒤로 가기.
+            }
+            else if(oatu==="gpuWating"){
+                alert("서비스를 너무 많이 요청하셨습니다. 잠시만 기다려 주세요.");
+                navigate("/selectimg",  { replace: true});
+            }
+            else {
+                alert("문제가 발생했습니다. 새로고침 해주세요.");
+                navigate("/");
+            }
+        }
+        
+        runAsync();
+        
+      },[]);
+    
+    if (!resultData) {
+        return <div>Loading...</div>;
+    }
+    
+    const handlehomeClick = async (e) => {
+
+        navigate("/");
+      };
+    
     
     /**
      * 틀을 만들자.!
@@ -149,6 +151,8 @@ const IdentyResult =() =>{
         return (
         
             <div>
+                <li className="nav-item"><Link to="/">홈</Link></li>
+                <button onClick={handlehomeClick}>홈으로 이동.</button>
                 <div className='userContain'>
                     <h2 className = 'userImgTitle'>식별 식물</h2>
                     <div className='userImgContain'>

@@ -1,7 +1,7 @@
 import axios from "axios"
 import jwtDecode from "jwt-decode";
 
-const tokenUse = async () => {
+const gpuUse = async () => {
     const limit_access = 30;
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -38,6 +38,7 @@ const tokenUse = async () => {
             console.log("GPU 제한 페이지");
             return "gpuWating";
         } 
+        
         else if(resp.data['access'] * 1 > 0){
             console.log(resp.data['access']+"번 요청함");
             console.log("GPU 제한 안함");
@@ -50,4 +51,4 @@ const tokenUse = async () => {
     }
 };
 
-export default tokenUse;
+export default gpuUse;
