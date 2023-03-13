@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 class UserList(Base):
-    User_id = Column(Integer, primary_key = True)
+    User_id = Column(Integer, unique=True, primary_key = True)
     Is_superuser = Column(Boolean(), default=False)
     Createtime = Column(DateTime, default=datetime.datetime.now())
     Access_count = Column(Integer, default =0)
