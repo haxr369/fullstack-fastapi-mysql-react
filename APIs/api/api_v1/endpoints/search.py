@@ -53,28 +53,47 @@ def get_plant_simple(
     result = db.query(SimpleSpecies).filter(SimpleSpecies.Species_name == species).first()
     print(result.Plant_id, result.Genus_name)
 
-    return result
+    resultSCH = SimpleSpeciesSCH(
+        Plant_id = result.Plant_id,
+        Species_name = result.Species_name,
+        Genus_name = result.Genus_name,
+        Family_name = result.Family_name
+    )
+    return resultSCH
 
-@router.get("/detailinfo/{species}")
+@router.get("/detailinfo/{species}", response_model = DetailSpeciesSCH)
 def get_plant_detail(
     *,
     db: Session = Depends(deps.get_db),
     species : str
-)->Any:
+):
     """
     식물 종 입력
     -> 식물의 구체적 정보 전송.
     """
     print(species," 검색!!!")
-    results = db.query(SimpleSpecies, DetailSpecies).filter(SimpleSpecies.Species_name == species_name, 
-                            SimpleSpecies.Plant_id == DetailSpecies.Plant_id).all()
+    results = db.query(SimpleSpecies, DetailSpecies).filter(SimpleSpecies.Species_name == species, 
+                            SimpleSpecies.Species_name == DetailSpecies.Species_name).all()
 
-    for result in results:
-        simple_species = result[0]
-        detail_species = result[1]
-        print(simple_species.Plant_id, simple_species.Genus_name)
+    print(results)
 
-    return results
+    simple_species = results[0][0]
+    detail_species = results[0][1]
+
+    resultSCH = DetailSpeciesSCH(
+        Plant_id = simple_species.Plant_id,
+        Species_name = simple_species.Species_name,
+        Genus_name = simple_species.Genus_name,
+        Family_name = simple_species.Family_name,
+
+        Blossom = detail_species.Blossom,
+        Flowers_fail = detail_species.Flowers_fail,
+        Bear_fruit = detail_species.Bear_fruit,
+        Bear_fail =detail_species.Bear_fail,
+        Describe = detail_species.Describe
+    )
+
+    return resultSCH
 
 """
 @router.post("/info/species")

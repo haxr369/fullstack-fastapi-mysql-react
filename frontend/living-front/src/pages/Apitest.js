@@ -1,12 +1,14 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import checkToken from "./auth/checkToken";
-
+import Simpleinfo from './APIs/Simpleinfo';
+import Detailinfo from './APIs/Detailinfo';
 const Apitest = () => {
   
   const [data, setData] = useState('');
   const [searchData, setSearchData] = useState('');
-
+  const [simpleinfo, setSimpleinfo] = useState('');
+  const [detailinfo, setDetailinfo] = useState('');
   useEffect(()=>{
     checkToken();
     
@@ -45,6 +47,18 @@ const Apitest = () => {
     }
   }
 
+  const handleDataSimple = (simpleinfo) => {
+    console.log('apitest');
+    setSimpleinfo(simpleinfo);
+    console.log(simpleinfo);
+  }
+
+  const handleDataDetail = (simpleinfo) => {
+    console.log('apitest');
+    setDetailinfo(simpleinfo);
+    console.log(simpleinfo);
+  }
+
   return (
     <div>
       <div>
@@ -62,6 +76,21 @@ const Apitest = () => {
         {searchData}
         
       </div>
+
+      <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
+      <Detailinfo Species = '가막살나무' onSearchDetail={handleDataDetail} />
+      <Detailinfo Species = '가죽나무' onSearchDetail={handleDataDetail} />
+      
+      <div>{simpleinfo['Species_name']}</div>
+      <div>{simpleinfo['Plant_id']}</div>
+      <div>{simpleinfo['Genus_name']}</div>
+      <div>{simpleinfo['Family_name']}</div>
+      <div>---------절취선------------</div>
+      <div>{detailinfo['Species_name']}</div>
+      <div>{detailinfo['Plant_id']}</div>
+      <div>{detailinfo['Bear_fail']}</div>
+      <div>{detailinfo['Describe']}</div>
+
     </div>
   );
 
