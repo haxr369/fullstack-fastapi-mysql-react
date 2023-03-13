@@ -3,7 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from api.api_v1.api import api_router
 from core.config import settings
-import pandas as pd
+#import pandas as pd
 
 from crud import crud_plant
 from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate
@@ -42,14 +42,14 @@ async def root():
 
 
 #엑셀 내용 DB에 입력
-def DB_setup():
-    filname = plant_149_DB.xlsx
-    df = pd.read_excel(filename, engine='openpyxl')
+"""def DB_setup():
+    filname = "plant_149_DB.xlsx"
+    df = pd.read_excel(filname)
 
     crud_simple = crud_plant.crud_SimpleSpecies
     crud_detail = crud_plant.crud_DetailSpecies
 
-    print(df.shape[0]+"개의 식물 발견!!")
+    print(str(df.shape[0])+"개의 식물 발견!!")
 
     #필요한 열은 1~8열 값.
     for i in range(df.shape[0]):
@@ -66,7 +66,7 @@ def DB_setup():
                                             Genus_name=Gname,
                                             Family_name=Fname)
 
-        detailSCH = DetailSpeciesSCHCreate(Species_name = Sname,
+        detailSCH = DetailSpeciesSCHCreate(
                                             Describe = Describe,
                                             Blossom=blossom,
                                             Flowers_fail =Ffail,
@@ -79,3 +79,5 @@ def DB_setup():
         except:
             print("crud 실패!!!")
 
+DB_setup()
+"""

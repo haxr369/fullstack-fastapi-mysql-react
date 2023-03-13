@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
-
+import pymysql
 from core.config import settings
 
 print("DSN:",settings.SQLALCHEMY_DATABASE_URI)

@@ -8,7 +8,7 @@ import shutil
 from crud import crud_plant
 from crud.base import CRUDBase
 from models.plant import SimpleSpecies, DetailSpecies
-from schemas import plant_sch
+from schemas.plant_sch import SimpleSpeciesSCH, DetailSpeciesSCH
 from api import deps
 from core.config import settings
 import json
@@ -16,13 +16,11 @@ router = APIRouter()
 
 
 
-@router.get("/search/{query}") #, response_model= item_sch.Item)
+@router.get("/search/{query}" , response_model= List[SimpleSpeciesSCH])
 def search_with_query(
     *,
     db: Session = Depends(deps.get_db),
-    query : str,
-#) -> List[plant_sch.SearchSCH]:
-)->Any:
+    query : str):
 
     """
     검색어를 입력
@@ -39,14 +37,14 @@ def search_with_query(
 
     print(results)
     
-    return 0
+    return results
 
-@router.get("/simpleinfo/{species}")
+@router.get("/simpleinfo/{species}", response_model = SimpleSpeciesSCH)
 def get_plant_simple(
     *,
     db: Session = Depends(deps.get_db),
     species : str
-) -> Any:
+) :
     """
     식물 종 입력
     -> 식물의 간단 정보 전송.
@@ -55,28 +53,28 @@ def get_plant_simple(
     result = db.query(SimpleSpecies).filter(SimpleSpecies.Species_name == species).first()
     print(result.Plant_id, result.Genus_name)
 
-    return 0
+    return result
 
 @router.get("/detailinfo/{species}")
 def get_plant_detail(
     *,
     db: Session = Depends(deps.get_db),
     species : str
-) -> Any:
+)->Any:
     """
     식물 종 입력
     -> 식물의 구체적 정보 전송.
     """
     print(species," 검색!!!")
-    simpleInfo = db.query(SimpleSpecies).filter(SimpleSpecies.Species_name == species).first()
-    result = db.query(DetailSpecies).filter(DetailSpecies.Plant_id == simpleInfo.Plant_id).first()
+    results = db.query(SimpleSpecies, DetailSpecies).filter(SimpleSpecies.Species_name == species_name, 
+                            SimpleSpecies.Plant_id == DetailSpecies.Plant_id).all()
 
-    #q = session.query(User).join(Address, User.addresses)
-    q = db.query(SimpleSpecies).join(DetailSpecies, SimpleSpecies.Plant_id)
+    for result in results:
+        simple_species = result[0]
+        detail_species = result[1]
+        print(simple_species.Plant_id, simple_species.Genus_name)
 
-    print(result.Plant_id, result.Genus_name)
-
-    return 0
+    return results
 
 """
 @router.post("/info/species")

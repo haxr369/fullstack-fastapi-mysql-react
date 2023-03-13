@@ -12,3 +12,4 @@ PyJWT
 timm==0.5.4
 opencv-python
 pandas
+openpyxl

@@ -76,9 +76,11 @@ services:
     volumes:
       - /home/data/LivingLab/db/init.sql:/db-data/init.sql
       - /home/data/LivingLab/db:/db-data
+
 networks:
   appnet:
     driver: bridge
+    
 secrets:
   db-password:
     file: /home/data/LivingLab/db/password.txt
