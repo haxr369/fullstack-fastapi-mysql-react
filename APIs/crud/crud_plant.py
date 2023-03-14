@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
-
+from sqlalchemy import or_
 from crud.base import CRUDBase
 from models.plant import SimpleSpecies, DetailSpecies
 from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate, SearchSCH
@@ -20,18 +20,24 @@ class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSp
         return db_obj
 
     def get_plants_by_query(
-        self, db: Session, query: str
-    ) -> List[SimpleSpecies]:
+        self, db: Session, *, query: str
+    ) -> List[SimpleSpeciesSCHCreate]:
 
-        searchResult = db.query(SimpleSpecies).filter(
+        searchResults = db.query(SimpleSpecies).filter(
             or_(
-                SimpleSpecies.Species_name.like(f"%{query}%"),
-                SimpleSpecies.Genus_name.like(f"%{query}%"),
-                SimpleSpecies.Family_name.like(f"%{query}%")
+                SimpleSpecies.Species_name.ilike(f"%{query}%"),
+                SimpleSpecies.Genus_name.ilike(f"%{query}%"),
+                SimpleSpecies.Family_name.ilike(f"%{query}%")
             )
         ).all()
-        return searchResult 
-        
+
+        result = [ SimpleSpeciesSCHCreate(Species_name= searchResult.Species_name,
+                                            Genus_name= searchResult.Genus_name,
+                                            Family_name = searchResult.Family_name )     
+                        for searchResult in searchResults]
+
+        return result 
+
     # 식물의 간단 정보 조회
     def get_by_plant_species(
         self, db: Session,*, species : str

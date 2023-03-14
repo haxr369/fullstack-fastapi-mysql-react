@@ -3,12 +3,16 @@ import axios from 'axios';
 import checkToken from "./auth/checkToken";
 import Simpleinfo from './APIs/Simpleinfo';
 import Detailinfo from './APIs/Detailinfo';
+import Searchquery from './APIs/Searchquery';
+
 const Apitest = () => {
   
   const [data, setData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [simpleinfo, setSimpleinfo] = useState('');
   const [detailinfo, setDetailinfo] = useState('');
+  const [queryResult, setQueryResult] = useState([]);
+
   useEffect(()=>{
     checkToken();
     
@@ -59,6 +63,28 @@ const Apitest = () => {
     console.log(simpleinfo);
   }
 
+const handleDataQuery = (queryResult) => {
+    console.log('apitest');
+    setQueryResult(queryResult);
+    console.log(queryResult);
+  }
+
+  /**
+   * <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
+      <Detailinfo Species = '가막살나무' onSearchDetail={handleDataDetail} />
+      <Detailinfo Species = '가죽나무' onSearchDetail={handleDataDetail} />
+      
+      <div>{simpleinfo['Species_name']}</div>
+      <div>{simpleinfo['Plant_id']}</div>
+      <div>{simpleinfo['Genus_name']}</div>
+      <div>{simpleinfo['Family_name']}</div>
+      <div>---------절취선------------</div>
+      <div>{detailinfo['Species_name']}</div>
+      <div>{detailinfo['Plant_id']}</div>
+      <div>{detailinfo['Bear_fail']}</div>
+      <div>{detailinfo['Describe']}</div>
+   * 
+   */
   return (
     <div>
       <div>
@@ -76,20 +102,8 @@ const Apitest = () => {
         {searchData}
         
       </div>
-
-      <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
-      <Detailinfo Species = '가막살나무' onSearchDetail={handleDataDetail} />
-      <Detailinfo Species = '가죽나무' onSearchDetail={handleDataDetail} />
+      <Searchquery Query= '가막살' onSearchQuery = {handleDataQuery}/>
       
-      <div>{simpleinfo['Species_name']}</div>
-      <div>{simpleinfo['Plant_id']}</div>
-      <div>{simpleinfo['Genus_name']}</div>
-      <div>{simpleinfo['Family_name']}</div>
-      <div>---------절취선------------</div>
-      <div>{detailinfo['Species_name']}</div>
-      <div>{detailinfo['Plant_id']}</div>
-      <div>{detailinfo['Bear_fail']}</div>
-      <div>{detailinfo['Describe']}</div>
 
     </div>
   );

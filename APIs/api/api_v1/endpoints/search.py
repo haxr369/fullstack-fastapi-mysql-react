@@ -15,28 +15,19 @@ import json
 router = APIRouter()
 
 
-
-@router.get("/search/{query}" , response_model= List[SimpleSpeciesSCH])
+@router.get("/searchquery/{query}" , response_model= List[SimpleSpeciesSCH])
 def search_with_query(
     *,
     db: Session = Depends(deps.get_db),
     query : str):
 
-    """
-    검색어를 입력
-    -> 연관 식물들을 리스트로 전송.
 
-    plants = crud.get_plants_by_query(db, query=query)
-    if not plants:
-        raise HTTPException(status_code=404, detail="검색 결과가 없습니다.")
-    return plants
-    """
     crud  = crud_plant.crud_SimpleSpecies
 
-    results = crud.get_plants_by_query(query = query)
-
-    print(results)
-    
+    results = crud.get_plants_by_query(db=db, query = query)
+    for i in results:
+        print(i.Species_name)
+        
     return results
 
 @router.get("/simpleinfo/{species}", response_model = SimpleSpeciesSCH)
