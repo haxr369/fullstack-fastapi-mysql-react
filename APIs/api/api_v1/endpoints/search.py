@@ -21,10 +21,12 @@ def search_with_query(
     db: Session = Depends(deps.get_db),
     query : str):
 
-
     crud  = crud_plant.crud_SimpleSpecies
 
-    results = crud.get_plants_by_query(db=db, query = query)
+    if(query != ''):
+        results = crud.get_plants_by_query(db=db, query = query)
+    else:
+        results = db.query(SimpleSpecies).all()
     for i in results:
         print(i.Species_name)
         

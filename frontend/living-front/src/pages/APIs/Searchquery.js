@@ -23,23 +23,21 @@ const Searchquery = (props) => {
 
   const handleDataUpdate= () => {
     const fetchData = async () => {
-      if(query !== ''){
-        try{
-            console.log("query : "+query);
-            const result = await axios.get(`/api/v1/search/searchquery/${query}`)
-            .then((json) => {
-                //console.log(json.data);
-                setData(json.data);
-            });
-        }
-        catch (ex){
-            alert("답변 불가. "+query);
-            //navigate("/selectimg");
-        } 
+      
+      try{
+          console.log("query : "+query);
+          const result = await axios.get(`/api/v1/search/searchquery/${query}`)
+          .then((json) => {
+              //console.log(json.data);
+              setData(json.data);
+          });
       }
-      else{
-        console.log('질문을 입력 받지 못했다.');
-      }
+      catch (ex){
+          alert("답변 불가. "+query);
+          //navigate("/selectimg");
+      } 
+      
+
     };
 
     const reu =  fetchData();

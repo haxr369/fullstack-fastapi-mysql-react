@@ -69,6 +69,11 @@ const handleDataQuery = (queryResult) => {
     console.log(queryResult);
   }
 
+
+
+  const plantList = queryResult.map((plant, index) => <li key={index}>{plant}</li>)
+
+
   /**
    * <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
       <Detailinfo Species = '가막살나무' onSearchDetail={handleDataDetail} />
@@ -102,7 +107,10 @@ const handleDataQuery = (queryResult) => {
         {searchData}
         
       </div>
-      <Searchquery Query= '가막살' onSearchQuery = {handleDataQuery}/>
+      <Searchquery Query= '' onSearchQuery = {handleDataQuery}/>
+      
+      <ul>{plantList}</ul>
+
       
 
     </div>
