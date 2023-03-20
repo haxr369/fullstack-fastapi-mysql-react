@@ -41,11 +41,9 @@ const Simpleinfo = (props) => {
         console.log('종을 입력 받지 못했다.');
       }
     };
-
     const reu =  fetchData();
     console.log('자식 컴포넌트');
     console.log(data);
-    
   };
 
   return (

@@ -108,7 +108,11 @@ const handleDataQuery = (queryResult) => {
         
       </div>
       <Searchquery Query= '가' onSearchQuery = {handleDataQuery}/>
-      
+      <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
+      <div>{simpleinfo['Species_name']}</div>
+      <div>{simpleinfo['Plant_id']}</div>
+      <div>{simpleinfo['Genus_name']}</div>
+      <div>{simpleinfo['Family_name']}</div>
       <ul>{plantList}</ul>
 
       
