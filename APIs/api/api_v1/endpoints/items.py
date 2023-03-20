@@ -27,7 +27,7 @@ def read_items() -> Any:
     print(items)
     return items
 
-@router.post('/userImg')            #이미지를 받아서 저장소에 저장
+@router.post('/uploadImg')            #이미지를 받아서 저장소에 저장
 async def create_upload_file(
     *,
     file: UploadFile = File(...),

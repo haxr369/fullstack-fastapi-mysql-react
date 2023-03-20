@@ -67,7 +67,7 @@ class CRUDDetailSpecies(CRUDBase[DetailSpecies, DetailSpeciesSCHCreate, DetailSp
         db.refresh(db_obj)
         return db_obj
 
-    # 식물의 간단 정보 조회
+    # 식물의 세부 정보 조회
     def get_by_plant_species(
         self, db: Session,*, species : str
     ) -> DetailSpecies:

@@ -107,7 +107,7 @@ const handleDataQuery = (queryResult) => {
         {searchData}
         
       </div>
-      <Searchquery Query= '' onSearchQuery = {handleDataQuery}/>
+      <Searchquery Query= '가' onSearchQuery = {handleDataQuery}/>
       
       <ul>{plantList}</ul>
 

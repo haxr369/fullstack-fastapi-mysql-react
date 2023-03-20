@@ -95,7 +95,7 @@ const sendImg = async () => {
   
   const item = await axios({
     method: 'post',
-    url: '/api/v1/items/userImg',
+    url: '/api/v1/items/uploadImg',
     data: formData,
     headers: {
       'Content-Type': 'multipart/form-data',

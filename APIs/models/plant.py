@@ -9,14 +9,19 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 
 class SimpleSpecies(Base):
-    Plant_id = Column(Integer, autoincrement=True, primary_key=True)
-    Species_name = Column(String(255),  unique=True, primary_key=True, index=True)
+    Plant_id = Column(Integer, autoincrement=True, 
+                                primary_key=True)
+    Species_name = Column(String(255),  unique=True, 
+                            primary_key=True, index=True)
     Genus_name = Column(String(255))
     Family_name = Column(String(255))
 
 class DetailSpecies(Base):
-    Plant_id = Column(Integer, autoincrement=True, primary_key=True, index=True)
-    Species_name = Column(String(255),  ForeignKey('simplespecies.Species_name'),  unique=True, primary_key=True, index=True)
+    Plant_id = Column(Integer, autoincrement=True, 
+                    primary_key=True, index=True)
+    Species_name = Column(String(255),  
+                    ForeignKey('simplespecies.Species_name'),  
+                    unique=True, primary_key=True, index=True)
     Blossom = Column(Integer, default =0)
     Flowers_fail = Column(Integer, default =0)
     Bear_fruit = Column(Integer, default =0)
