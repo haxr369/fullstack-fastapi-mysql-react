@@ -18,8 +18,6 @@ const checkToken = async () => {
         'Content-Type': 'application/json'
     };
 
-    
-
     try {
         console.log("토큰 테스트 시작!!")
         const resp = await axios.get(TEST_TOKEN_ENDPOINT,  {

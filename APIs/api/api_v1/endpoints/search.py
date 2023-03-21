@@ -1,6 +1,6 @@
 from typing import Any, List
 from fastapi.encoders import jsonable_encoder
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import os
@@ -15,18 +15,19 @@ import json
 router = APIRouter()
 
 
-@router.get("/searchquery/{query}" , response_model= List[SimpleSpeciesSCH])
+@router.get("/searchquery" , response_model= List[SimpleSpeciesSCH])
 def search_with_query(
     *,
     db: Session = Depends(deps.get_db),
-    query : str):
+    query: str):
 
     crud  = crud_plant.crud_SimpleSpecies
 
-    if(query != ''):
+    if (query != ''):
         results = crud.get_plants_by_query(db=db, query = query)
     else:
-        results = db.query(SimpleSpecies).all()
+        results = crud.get_plants_by_query(db=db, query = '')
+
     for i in results:
         print(i.Species_name)
         

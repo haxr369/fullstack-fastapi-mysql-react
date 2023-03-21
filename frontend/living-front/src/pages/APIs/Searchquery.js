@@ -4,8 +4,8 @@ import axios from "axios";
 const Searchquery = (props) => {
   /**
    * ^^^props^^^^
-   * Query
-   * onSearchQuery
+   * Query : 검색어
+   * onSearchQuery :
    * 
    */
   const [data, setData] = useState('');
@@ -14,6 +14,7 @@ const Searchquery = (props) => {
   
 
   useEffect(() => {
+    console.log("들어온 쿼리 : "+props.Query);
     setQuery(props.Query);
     if(data !== ''){
       props.onSearchQuery(data);
@@ -48,9 +49,7 @@ const Searchquery = (props) => {
 
   return (
       <div>
-        <p>Data: {query}</p>
         <button onClick={handleDataUpdate}>Search Data</button>
-        
       </div>
     );
 

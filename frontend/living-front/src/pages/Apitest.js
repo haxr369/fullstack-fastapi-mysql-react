@@ -66,12 +66,16 @@ const Apitest = () => {
 const handleDataQuery = (queryResult) => {
     console.log('apitest');
     setQueryResult(queryResult);
-    console.log(queryResult);
+    console.log(queryResult[0]);
   }
 
 
 
-  const plantList = queryResult.map((plant, index) => <li key={index}>{plant}</li>)
+  const plantList = queryResult.map((plant, index) => <li key={index}>
+                                  <div>{plant['Species_name']}</div>
+                                  <div>{plant['Plant_id']}</div>
+                                  <div>{plant['Genus_name']}</div>
+                                  <div>{plant['Family_name']}</div></li>)
 
 
   /**

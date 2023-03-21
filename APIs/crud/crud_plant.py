@@ -31,7 +31,8 @@ class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSp
             )
         ).all()
 
-        result = [ SimpleSpeciesSCHCreate(Species_name= searchResult.Species_name,
+        result = [ SimpleSpeciesSCHCreate(  Plant_id = searchResult.Plant_id,
+                                            Species_name= searchResult.Species_name,
                                             Genus_name= searchResult.Genus_name,
                                             Family_name = searchResult.Family_name )     
                         for searchResult in searchResults]

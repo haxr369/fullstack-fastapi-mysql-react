@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PlantList from './PlantList';         //plants 데이터 리스트를 이용해서 식물 막대표를 그리는 컴포넌트.
-//import Pagination from './Pagination';      
+//import Pagination from './Pagination';    
+  
 import SearchBar from './SearchBar';
 //import { getPlants } from './api'; // API 호출 함수
 
@@ -18,8 +19,8 @@ const Plants = () => {
                                         'dfhfbh','abc','bcd','기본 값','dfv','기본 값','dfgs','dsfs','dfhdsfds']); // 식물 데이터
   //const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   //const [totalPage, setTotalPage] = useState(1); // 현재 페이지 번호
-  const [searchTemp, setSearchTemp] = useState(''); // 임시 검색어
-  const [searchQuery, setSearchQuery] = useState(''); // 검색어
+  
+  const [searchQuery, setSearchQuery] = useState([]); // 검색어
 
   
   async function getPlantList(page, query) {
@@ -31,26 +32,7 @@ const Plants = () => {
 
 
   useEffect(() => {
-    console.log("현재 검색어 : "+searchQuery);
-
-    const getPlantList = async () =>{
-      /**getPlantList(currentPage,searchQuery)
-        .then((data) =>{
-            console.log(data);
-        setPlants(data);
-        }).catch((err) =>{
-            console.log(err);
-        })
-       * 
-       */
-      
-        
-
-    }
-
-    getPlantList();
-    
-  }, [searchQuery]);
+  }, []);
 
   //화면 하단에 페이지 번호를 누르면 현재 페이지 번호를 바꾸는 함수.
   /**
@@ -62,15 +44,23 @@ const Plants = () => {
 
   // 검색어를 입력하면 결과를 받아와서 plant data list를 변경하는 함수.
   //query는 검색어
-  const handleSearch = () => { 
+  const handleSearch = (e) => { 
     //alert(searchQuery);
-    setSearchQuery(searchTemp);
+    console.log("plants");
+    console.log(e);
+    if (Array.isArray(e)){
+      setSearchQuery(e);
+    }
+    else{
+      setSearchQuery([]);
+    }
   };
 
-  const handleWord = e => { //검색어를 입력하는 과정
-    const query = e.target.value
-    setSearchTemp(query);
-  }
+  const plantList = searchQuery.map((plant, index) => <li key={index}>
+                                  <div>{plant['Species_name']}</div>
+                                  <div>{plant['Plant_id']}</div>
+                                  <div>{plant['Genus_name']}</div>
+                                  <div>{plant['Family_name']}</div></li>)
 
   /**
    * <SearchBar onSearch={handleSearch} />
@@ -87,10 +77,9 @@ const Plants = () => {
   
   return (
     <div>
-        <SearchBar onSearchTerm={handleWord} onSearchSubmit={handleSearch} />
+        <SearchBar onSearchSubmit={handleSearch} />
         <div className="plant-list">
-        {plants.map((plant) => (
-            <div>{plant}</div>))}
+        {plantList}
         </div>
     </div>
   );
