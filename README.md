@@ -1,5 +1,5 @@
-# fullstack-fastapi-mysql-react
-University of Seoul CVLAB's Livinglab
+# University of Seoul CVLAB's Livinglab
+fullstack-fastapi-mysql-react
 
 ## 개발목표
 1. 사용자가 식물 분류 모델을 사용할 수 있도록 한다.
