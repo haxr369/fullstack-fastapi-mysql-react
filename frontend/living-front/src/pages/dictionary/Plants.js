@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PlantList from './PlantList';         //plants 데이터 리스트를 이용해서 식물 막대표를 그리는 컴포넌트.
+import SearchPlantAPI from '../APIs/SearchPlantAPI';
 //import Pagination from './Pagination';    
   
 import SearchBar from './SearchBar';
@@ -32,6 +33,14 @@ const Plants = () => {
 
 
   useEffect(() => {
+    const runAsync = async () =>{
+      //console.log("서치바의 쿼리 : "+searchTemp);
+      const result = await SearchPlantAPI('');
+      //console.log("검색 결과");
+      //console.log(result.data);
+      setSearchQuery(result.data);
+    }
+    runAsync();
   }, []);
 
   //화면 하단에 페이지 번호를 누르면 현재 페이지 번호를 바꾸는 함수.

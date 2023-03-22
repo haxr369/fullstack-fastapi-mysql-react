@@ -23,10 +23,7 @@ def search_with_query(
 
     crud  = crud_plant.crud_SimpleSpecies
 
-    if (query != ''):
-        results = crud.get_plants_by_query(db=db, query = query)
-    else:
-        results = crud.get_plants_by_query(db=db, query = '')
+    results = crud.get_plants_by_query(db=db, query = query)
 
     for i in results:
         print(i.Species_name)
@@ -55,7 +52,7 @@ def get_plant_simple(
     )
     return resultSCH
 
-@router.get("/detailinfo/{species}", response_model = DetailSpeciesSCH)
+@router.get("/detailinfo", response_model = DetailSpeciesSCH)
 def get_plant_detail(
     *,
     db: Session = Depends(deps.get_db),
@@ -65,29 +62,16 @@ def get_plant_detail(
     식물 종 입력
     -> 식물의 구체적 정보 전송.
     """
-    print(species," 검색!!!")
-    results = db.query(SimpleSpecies, DetailSpecies).filter(SimpleSpecies.Species_name == species, 
-                            SimpleSpecies.Species_name == DetailSpecies.Species_name).all()
+    print(species," 상세 검색!!!")
+    try:
+        crud  = crud_plant.crud_DetailSpecies
 
-    print(results)
+        results = crud.get_by_plant_species(db=db, species = species)
+        return results
+    except:
+        raise HTTPException(status_code=404, detail="Plant Detail not found")
 
-    simple_species = results[0][0]
-    detail_species = results[0][1]
-
-    resultSCH = DetailSpeciesSCH(
-        Plant_id = simple_species.Plant_id,
-        Species_name = simple_species.Species_name,
-        Genus_name = simple_species.Genus_name,
-        Family_name = simple_species.Family_name,
-
-        Blossom = detail_species.Blossom,
-        Flowers_fail = detail_species.Flowers_fail,
-        Bear_fruit = detail_species.Bear_fruit,
-        Bear_fail =detail_species.Bear_fail,
-        Describe = detail_species.Describe
-    )
-
-    return resultSCH
+    
 
 """
 @router.post("/info/species")

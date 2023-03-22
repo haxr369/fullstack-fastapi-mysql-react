@@ -1,14 +1,35 @@
 import { useState, useEffect } from 'react';
-import {useSearchParams} from 'react-router-dom';
+import {useSearchParams, useNavigate} from 'react-router-dom';
 import './css/DetailPlant.css';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import logo from '../statics/img/nuti.jpeg';
+import DetailPlantInfo from '../APIs/DetailPlantInfo';
 
-const DetailPlant = props => {
-    const {result} = props;
+const DetailPlant = ({ species }) => {
+    const [searchDetail, setSearchDetail] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(species);
+        const runAsync = async () =>{
+            //console.log("서치바의 쿼리 : "+searchTemp);
+            console.log("props의 타입 : "+typeof(species));
+            if(typeof(species) !== 'string'){
+                navigate("/");
+            }
+            const result = await DetailPlantInfo(species);
+            //console.log("검색 결과");
+            //console.log(result.data);
+            setSearchDetail(result.data);
+          }
+      
+        runAsync();
+
+    }, []);
+
     /**
      * const settings = {
         infinite: true,
@@ -44,12 +65,8 @@ const DetailPlant = props => {
                         </Slider>
      */
     
-    const stages = [    { stage: "Seed", start: 0, end: 3 },    
-                    { stage: "Sprout", start: 3, end: 7 },    
-                    { stage: "Growth", start: 7, end: 12 },    
-                    { stage: "Maturity", start: 12, end: 15 },    
-                    { stage: "Decay", start: 15, end: 18 }  ];
-         
+    
+        
     return (
         <div className='contentMain'>
             <div className='title'>

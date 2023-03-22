@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from crud.base import CRUDBase
 from models.plant import SimpleSpecies, DetailSpecies
-from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate, SearchSCH
+from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate, SearchSCH, DetailSpeciesSCH
 
 #누가 넣었는지 알 필요가 있을까?...
 class CRUDSimpleSpecies(CRUDBase[SimpleSpecies, SimpleSpeciesSCHCreate, SimpleSpeciesSCHCreate]):
@@ -71,9 +71,30 @@ class CRUDDetailSpecies(CRUDBase[DetailSpecies, DetailSpeciesSCHCreate, DetailSp
     # 식물의 세부 정보 조회
     def get_by_plant_species(
         self, db: Session,*, species : str
-    ) -> DetailSpecies:
-        species = db.query(DetailSpecies).filter(DetailSpecies.species_name == species).first()
-        return species
+    ) -> DetailSpeciesSCH:
+        #species = db.query(DetailSpecies).filter(DetailSpecies.species_name == species).first()
+
+        results = db.query(SimpleSpecies, DetailSpecies).filter(SimpleSpecies.Species_name == species, 
+                            SimpleSpecies.Species_name == DetailSpecies.Species_name).all()
+
+        print(results)
+
+        simple_species = results[0][0]
+        detail_species = results[0][1]
+
+        resultSCH = DetailSpeciesSCH(
+            Plant_id = simple_species.Plant_id,
+            Species_name = simple_species.Species_name,
+            Genus_name = simple_species.Genus_name,
+            Family_name = simple_species.Family_name,
+
+            Blossom = detail_species.Blossom,
+            Flowers_fail = detail_species.Flowers_fail,
+            Bear_fruit = detail_species.Bear_fruit,
+            Bear_fail =detail_species.Bear_fail,
+            Describe = detail_species.Describe
+        )
+        return resultSCH
 
 
     def delete(self, db: Session, *, species_name: str) -> DetailSpecies:
