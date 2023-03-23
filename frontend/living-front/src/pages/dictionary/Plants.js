@@ -89,7 +89,7 @@ const Plants = () => {
   
   return (
     <div>
-        <SearchBar onSearchSubmit={handleSearch} />
+        <SearchBar className='searchbar' onSearchSubmit={handleSearch} />
         <div className="plant-list">
         {plantList}
         </div>

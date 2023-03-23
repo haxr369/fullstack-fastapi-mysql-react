@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SearchPlantAPI from '../APIs/SearchPlantAPI';  
+import './css/SearchBar.css'
 /**
  * 
  * searchTerm 변수는 현재 검색어
@@ -42,7 +43,9 @@ const SearchBar = ({ onSearchSubmit }) => {
         placeholder="Search for plants"
         className="search-input"
       />
-      <button onClick={handleQuery} type="submit" className="search-button">
+      <button onClick={handleQuery} 
+          type="submit" 
+          className="search-button">
         Search
       </button>
     </div>
