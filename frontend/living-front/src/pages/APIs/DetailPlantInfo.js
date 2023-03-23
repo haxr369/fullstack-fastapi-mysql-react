@@ -15,7 +15,7 @@ const DetailPlantInfo = async (Species) => {
   }
   catch (ex){
     console.log(ex);
-    return '';
+    return -1;
   } 
 }
 export default DetailPlantInfo;

@@ -22,12 +22,9 @@ const Home =() =>{
             <Link to="/apitest"> API 서버와 연결 테스트</Link><br/>
             <Link to="/selectimg"> 이미지 전송 테스트</Link><br/>
             <Link to="/login"> 로그인</Link><br/>
-            <Link to={{
-                    pathname: '/detailplant',
-                    state: {
-                        species: '가막나무'
-                    }
-                    }} > 가막나무</Link><br/>
+            <Link to={`/detailplant?species=가막살나무`}>
+                가막살나무
+            </Link>
                     
         </div>
     );

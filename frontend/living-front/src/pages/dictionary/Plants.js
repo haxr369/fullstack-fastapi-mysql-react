@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PlantList from './PlantList';         //plants 데이터 리스트를 이용해서 식물 막대표를 그리는 컴포넌트.
 import SearchPlantAPI from '../APIs/SearchPlantAPI';
 //import Pagination from './Pagination';    
-  
+import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 //import { getPlants } from './api'; // API 호출 함수
 
@@ -66,10 +66,13 @@ const Plants = () => {
   };
 
   const plantList = searchQuery.map((plant, index) => <li key={index}>
-                                  <div>{plant['Species_name']}</div>
-                                  <div>{plant['Plant_id']}</div>
-                                  <div>{plant['Genus_name']}</div>
-                                  <div>{plant['Family_name']}</div></li>)
+                          <Link to={`/detailplant?species=${plant['Species_name']}`}>
+                            <div>{plant['Species_name']}</div>
+                            <div>{plant['Plant_id']}</div>
+                            <div>{plant['Genus_name']}</div>
+                            <div>{plant['Family_name']}</div>
+                        </Link>
+                                </li>)
 
   /**
    * <SearchBar onSearch={handleSearch} />
