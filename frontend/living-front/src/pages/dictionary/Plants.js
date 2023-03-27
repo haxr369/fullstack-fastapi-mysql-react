@@ -23,14 +23,6 @@ const Plants = () => {
   
   const [searchQuery, setSearchQuery] = useState([]); // 검색어
 
-  
-  async function getPlantList(page, query) {
-    //서버로 검색어와 현재 페이지를 전송해서 총 페이지와 현재 페이지의 데이터를 받아온다.
-    //console.log("현재 검색어 :"+query+" 현재 페이지 :"+page);
-    const ll =['검색',"검색어"+query,"페이지"+page];
-    return ll;
-  }
-
 
   useEffect(() => {
     const runAsync = async () =>{
