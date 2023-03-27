@@ -9,9 +9,6 @@ fullstack-fastapi-mysql-react
 도커를 이용해서 프록시, 프론트, 백, DB 서버를 운용한다.<p/>
 프록시는 Nginx를, Frontend는 React를 사용하고, Backend는 Fastapi를, 그리고 DB는 Mysql을 사용한다.
 
-## 개념적 데이터 모델링
-![ER다이어그램 drawio](https://user-images.githubusercontent.com/53365713/222315523-9e87d12a-1c07-4027-9a35-2dcb5cb64165.png)
-
 ## 관계형 데이터 모델링
 ![RDB_model drawio (2)](https://user-images.githubusercontent.com/53365713/227877874-4f38397f-b067-4540-8e2c-d92d23e063e0.png)
 
