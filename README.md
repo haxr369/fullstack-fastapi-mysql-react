@@ -13,7 +13,7 @@ fullstack-fastapi-mysql-react
 ![ER다이어그램 drawio](https://user-images.githubusercontent.com/53365713/222315523-9e87d12a-1c07-4027-9a35-2dcb5cb64165.png)
 
 ## 관계형 데이터 모델링
-![RDB_model drawio](https://user-images.githubusercontent.com/53365713/222414405-2779ca10-f2a0-48d5-95c0-69f237585482.png)
+![RDB_model drawio (2)](https://user-images.githubusercontent.com/53365713/227877874-4f38397f-b067-4540-8e2c-d92d23e063e0.png)
 
 
 <p/>
