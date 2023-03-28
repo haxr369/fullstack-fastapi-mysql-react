@@ -16,6 +16,7 @@ class SimpleSpecies(Base):
     Genus_name = Column(String(255))
     Family_name = Column(String(255))
 
+
 class DetailSpecies(Base):
     Plant_id = Column(Integer, autoincrement=True, 
                     primary_key=True, index=True)
@@ -28,7 +29,13 @@ class DetailSpecies(Base):
     Bear_fail = Column(Integer, default =0)
     Describe = Column(TEXT)
 
-
+#식물 뱃지를 위해 식물의 뱃지들을 저장해놓은 테이블 이것으로 검색도 가능하게 할것.
+class PlantFeature(Base):
+    Feature_id = Column(Integer, autoincrement=True, 
+                    primary_key=True, index=True)
+    Species_name = Column(String(255),  
+                    ForeignKey('simplespecies.Species_name'))
+    Feature = Column(String(255))
 
 Base.metadata.create_all(bind=engine)
 

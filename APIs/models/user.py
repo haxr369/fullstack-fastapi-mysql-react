@@ -19,9 +19,21 @@ if TYPE_CHECKING:
 
 
 class UserList(Base):
-    User_id = Column(Integer, unique=True, primary_key = True)
+    User_id = Column(Integer, autoincrement=True, 
+                    primary_key=True, index=True)
+    User_nickname = Column(String(255),   
+                    unique=True, primary_key=True, nullable=False)
+    User_password = Column(String, nullable=False)
     Is_superuser = Column(Boolean(), default=False)
     Createtime = Column(DateTime, default=datetime.datetime.now())
     Access_count = Column(Integer, default =0)
+
+
+class UserCollect(Base):
+    Collect_id = Column(Integer, autoincrement=True, 
+                    primary_key=True, index=True)
+    User_id = Column(Integer,ForeignKey('userlist.User_id'))
+    Collected_plant = Column(String(255), nullable=False )
+    Collect_time = Column(DateTime, default=datetime.datetime.now())
 
 Base.metadata.create_all(bind=engine)
