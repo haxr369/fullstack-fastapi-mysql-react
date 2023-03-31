@@ -17,10 +17,6 @@ from fastapi.encoders import jsonable_encoder
 
 router = APIRouter()
 
-
-
-
-
 #사용자에게 access token을 준다.
 @router.post("/access-token", response_model=token_sch.Token)
 def give_access_token(
@@ -63,18 +59,16 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserL
 
         jwtUser = crud.update(db=db, db_obj = current_user ,obj_in= {"Access_count": current_user.Access_count+1})
 
-        response = user_sch.User(User_id=jwtUser.id, 
+        response = user_sch.User(User_nickname=jwtUser.User_nickname, 
                                 Access_count=jwtUser.access_count, 
                                 Createtime=jwtUser.createtime)
         print(response)
-        
         return response
         
     else: #만료된 토큰을 가진 user인 경우
         response = user_sch.User(User_id=-1, 
                                 Access_count=0)
         print(response)
-        
         return response
 
 
