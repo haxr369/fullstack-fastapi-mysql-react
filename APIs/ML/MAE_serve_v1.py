@@ -29,8 +29,10 @@ def inference(model, path, k=3, num_samples=5):
     return infer(k, num_samples)
 
 #Global model load
+"""
 device = torch.device("cuda")
 if(device):
     MAE_Model = load_model(device='cuda')
     print("GPU 서비스 시작!!")
 else: MAE_Model = load_model(device='cpu')
+"""

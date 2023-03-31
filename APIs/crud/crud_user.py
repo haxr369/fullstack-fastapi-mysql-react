@@ -24,8 +24,8 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
         return db_obj
 
     #R
-    def get_by_id(self, db: Session, *, id: int) -> Optional[UserList]:
-        return db.query(UserList).filter(UserList.User_id == id).first()
+    def get_by_nickname(self, db: Session, *, nickname: str) -> Optional[UserList]:
+        return db.query(UserList).filter(UserList.User_nickname == nickname).first()
 
     #U
     def update(
@@ -44,11 +44,11 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
         db.commit()
 
     #사용자 비밀번호 인증
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[UserList]:
-        user = self.get_by_email(db, email=email)
+    def authenticate(self, db: Session, *, nickname: str, password: str) -> Optional[UserList]:
+        user = self.get_by_nickname(db, nickname=nickname)
         if not user:
             return None
-        if not verify_password(password, user.hashed_password):
+        if not verify_password(password, user.User_password): #DB 속 유저 pwd와 입력 pwd를 비교
             return None
         return user
     

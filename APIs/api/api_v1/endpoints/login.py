@@ -17,56 +17,38 @@ from fastapi.encoders import jsonable_encoder
 
 router = APIRouter()
 
+
+
+
+
 #사용자에게 access token을 준다.
 @router.post("/access-token", response_model=token_sch.Token)
 def give_access_token(
     db: Session = Depends(deps.get_db) , form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
+    
     """
-
     OAuth2 compatible token login, get an access token for future requests
-    로그인하는 부분
-    user = crud.user.authenticate(
-        db, email=form_data.username, password=form_data.password
+    로그인하는 부분 
+    """
+    user = crud_user.user.authenticate(
+        db, nickname=form_data.username, password=form_data.password
     )
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
+    """
     elif not crud.user.is_active(user):
         raise HTTPException(status_code=400, detail="Inactive user")
+    """
     
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         "access_token": security.create_access_token(
-            user.id, expires_delta=access_token_expires
+            user.User_nickname, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
     }
-    """
-    print("로그인 user 이름: ",{"grant_type":form_data.grant_type,
-                                "username":form_data.username,
-                                "password":form_data.password})
-    crud = crud_user.user
-    #DB에 username이 있는지 확인
-    print("계정 생성 중")
-    while(1):
-        id =  random.randrange(1,100000)      
-        exis = crud.get_by_id(db=db, id=id)
-        if(not exis): break # 없는 경우에 while문 탈출
-    createtime = datetime.now()
-    print("유저 아이디 : ",id)
-    #새로운 유저 정보를 저장
-    userinfo = user_sch.UserListSCHCreate(User_id=id, 
-                                        Createtime=createtime)
-    
-    userinfo = crud.create(db=db, obj_in=userinfo)
-    print(userinfo)
-    
-    return {
-        "access_token": security.create_access_token(
-            userinfo.User_id
-        ),
-        "token_type": "bearer",
-    }
+
 
 @router.post("/usetoken", response_model=user_sch.User)
 def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserList, None] = Depends(deps.get_current_user)) -> Any:
