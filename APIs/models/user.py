@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from sqlalchemy import Boolean, Column,ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 import datetime
 from db.base_class import Base #자동으로 테이블을 만들어 준다.!!

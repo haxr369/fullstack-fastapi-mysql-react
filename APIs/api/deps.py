@@ -54,6 +54,6 @@ def get_current_user(
     user = crud_user.user.get_by_id(db, id=token_data.sub)
     print("완성!!!!!!!!!",user)
     if not user:
-        print("문제 발생!! "+token_data )
+        print("존재하지 않는 유저 "+token_data )
         raise HTTPException(status_code=404, detail="User not found")
     return user
