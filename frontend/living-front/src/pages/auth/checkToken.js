@@ -20,7 +20,6 @@ const checkToken = async () => {
         'Content-Type': 'application/json'
     };
 
-
     const testToken = async () => {
         await axios.get(TEST_TOKEN_ENDPOINT,  {
             headers

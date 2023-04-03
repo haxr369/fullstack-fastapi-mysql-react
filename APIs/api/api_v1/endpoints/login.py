@@ -49,7 +49,9 @@ def give_access_token(
 
 
 @router.post("/usetoken", response_model=user_sch.User)
-def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserList, None] = Depends(deps.get_current_user)) -> Any:
+def use_token(db: Session = Depends(deps.get_db), 
+            current_user: Union[user.UserList, None] = Depends(deps.get_current_user)
+            ) -> Any:
     """
     유효한 토큰을 가져오면 유저의 Access_count를 늘림.
     """
@@ -59,11 +61,12 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserL
 
         #info = crud.get(db=db, id=current_user.id)
 
-        jwtUser = crud.update(db=db, db_obj = current_user ,obj_in= {"Access_count": current_user.Access_count+1})
+        jwtUser = crud.update(db=db, db_obj = current_user ,
+                            obj_in= {"Access_count": current_user.Access_count+1})
 
         response = user_sch.User(User_nickname=jwtUser.User_nickname, 
-                                Access_count=jwtUser.access_count, 
-                                Createtime=jwtUser.createtime)
+                                Access_count=jwtUser.Access_count, 
+                                Createtime=jwtUser.Createtime)
         print(response)
         return response
         
@@ -77,7 +80,8 @@ def use_token(db: Session = Depends(deps.get_db), current_user: Union[user.UserL
 
 
 @router.get("/testToken", response_model=user_sch.User)
-def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_current_user)) -> Any:
+def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_current_user)
+            ) -> Any:
     """
     Test access token
     """
