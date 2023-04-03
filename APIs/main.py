@@ -8,7 +8,9 @@ from core.config import settings
 from crud import crud_plant
 from schemas.plant_sch import SimpleSpeciesSCHCreate, DetailSpeciesSCHCreate
 
-app = FastAPI()
+app = FastAPI(title='Project title',
+            description='Description of your project',
+            openapi_url='/api/openapi.json')
 
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:

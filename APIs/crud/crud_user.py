@@ -46,6 +46,8 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
     #사용자 비밀번호 인증
     def authenticate(self, db: Session, *, nickname: str, password: str) -> Optional[UserList]:
         user = self.get_by_nickname(db, nickname=nickname)
+        if(user):
+            print("유저 확인 비번 체크 시작!")
         if not user:
             return None
         if not verify_password(password, user.User_password): #DB 속 유저 pwd와 입력 pwd를 비교

@@ -31,26 +31,30 @@ def read_items() -> Any:
 async def create_upload_file(
     *,
     file: UploadFile = File(...),
-    metadata: int = Form(None),
+    UserNickName: str,
     db: Session = Depends(deps.get_db)
 ):
     try:
         contents = await file.read()
         #print(file.filename)
-        print(file.content_type)
-        with open(os.path.join(settings.UPLOAD_DIRECTORY, file.filename), "wb") as fp:
+        filename = file.filename
+        with open(os.path.join(settings.UPLOAD_DIRECTORY, filename), "wb") as fp:
             fp.write(contents)
+
+        img_info = schemas.UserImg(Image_url=filename, User_nickname=UserNickName)
+        item = crud_img.user_img.create(db=db, obj_in=img_info)
+        
     except Exception as e:
         print(f"Failed to read file: {e}")
 
     # 이미지 정보를 DB에 저장 
     # metadata에 유저 id를 포함하도록 수정 요청 일단은 999로 하드코딩.
-    print("User_id : ",metadata, " type metadata : ",type(metadata))
+    print("User_nickname : ",file.fields['UserNickName'][0])
+
     img_info = img_sch.UserImg(Image_url=file.filename, User_id = metadata)
     #User_id=999 Image_id=None Image_url='210.125.183.216_1678099295390.jpg' Send_time=None
     print(img_info)
-    crud = crud_img.user_img
-    item = crud.create(db=db, obj_in=img_info)
+    
 
     return item
 

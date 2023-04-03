@@ -7,8 +7,6 @@ from db.session import engine
 if TYPE_CHECKING:
     from .user import User  # noqa: F401
 
-
-
 class UserImage(Base):
     Image_id = Column(Integer, primary_key=True, autoincrement=True)
     User_id = Column(Integer, ForeignKey('userlist.User_id'))

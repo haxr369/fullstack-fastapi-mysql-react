@@ -27,9 +27,11 @@ def give_access_token(
     OAuth2 compatible token login, get an access token for future requests
     로그인하는 부분 
     """
+    print("로그인 시작! ",form_data.username, form_data.password)
     user = crud_user.user.authenticate(
         db, nickname=form_data.username, password=form_data.password
     )
+    print(user.User_nickname, user.User_password)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     """
@@ -37,10 +39,10 @@ def give_access_token(
         raise HTTPException(status_code=400, detail="Inactive user")
     """
     
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    #access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         "access_token": security.create_access_token(
-            user.User_nickname, expires_delta=access_token_expires
+            user.User_nickname
         ),
         "token_type": "bearer",
     }
@@ -86,11 +88,8 @@ def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_curre
         print(response)
         
         return response
-        
     else: #만료된 토큰을 가진 user인 경우
         response = user_sch.User(User_id=-1, 
                                 Access_count=0)
         print(response)
-        
         return response
-

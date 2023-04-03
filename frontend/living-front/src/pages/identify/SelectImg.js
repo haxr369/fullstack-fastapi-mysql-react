@@ -90,8 +90,9 @@ const sendImg = async () => {
   console.log("보내는 파일 크기 : "+files.size/1024);
   console.log("보내는 파일 이름"+files.name);
   console.log("유저 id : "+decodedIdToken['sub']);
-  formData.append('file', files,files.name);
-  formData.append('metadata', parseInt(decodedIdToken['sub']));
+  //formData.append('file', files,files.name);
+  formData.append('file', files[0]);
+  formData.append('UserNickName', decodedIdToken['sub']);
   
   const item = await axios({
     method: 'post',
