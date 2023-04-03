@@ -90,18 +90,19 @@ const sendImg = async () => {
   console.log("보내는 파일 크기 : "+files.size/1024);
   console.log("보내는 파일 이름"+files.name);
   console.log("유저 id : "+decodedIdToken['sub']);
-  //formData.append('file', files,files.name);
-  formData.append('file', files[0]);
-  formData.append('UserNickName', decodedIdToken['sub']);
+  formData.append('file', files,files.name);
+  //formData.append('file', files[0]);
+  //formData.append('UserNickName', decodedIdToken['sub']);
   
   const item = await axios({
     method: 'post',
-    url: '/api/v1/items/uploadImg',
+    url: `/api/v1/items/uploadImg?UserNickName=${decodedIdToken['sub']}`,
     data: formData,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-  }).then(() => {
+  }).then(res => {
+    console.log(res);
     console.log('이미지 업로드 성공');
   }).catch((err) => {
     console.log('이미지 업로드 실패');

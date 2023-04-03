@@ -51,19 +51,16 @@ const checkToken = async () => {
         const resp = testToken();
         //const decodedJson = jwtDecode(resp);
         
-        //console.log(resp.status);
+        console.log(resp);
 
-        
-        
-
-        if(resp.data['Access_count']  < limit_access){
-            console.log(resp.data['Access_count']+"번 요청함");
+        if(resp.data.Access_count  < limit_access){
+            console.log(resp.data.Access_count+"번 요청함");
             console.log("GPU 제한 안함");
             return "ok";
         }
         
         else{
-            console.log(resp.data['Access_count']+"번 요청함");
+            console.log(resp.data.Access_count+"번 요청함");
             console.log("GPU 서비스 중지");
             return "gpuWating";
         }

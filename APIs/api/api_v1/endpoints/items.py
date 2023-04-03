@@ -4,7 +4,7 @@ from fastapi import APIRouter,Form, Body, Depends, HTTPException,File, UploadFil
 from fastapi.responses import JSONResponse, FileResponse
 from sqlalchemy.orm import Session
 import os
-from crud import crud_img, crud_plant
+from crud import crud_img, crud_plant, crud_user
 import models.user
 from schemas import item_sch, img_sch
 from api import deps
@@ -40,23 +40,23 @@ async def create_upload_file(
         filename = file.filename
         with open(os.path.join(settings.UPLOAD_DIRECTORY, filename), "wb") as fp:
             fp.write(contents)
-
-        img_info = schemas.UserImg(Image_url=filename, User_nickname=UserNickName)
+        user_id = crud_user.user.get_by_nickname(db = db, nickname = UserNickName).User_id
+        img_info = img_sch.UserImg(Image_url=filename, User_id=user_id)
         item = crud_img.user_img.create(db=db, obj_in=img_info)
+
+        # 이미지 정보를 DB에 저장 
+        # metadata에 유저 id를 포함하도록 수정 요청 일단은 999로 하드코딩.
+        print("User_nickname : ",UserNickName)
+        return item
         
     except Exception as e:
         print(f"Failed to read file: {e}")
+        return None
 
-    # 이미지 정보를 DB에 저장 
-    # metadata에 유저 id를 포함하도록 수정 요청 일단은 999로 하드코딩.
-    print("User_nickname : ",file.fields['UserNickName'][0])
-
-    img_info = img_sch.UserImg(Image_url=file.filename, User_id = metadata)
-    #User_id=999 Image_id=None Image_url='210.125.183.216_1678099295390.jpg' Send_time=None
-    print(img_info)
+    
     
 
-    return item
+    
 
 #사용자 사진을 전송하는 api
 @router.get('/userImg/{file_name}')
