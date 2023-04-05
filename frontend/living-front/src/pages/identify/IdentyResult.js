@@ -101,26 +101,33 @@ const IdentyResult =() =>{
     };
      */
     useEffect(() => {
-
-        const runAsync = async () =>{
-            const oatu = await checkToken();
-            console.log(oatu);
-            if(oatu==="ok"){
-                console.log("gpu 서비스 허가");
-                const fet = fetchData(); // 파일 이름 체크. 에러나면 뒤로 가기.
-            }
-            else if(oatu==="gpuWating"){
-                alert("서비스를 너무 많이 요청하셨습니다. 잠시만 기다려 주세요.");
-                navigate("/selectimg",  { replace: true});
-            }
-            else {
-                alert("문제가 발생했습니다. 새로고침 해주세요.");
-                navigate("/");
-            }
+        /**
+         * const runAsync = async () =>{
+            checkToken().then(res => {
+                console.log(res);
+                if(res==="ok"){
+                    console.log("gpu 서비스 허가");
+                    const fet = fetchData(); // 파일 이름 체크. 에러나면 뒤로 가기.
+                }
+                else if(res==="gpuWating"){
+                    alert("서비스를 너무 많이 요청하셨습니다. 잠시만 기다려 주세요.");
+                    navigate("/selectimg",  { replace: true});
+                }
+                else {
+                    alert("문제가 발생했습니다. 새로고침 해주세요.");
+                    navigate("/");
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+            
+            
         }
         
         runAsync();
+         */
         
+        const fet = fetchData();
       },[]);
     
     if (!resultData) {

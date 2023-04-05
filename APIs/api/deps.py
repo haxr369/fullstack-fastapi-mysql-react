@@ -80,16 +80,9 @@ def get_current_user(
             detail="Could not validate credentials",
         )
 
-    except (ExpiredSignatureError):
+    except (jwt.JWTError, ExpiredSignatureError):
         print("토큰 유효기간 만료")
         return None
-
-    except (jwt.JWTError):
-        print("JWT Error")
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-        )
 
     except (ValidationError):
         print("기타 에러 발생")

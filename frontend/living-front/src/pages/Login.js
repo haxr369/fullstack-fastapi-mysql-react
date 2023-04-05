@@ -19,7 +19,11 @@ const Login = () => {
     const handleLogin = async() => {
         const res = localStorage.getItem('access_token')
         if(res){
-            console.log("현재 내가 가지고 있는 "+res)
+            console.log("현재 내가 가지고 있는 "+res);
+            const rep = await checkToken();
+            if(rep.data.User_nickname === "-1"){
+                oAuth();
+            }
         }
         else{
             const res = oAuth(); // token localStorage에 저장.
@@ -31,7 +35,8 @@ const Login = () => {
     }
 
     const handleTest = async() => {
-        checkToken();
+        const rep = await checkToken();
+        console.log(rep);
     }
 
     return (

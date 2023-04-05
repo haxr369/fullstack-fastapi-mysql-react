@@ -12,7 +12,9 @@ class UserListSCHBase(BaseModel):
     Createtime : Optional[datetime] = None
     Access_count : Optional[int] = 0
     
-
+class UserShowSCH(BaseModel):
+    User_nickname : Optional[str] = None
+    Access_count : Optional[int] = 0
 
 # Properties to receive via API on creation
 class UserListSCHCreate(UserListSCHBase):

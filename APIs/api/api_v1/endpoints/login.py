@@ -79,21 +79,20 @@ def use_token(db: Session = Depends(deps.get_db),
 
 
 
-@router.get("/testToken", response_model=user_sch.User)
+@router.get("/testToken", response_model=user_sch.UserShowSCH)
 def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_current_user)
             ) -> Any:
     """
     Test access token
     """
     if(current_user):
-        response = user_sch.User(User_id = current_user.User_id, 
-                                Access_count = current_user.Access_count, 
-                                Createtime = current_user.Createtime)
+        response = user_sch.UserShowSCH(User_nickname = current_user.User_nickname, 
+                                Access_count = current_user.Access_count)
         print(response)
         
         return response
     else: #만료된 토큰을 가진 user인 경우
-        response = user_sch.User(User_id=-1, 
+        response = user_sch.UserShowSCH(User_nickname=-1, 
                                 Access_count=0)
         print(response)
         return response
