@@ -26,10 +26,19 @@ const gpuUse = async () => {
     };
      */
 
+    try{
+      const result = axios.post(USE_TOKEN_ENDPOINT, null, {
+        headers: headers,
+      })
+      return result;
+    }
+    catch (ex) {
+        console.log(ex);
+        return -1;
+    }
+    /**
     const accessCountUp = () => {
-        return axios.post(USE_TOKEN_ENDPOINT, null, {
-          headers: headers,
-        })
+        return 
           .then((res) => {
             console.log(res);
             if (res.data.User_id === -1) {
@@ -60,7 +69,7 @@ const gpuUse = async () => {
         console.error(error);
         return error;
     }
-    
+     */
 };
 
 export default gpuUse;

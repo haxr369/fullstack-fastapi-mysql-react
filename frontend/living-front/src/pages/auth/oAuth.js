@@ -24,20 +24,26 @@ const oAuth  =  async () => {
         username : "haxr",
         password : "1234"
     };
+    try {
+        const resp = await axios.post(
+            OAUTH_TOKEN_ENDPOINT,formdata,{
+                headers
+            }).then((json) => {
+                //console.log("token받고 난후!!"+json);
+                //console.log(json.data['access_token']);
+                if(json.data['access_token']){
+                    console.log("토큰 저장!!")
+                    localStorage.setItem('access_token',json.data['access_token']);
+                }
+            });
+        
+        return resp;
+    }
+    catch (ex) {
+        console.log(ex);
+        return -1;
+    }
     
-    const resp = await axios.post(
-        OAUTH_TOKEN_ENDPOINT,formdata,{
-            headers
-        }).then((json) => {
-            //console.log("token받고 난후!!"+json);
-            //console.log(json.data['access_token']);
-            if(json.data['access_token']){
-                console.log("토큰 저장!!")
-                localStorage.setItem('access_token',json.data['access_token']);
-            }
-        });
-    
-    return resp;
     
 }
 
