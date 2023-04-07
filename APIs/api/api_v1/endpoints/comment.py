@@ -3,36 +3,54 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 
-from typing import List
-
+from typing import List, Union
+from models import user
 from models.compare import PlantCompare
 from schemas.comment_sch import CommentCreateSCH,CommentSCH,CommentDeleteSCH,CommentClearSCH
-from crud import crud_comment
-from api.deps import get_db
+from crud.crud_comment import comment_crud
+from api import deps
 
 router = APIRouter()
 
-
-@router.post("/create", status_code=status.HTTP_201_CREATED)
+#식물 비교 팁에대한 댓글을 Create <일반용>
+@router.post("/create")
 def create_comment(_Comment_create: CommentCreateSCH,
-                   db: Session = Depends(get_db)):
+        db: Session = Depends(deps.get_db),
+        current_user: Union[user.UserList, None] = Depends(deps.get_current_user) ):
 
-    rep = crud_comment.Create_comment(
-        db, Comment_create=_Comment_create)  # user는 일단 제외했음
-    return rep
+    if (current_user==None):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="you are not our user",
+        )
+    else:
+        rep = comment_crud.Create_comment(
+            db = db, Comment_create=_Comment_create, User_id = current_user.User_id )  # user는 일단 제외했음
+        return rep
 
+"""
+단순히 댓글만 리스트로 출력하는 건 의미 없음.
 @router.get("/list", response_model=List[CommentSCH])
 def read_comment_list(db: Session = Depends(get_db)):
     _comment_list = crud_comment.get_comment_list(db)
     return _comment_list
+"""
 
+#비교 페이지에 맞는 댓글 리스트를 불러옴.
+@router.get("/list/{Compare_id}", response_model=List[CommentSCH])
+def read_comment_list(Compare_id: int, db: Session = Depends(deps.get_db)):
+    _comment_list = comment_crud.get_comments_by_compare(db= db, Compare_id = Compare_id)
+    return _comment_list
 
+"""
+댓글 하나만 가져오는 건 없어도 될 것 같다.
 @router.get("/detail/{Comment_id}", response_model=CommentSCH)
-def read_comment(Comment_id: int, db: Session = Depends(get_db)):
-    comment = crud_comment.get_comment(db, Comment_id=Comment_id)
+def read_comment(Comment_id: int, db: Session = Depends(deps.get_db)):
+    comment = comment_crud.get_comment(db, Comment_id=Comment_id)
     return comment
-
-
+"""
+"""
+삭제 API는 사용자 인증등 추가할 부분이 있다. 일단 주석처리
 @router.delete("/delete/", status_code=status.HTTP_204_NO_CONTENT)
 def delete_comment(_Comment_delete: CommentDeleteSCH,
                    db: Session = Depends(get_db)):
@@ -43,7 +61,7 @@ def delete_comment(_Comment_delete: CommentDeleteSCH,
                             detail="데이터를 찾을수 없습니다.")
 
     crud_comment.delete_comment(db=db, db_comment=db_comment)
-
+"""
 
 # @router.delete("/delete/{compare_id}", status_code=status.HTTP_204_NO_CONTENT)
 # def clear_comments(Comment_clear: comment_schema.CommentClear, db: Session = Depends(get_db)):

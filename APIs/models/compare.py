@@ -22,6 +22,7 @@ class CompareComment(Base):
                     primary_key=True, index=True)
     Compare_id = Column(Integer,  
                     ForeignKey('plantcompare.Compare_id'))
+    User_id = Column(Integer,ForeignKey('userlist.User_id'))
     Contents = Column(TEXT)
     Write_time = Column(DateTime, default=datetime.datetime.now())
 

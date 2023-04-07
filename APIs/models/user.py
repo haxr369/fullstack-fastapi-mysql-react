@@ -48,7 +48,8 @@ session = Session()
 admin_user = UserList(
         User_id = 0,
         User_nickname = 'haxr',
-        User_password = get_password_hash('1234')
+        User_password = get_password_hash('1234'),
+        Is_superuser = True
     )
 session.add(admin_user)
 try:

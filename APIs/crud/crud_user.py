@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
 from models.user import UserList
-from schemas.user_sch import UserListSCHCreate, UserListSCHUpdate
+from schemas.user_sch import UserListSCHCreate, UserListSCHUpdate, UserShowSCH
 from core.security import get_password_hash, verify_password
 
 
@@ -24,8 +24,10 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
         return db_obj
 
     #R
-    def get_by_nickname(self, db: Session, *, nickname: str) -> Optional[UserList]:
-        return db.query(UserList).filter(UserList.User_nickname == nickname).first()
+    def get_by_nickname(self, db: Session, *, nickname: str
+        ) -> UserList:
+        user = db.query(UserList).filter(UserList.User_nickname == nickname).first()
+        return user
 
     #U
     def update(

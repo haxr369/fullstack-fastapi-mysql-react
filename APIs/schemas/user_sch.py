@@ -13,6 +13,7 @@ class UserListSCHBase(BaseModel):
     Access_count : Optional[int] = 0
     
 class UserShowSCH(BaseModel):
+    User_id : Optional[int] = None
     User_nickname : Optional[str] = None
     Access_count : Optional[int] = 0
 
