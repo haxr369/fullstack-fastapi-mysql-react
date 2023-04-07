@@ -27,7 +27,7 @@ const Searchquery = (props) => {
       
       try{
           console.log("query : "+query);
-          const result = await axios.get(`/api/v1/search/searchquery/${query}`)
+          const result = await axios.get(`/api/v1/search/searchquery?query=${query}`)
           .then((json) => {
               //console.log(json.data);
               setData(json.data);

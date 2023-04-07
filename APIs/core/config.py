@@ -16,11 +16,11 @@ class Settings(BaseSettings):
 
 
     API_V1_STR: str = "/api/v1"
-    SECRET_KEY: str = "rkwmdkrkwmdkrkwmdk" #secrets.token_urlsafe(32)
+    SECRET_KEY: str = secrets.token_urlsafe(32)
 
     ALGORITHM = "HS256"
     # 60 minutes * 24 hours * 8 days = 8 days || 토큰 유효기간 = 2분
-    ACCESS_TOKEN_EXPIRE_MINUTES = 2
+    ACCESS_TOKEN_EXPIRE_MINUTES = 60*24
     SERVER_NAME: str = 'livinglab-with-fastapi'
     SERVER_HOST: str = 'backend-livinglab'  #AnyHttpUrl = 'http://172.28.0.2:8005'
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins

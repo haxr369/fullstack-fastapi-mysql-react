@@ -10,6 +10,9 @@ const checkToken = async () => {
       console.log(decodedIdToken);
       //console.log(timestamp);
     }
+    else{
+        return -1;
+    }
     const TEST_TOKEN_ENDPOINT = "/api/v1/login/testToken"
     const headers = {
         'accept': 'application/json',

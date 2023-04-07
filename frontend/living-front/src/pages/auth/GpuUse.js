@@ -18,13 +18,7 @@ const gpuUse = async () => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       };
-    /**
-    const formdata = {
-        grant_type: "password",
-        username: "haxr",
-        password: "1234"
-    };
-     */
+    
 
     try{
       const result = axios.post(USE_TOKEN_ENDPOINT, null, {
@@ -36,40 +30,7 @@ const gpuUse = async () => {
         console.log(ex);
         return -1;
     }
-    /**
-    const accessCountUp = () => {
-        return 
-          .then((res) => {
-            console.log(res);
-            if (res.data.User_id === -1) {
-              console.log("토큰 유효기간 만료");
-              return "tokenExpiration";
-            }
-      
-            if (res.data.Access_count  > limit_access) {
-              console.log("GPU 제한 페이지");
-              return "gpuWating";
-            }
-      
-            if (res.data.Access_count> 0) {
-              console.log(res.data.Access_count + "번 요청함");
-              console.log("GPU 제한 안함");
-              return 'ok';
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            return error;
-          });
-      };
-
-    try {
-        accessCountUp();
-    } catch (error) {
-        console.error(error);
-        return error;
-    }
-     */
+    
 };
 
 export default gpuUse;
