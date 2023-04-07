@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from api.api_v1.endpoints import  login , items,  users, search #, auth,results, plantcompare, comment
+from api.api_v1.endpoints import  login , items,  users, search, plantcompare #, auth,results, comment
 
 api_router = APIRouter()
 api_router.include_router(login.router,  prefix="/login",tags=["login"])

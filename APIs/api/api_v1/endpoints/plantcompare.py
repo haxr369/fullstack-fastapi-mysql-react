@@ -15,12 +15,15 @@ from api.deps import get_db
 router = APIRouter()
 
 #두 식물을 비교하는 팁을 Create <관리자용>
-@router.post("/create", status_code=status.HTTP_201_CREATED)
+@router.post("/create", response_model=PlantCompareSCH)
 def create_compare(_PlantCompare_create: PlantCompareCreateSCH,
                    db: Session = Depends(get_db)):
 
-    crud_plantcompare.create_compare(
+    compare = crud_plantcompare.create_compare(
         db, PlantCompare_create=_PlantCompare_create)  # user는 일단 제외했음
+
+    #model과 schema가 동일하기 때문에 response model이 스키마지만 모델 객체를 출력할 수 있다.
+    return compare
 
 #식물 비교 리스트
 @router.get("/list", response_model=List[PlantCompareSCH])

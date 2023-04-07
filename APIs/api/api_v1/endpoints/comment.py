@@ -17,9 +17,9 @@ router = APIRouter()
 def create_comment(_Comment_create: CommentCreateSCH,
                    db: Session = Depends(get_db)):
 
-    crud_comment.Create_comment(
+    rep = crud_comment.Create_comment(
         db, Comment_create=_Comment_create)  # user는 일단 제외했음
-
+    return rep
 
 @router.get("/list", response_model=List[CommentSCH])
 def read_comment_list(db: Session = Depends(get_db)):

@@ -24,3 +24,5 @@ class CompareComment(Base):
                     ForeignKey('plantcompare.Compare_id'))
     Contents = Column(TEXT)
     Write_time = Column(DateTime, default=datetime.datetime.now())
+
+Base.metadata.create_all(bind=engine)
