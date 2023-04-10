@@ -7,6 +7,7 @@ from typing import List, Union
 from models import user
 from models.compare import PlantCompare
 from schemas.comment_sch import CommentCreateSCH,CommentSCH,CommentDeleteSCH,CommentClearSCH
+from schemas.user_sch import UserShowSCH
 from crud.crud_comment import comment_crud
 from api import deps
 
@@ -49,19 +50,31 @@ def read_comment(Comment_id: int, db: Session = Depends(deps.get_db)):
     comment = comment_crud.get_comment(db, Comment_id=Comment_id)
     return comment
 """
-"""
-삭제 API는 사용자 인증등 추가할 부분이 있다. 일단 주석처리
-@router.delete("/delete/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_comment(_Comment_delete: CommentDeleteSCH,
-                   db: Session = Depends(get_db)):
-    db_comment = crud_comment.get_comment(
-        db, Comment_id=_Comment_delete.Comment_id)
-    if not db_comment:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="데이터를 찾을수 없습니다.")
 
-    crud_comment.delete_comment(db=db, db_comment=db_comment)
-"""
+#삭제 API는 사용자 인증등 추가할 부분이 있다. 일단 주석처리
+@router.delete("/delete")
+def delete_comment(_Comment_delete: CommentDeleteSCH,
+                  db: Session = Depends(deps.get_db),
+                  current_user: Union[user.UserList, None] = Depends(deps.get_current_user)):
+    #현재 유저가 정상적인 유저인지 확인
+    if (current_user==None):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="you are not our user",
+        )
+
+    #현재 유저가 댓글의 주인인 경우.
+    if(current_user.User_id == _Comment_delete.User_id) :
+        rep = comment_crud.delete_comment(db=db, Comment_id = _Comment_delete.Comment_id)
+        return rep
+
+    else:   #현재 유저가 댓글의 주인이 아닌 경우
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="you are not owner the comment",
+        )
+
+    
 
 # @router.delete("/delete/{compare_id}", status_code=status.HTTP_204_NO_CONTENT)
 # def clear_comments(Comment_clear: comment_schema.CommentClear, db: Session = Depends(get_db)):

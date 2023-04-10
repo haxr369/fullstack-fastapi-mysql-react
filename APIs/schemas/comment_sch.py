@@ -32,6 +32,7 @@ class CommentCreateSCH(CommentSCH):
 
 class CommentDeleteSCH(BaseModel):
     Comment_id: int
+    User_id : int 
 
 
 class CommentClearSCH(BaseModel):

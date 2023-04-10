@@ -30,6 +30,18 @@ class  CRUDComment(CRUDBase[CompareComment, CommentCreateSCH, CommentDeleteSCH])
     def get_comment(self, db: Session, *, Comment_id: int):
         comment = db.query(Comment).get(Comment_id)
         return comment
+    
+    def delete_comment(self, db: Session, *, Comment_id: int): 
+        comment = db.query(CompareComment)\
+                    .filter(CompareComment.Comment_id == Comment_id)\
+                    .first()
+        if comment:
+            db.delete(db_comment)
+            db.commit()
+            db.flush()
+            return {"message": "Comment has been deleted."}
+        else:
+            return {"message": "Comment not found."}
 
 comment_crud = CRUDComment(CompareComment)
 

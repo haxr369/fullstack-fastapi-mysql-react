@@ -87,7 +87,8 @@ def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_curre
     """
     if(current_user):
         response = user_sch.UserShowSCH(User_nickname = current_user.User_nickname, 
-                                Access_count = current_user.Access_count)
+                                Access_count = current_user.Access_count,
+                                User_id = current_user.User_id)
         print(response)
         
         return response
