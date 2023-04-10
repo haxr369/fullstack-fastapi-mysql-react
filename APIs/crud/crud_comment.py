@@ -19,7 +19,7 @@ class  CRUDComment(CRUDBase[CompareComment, CommentCreateSCH, CommentDeleteSCH])
 
     def create_comment(self, db: Session, *, 
         Comment_create: CommentCreateSCH, User_id: int) -> CompareComment:
-        db_comment = CompareComment(Contents=Comment_create.Content,
+        db_comment = CompareComment(Contents=Comment_create.Contents,
                             Compare_id=Comment_create.Compare_id,
                             User_id = User_id)
         db.add(db_comment)

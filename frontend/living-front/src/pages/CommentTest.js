@@ -136,14 +136,18 @@ function CommentBlock() {
     };
 
 
-    async function deleteData(data) {
+    async function deleteData(Ddata) {
         try {
             //console.log("삭제로그: ", data)
-            await axios.delete('/api/v1/comment/delete', {
-                data: {
-                    "comment_id": data.comment_id
-                }
-            }).then((response) => {
+            const token = localStorage.getItem('access_token');
+            const data = { "Comment_id": Ddata.comment_id}
+            await axios.delete('/api/v1/comment/delete', 
+                data,
+                {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }).then((response) => {
                 console.log("데이터 삭제");
                 //console.log(response);
             });
@@ -166,7 +170,7 @@ function CommentBlock() {
     const handleCommentSubmit = (comment) => {
 
         if (comment !== "") {
-            const newData = { content: comment, compare_id: 3,  } //user id는 user 구축 후 추가, compare id 수정해야함
+            const newData = { Contents: comment, Compare_id: 3, User_id:0 } //user id는 user 구축 후 추가, compare id 수정해야함
             postData(newData);
 
 

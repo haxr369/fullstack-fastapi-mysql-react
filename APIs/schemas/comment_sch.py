@@ -19,7 +19,7 @@ class CommentSCH(BaseModel):
     Comment_id: Optional[int] = None
     Compare_id: Optional[int] = None
     User_id: Optional[int] = None
-    Content: Optional[str] = None
+    Contents: Optional[str] = None
     Write_time: Optional[datetime] = None
 
     class Config:

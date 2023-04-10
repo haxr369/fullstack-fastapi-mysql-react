@@ -14,7 +14,7 @@ from api import deps
 router = APIRouter()
 
 #식물 비교 팁에대한 댓글을 Create <일반용>
-@router.post("/create")
+@router.post("/create", response_model = CommentSCH)
 def create_comment(_Comment_create: CommentCreateSCH,
         db: Session = Depends(deps.get_db),
         current_user: Union[user.UserList, None] = Depends(deps.get_current_user) ):
@@ -25,7 +25,7 @@ def create_comment(_Comment_create: CommentCreateSCH,
             detail="you are not our user",
         )
     else:
-        rep = comment_crud.Create_comment(
+        rep = comment_crud.create_comment(
             db = db, Comment_create=_Comment_create, User_id = current_user.User_id )  # user는 일단 제외했음
         return rep
 
