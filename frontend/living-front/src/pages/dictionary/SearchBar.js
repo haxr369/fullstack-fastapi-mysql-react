@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SearchPlantAPI from '../APIs/SearchPlantAPI';  
+import SearchPlantAPI from '../SearchAPIs/SearchPlantAPI';  
 import './css/SearchBar.css'
 /**
  * 

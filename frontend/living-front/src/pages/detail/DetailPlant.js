@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import logo from '../statics/img/nuti.jpeg';
-import DetailPlantInfo from '../APIs/DetailPlantInfo';
+import DetailPlantInfo from '../SearchAPIs/DetailPlantInfo';
 import SearchBar from '../dictionary/SearchBar';
 
 const DetailPlant = () => {

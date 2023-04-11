@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import checkToken from "./auth/checkToken";
-import Simpleinfo from './APIs/Simpleinfo';
-import Detailinfo from './APIs/Detailinfo';
-import Searchquery from './APIs/Searchquery';
+import Simpleinfo from './SearchAPIs/Simpleinfo';
+import Detailinfo from './SearchAPIs/Detailinfo';
+import Searchquery from './SearchAPIs/Searchquery';
 
 const Apitest = () => {
   
