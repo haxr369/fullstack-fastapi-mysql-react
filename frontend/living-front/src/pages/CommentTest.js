@@ -140,7 +140,8 @@ function CommentBlock() {
         try {
             //console.log("삭제로그: ", data)
             const token = localStorage.getItem('access_token');
-            const data = { "Comment_id": Ddata.comment_id}
+            const data = { "Comment_id": Ddata.comment_id,
+                            "User_id":1}
             await axios.delete('/api/v1/comment/delete', 
                 data,
                 {

@@ -9,16 +9,28 @@ from models.compare import PlantCompare
 from schemas.plantcompare_sch import PlantCompareCreateSCH, PlantCompareDeleteSCH,PlantCompareSCH
 from crud import crud_plantcompare
 #from domain.comment.comment_schema import Comment
-from typing import List
-from api.deps import get_db
+from typing import List, Union
+from api import deps
+from models import user
 
 router = APIRouter()
 
 #두 식물을 비교하는 팁을 Create <관리자용>
 @router.post("/create", response_model=PlantCompareSCH)
 def create_compare(_PlantCompare_create: PlantCompareCreateSCH,
-                   db: Session = Depends(get_db)):
+                   db: Session = Depends(deps.get_db),
+                   current_user: Union[user.UserList, None] = Depends(deps.get_current_user)):
 
+    if (current_user==None):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="you are not our user",
+        )
+    if (current_user.Is_superuser):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="you are not our superuser",
+        )
     compare = crud_plantcompare.create_compare(
         db, PlantCompare_create=_PlantCompare_create)  # user는 일단 제외했음
 
@@ -27,14 +39,14 @@ def create_compare(_PlantCompare_create: PlantCompareCreateSCH,
 
 #식물 비교 리스트
 @router.get("/list", response_model=List[PlantCompareSCH])
-def read_compare_list(db: Session = Depends(get_db)):
+def read_compare_list(db: Session = Depends(deps.get_db)):
     _compare_list = crud_plantcompare.get_compare_list(db)
     return _compare_list
 
 #두 식물을 비교하는 팁을 Read
 @router.get("/detail/{Compare_id}", response_model=PlantCompareSCH)
 def read_compare(Compare_id: int, 
-                db: Session = Depends(get_db)):
+                db: Session = Depends(deps.get_db)):
 
     compare = crud_plantcompare.get_compare(db, Compare_id=Compare_id)
     return compare
