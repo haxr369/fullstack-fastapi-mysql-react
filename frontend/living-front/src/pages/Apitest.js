@@ -71,8 +71,8 @@ const Apitest = () => {
     }
 
   const onRemove = async () => {
-    const rep = await DeleteComment({Comment_id : 42, WriteUser_id : 1});
-    console.log(rep);
+    const rep = await DeleteComment({Comment_id : 18, WriteUser_id : 1});
+    alert(rep.message);
   }
 
   const plantList = queryResult.map((plant, index) => <li key={index}>

@@ -31,17 +31,14 @@ const DeleteComment = async props => {
         }
         const data = {"Comment_id": Comment_id, 
                         "User_id": WriteUser_id};
-        const response = await axios.delete('/api/v1/comment/delete',
-             data,
-             {
-                headers: {
-                    'accept': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-              });
-        console.log("응답", response);
-        return response;
+        const response = await axios.delete('/api/v1/comment/delete', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            data: data
+            });
+        
+        return response.data;
     }
     catch (ex){
         console.log(ex);
