@@ -16,19 +16,28 @@ const DeleteComment = async props => {
 
     try{
         // 사용자 로그인 확인.
-        const userInfo = checkToken();
+        const userInfo = await checkToken();
         // 로그인이 안돼있는 등 사용자 인증 문제가 존재.
-        if(userInfo === -1 || parseInt(userInfo.User_id) === -1) return -1;
+        if(userInfo === -1 || parseInt(userInfo.User_id) === -1){
+            console.log("로그인 안됨.");
+            return -1;
+        } 
         const token = localStorage.getItem('access_token');
         // 작성자와 사용자의 id가 다르다면 문제 발생.
-        if(WriteUser_id !== parseInt(userInfo.User_id)) return -1;
+        if(WriteUser_id !== parseInt(userInfo.User_id)) {
+            console.log("글쓴이 : "+WriteUser_id);
+            console.log("사용자 : "+userInfo.User_id);
+            return -1;
+        }
         const data = {"Comment_id": Comment_id, 
                         "User_id": WriteUser_id};
-        const response = await axios.post('/api/v1/comment/delete',
+        const response = await axios.delete('/api/v1/comment/delete',
              data,
              {
                 headers: {
-                  Authorization: `Bearer ${token}`,
+                    'accept': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 },
               });
         console.log("응답", response);

@@ -4,6 +4,7 @@ import checkToken from "./auth/checkToken";
 import Simpleinfo from './SearchAPIs/Simpleinfo';
 import Detailinfo from './SearchAPIs/Detailinfo';
 import Searchquery from './SearchAPIs/Searchquery';
+import DeleteComment from './CommentAPIs/DeleteComment';
 
 const Apitest = () => {
   
@@ -63,13 +64,16 @@ const Apitest = () => {
     console.log(simpleinfo);
   }
 
-const handleDataQuery = (queryResult) => {
-    console.log('apitest');
-    setQueryResult(queryResult);
-    console.log(queryResult[0]);
+  const handleDataQuery = (queryResult) => {
+      console.log('apitest');
+      setQueryResult(queryResult);
+      console.log(queryResult[0]);
+    }
+
+  const onRemove = async () => {
+    const rep = await DeleteComment({Comment_id : 42, WriteUser_id : 1});
+    console.log(rep);
   }
-
-
 
   const plantList = queryResult.map((plant, index) => <li key={index}>
                                   <div>{plant['Species_name']}</div>
@@ -119,7 +123,7 @@ const handleDataQuery = (queryResult) => {
       <div>{simpleinfo['Family_name']}</div>
       <ul>{plantList}</ul>
 
-      
+      <button onClick={onRemove}>댓글 지우기</button>
 
     </div>
   );

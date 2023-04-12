@@ -52,7 +52,7 @@ def read_comment(Comment_id: int, db: Session = Depends(deps.get_db)):
 """
 
 #삭제 API는 사용자 인증등 추가할 부분이 있다. 일단 주석처리
-@router.delete("/delete")
+@router.delete("/delete", status_code=status.HTTP_204_NO_CONTENT)
 def delete_comment(_Comment_delete: CommentDeleteSCH,
                   db: Session = Depends(deps.get_db),
                   current_user: Union[user.UserList, None] = Depends(deps.get_current_user)):

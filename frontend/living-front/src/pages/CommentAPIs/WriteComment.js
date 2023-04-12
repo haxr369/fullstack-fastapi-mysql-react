@@ -2,6 +2,12 @@ import axios from "axios";
 import  PropTypes  from "prop-types";
 import checkToken from '../auth/checkToken';
 
+/**
+ *  WriteComment({ comment: 'Hello', Compare_id: 123 });
+ *  위와 같은 방식으로 다른 컴포넌트에서 함수를 호출할 수 있습니다.
+ */
+
+
 const WriteComment = async props => {
     /**
    * ^^^props^^^^

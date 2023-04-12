@@ -37,15 +37,15 @@ function Comment({ data, props }) {
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
-        if (data.user_id === props.user_id) {
+        if (data.Comment_id === props.Comment_id) { //comment_id -> user_id로 바꿔야함
             setIsUserComment(true);
         }
-    }, [data, props.user_id]);
+    }, [data, props.User_id]);
 
     const onRemove = (data) => {
         if (isUserComment) {
             setIsModalOpen(true);
-            props.onRemove(data.comment_id);
+            props.onRemove(data.Comment_id);
         }
     };
     const onCancel = () => {
@@ -64,14 +64,20 @@ function Comment({ data, props }) {
             onCancel();
         }
     }
-
+    const handlePasswordSubmit = () => {
+        const typedPassword = password;
+        props.handlePasswordSubmit(typedPassword);
+        setPassword("");
+    }
+    //  여기서의 password 전달값을 상위 컴포넌트로 줘야함
     return (
         <div className="comment">
-            <b>{data.nickname}: </b> <span>{data.content}</span>
+            <b>{"익명" + data.Comment_id}: </b> <span>{data.Contents}</span> {/* 유저 닉네임은 api 만들어지면 변경 할 것*/}
             <button onClick={() => { onRemove(data); onOffModal() }}>삭제</button>
             {modalVisible && isModalOpen && (
-                <Modal password={password} handlePasswordChange={handlePasswordChange} onConfirm={props.handlePasswordSubmit} onCancel={onCancel} />
+                <Modal password={password} handlePasswordChange={handlePasswordChange} onConfirm={handlePasswordSubmit} onCancel={onCancel} />
             )}
+            {console.log("여기는 댓글 객체 password", password)}
 
         </div>
     );
@@ -83,7 +89,7 @@ function CommentList({ datas, onRemove, props }) { //users는 write해준 후 �
             {datas.map((data) => (
                 <Comment
                     data={data}
-                    key={data.comment_id}
+                    key={data.Comment_id}
                     onRemove={onRemove}
                     props={props}
                 />
@@ -104,7 +110,6 @@ function CommentBoard({ datas, onRemove, props }) {
 function CommentBlock() {
     const [datas, setDatas] = useState([]);
     const [targetUser, setTargetUser] = useState(null);
-    const [password, setPassword] = useState('');
 
 
     async function getData(id) {
@@ -112,7 +117,7 @@ function CommentBlock() {
             await axios.get(`/api/v1/comment/list/${id}`).then((response) => {
 
                 setDatas(response.data);
-                console.log(response);
+                console.log("getData 로그", response);
             });
         } catch (error) {
             console.error(error);
@@ -123,15 +128,16 @@ function CommentBlock() {
         try {
             const token = localStorage.getItem('access_token');
             const response = await axios.post('/api/v1/comment/create',
-             data,
-             {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              });
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
             console.log("응답", response);
+            window.location.replace("/commentTest")
         } catch (error) {
-            console.error(error);
+            console.error("에러응답", error);
         }
     };
 
@@ -140,18 +146,20 @@ function CommentBlock() {
         try {
             //console.log("삭제로그: ", data)
             const token = localStorage.getItem('access_token');
-            const data = { "Comment_id": Ddata.comment_id,
-                            "User_id":1}
-            await axios.delete('/api/v1/comment/delete', 
-                data,
+            const data = {
+                "Comment_id": Ddata.Comment_id,
+                "User_id": 1
+            }
+            await axios.delete('/api/v1/comment/delete',
                 {
+                    data: data,
                     headers: {
-                      Authorization: `Bearer ${token}`,
-                    },
-                  }).then((response) => {
-                console.log("데이터 삭제");
-                //console.log(response);
-            });
+                        Authorization: `Bearer ${token}`,
+                    }
+                }).then((response) => {
+                    console.log("데이터 삭제");
+                    //console.log(response);
+                });
         } catch (error) {
             console.error(error);
         }
@@ -171,10 +179,8 @@ function CommentBlock() {
     const handleCommentSubmit = (comment) => {
 
         if (comment !== "") {
-            const newData = { Contents: comment, Compare_id: 3, User_id:0 } //user id는 user 구축 후 추가, compare id 수정해야함
+            const newData = { Contents: comment, Compare_id: 3, User_id: 2 } //user id는 user 구축 후 추가, compare id 수정해야함
             postData(newData);
-
-
             getData(3);
         }
         else {
@@ -182,34 +188,34 @@ function CommentBlock() {
         }
     };
 
-    const handlePasswordSubmit = () => {
+    const handlePasswordSubmit = (typedPassword) => {
         if (!targetUser) {
             alert("Error");
         }
-        if (password === (targetUser.comment_id)) { //유저 비번에 대한 정보는 api 만들어야하므로 일단 코멘트 아디로
-            setDatas(datas.filter((data) => data.comment_id !== targetUser.comment_id));
+        //console.log(password, targetUser.Comment_id)
+        console.log("전달된 pw1", typedPassword)
+        if (typedPassword === String(targetUser.Comment_id)) { //유저 비번에 대한 정보는 api 만들어야하므로 일단 코멘트 아디로
+            setDatas(datas.filter((data) => data.Comment_id !== targetUser.Comment_id));
             //댓글 삭제 api 가져와야함
             deleteData(targetUser);
             console.log(datas);
         } else {
-            setPassword("");
             alert('비밀번호가 일치하지 않습니다');
         }
     };
 
     const onRemove = (id) => {
-        const target = datas.find((data) => data.comment_id === id);
+        const target = datas.find((data) => data.Comment_id === id); //comment_id -> user_id로 변경해야
 
         if (!target) {
             alert('해당하는 댓글이 없습니다');
             return;
         }
         setTargetUser(target);
-        setPassword(target.compare_id);
     };
 
 
-    var modal_props = { onRemove: onRemove, handlePasswordSubmit: handlePasswordSubmit, user_id: 3 }
+    var modal_props = { onRemove: onRemove, handlePasswordSubmit: handlePasswordSubmit, Comment_id: 1 } //삭제 타겟 수정해야
     return (
         <div>
             <WriteComment handleCommentSubmit={handleCommentSubmit} />

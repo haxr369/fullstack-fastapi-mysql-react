@@ -13,9 +13,15 @@ const Header = () =>{
         if (token) {
         try {
             const resp = await checkToken();
-            if (resp.data.User_nickname !== "-1") {
-            setIsLoggedIn(true);
-            setUserNickName(resp.data.User_nickname);
+            console.log(resp);
+            if (resp.User_nickname !== '-1') {
+                setIsLoggedIn(true);
+                setUserNickName(resp.User_nickname);
+            }
+            else{
+                localStorage.removeItem('access_token');
+                setIsLoggedIn(false);
+                setUserNickName("");
             }
         } catch (error) {
             console.error(error);

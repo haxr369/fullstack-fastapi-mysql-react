@@ -23,7 +23,13 @@ const checkToken = async () => {
         const result = await axios.get(TEST_TOKEN_ENDPOINT,  {
             headers
         });
-        return result;
+
+        const { User_id, User_nickname, Access_count } = result.data;
+        return {
+            User_id: parseInt(User_id),
+            User_nickname,
+            Access_count: parseInt(Access_count),
+          };
     }
     catch (ex) {
         console.log(ex);

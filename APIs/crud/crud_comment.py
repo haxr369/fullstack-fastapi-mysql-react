@@ -12,8 +12,8 @@ class  CRUDComment(CRUDBase[CompareComment, CommentCreateSCH, CommentDeleteSCH])
         )-> List[CompareComment]:
         comment_list = db.query(CompareComment)\
             .filter(CompareComment.Compare_id == Compare_id)\
-            .order_by(CompareComment.Write_time.desc())\
-            .all()  # 데베 안만들어졌는데 고를라고 하니까 문제생김
+            .order_by(CompareComment.Write_time.asc())\
+            .all() 
         return comment_list
 
 
@@ -36,7 +36,7 @@ class  CRUDComment(CRUDBase[CompareComment, CommentCreateSCH, CommentDeleteSCH])
                     .filter(CompareComment.Comment_id == Comment_id)\
                     .first()
         if comment:
-            db.delete(db_comment)
+            db.delete(comment) #수정 해야
             db.commit()
             db.flush()
             return {"message": "Comment has been deleted."}
