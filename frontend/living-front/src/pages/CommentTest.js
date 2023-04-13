@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import GetCommentList from './CommentAPIs/GetCommentList';
+import WriteComment from './CommentAPIs/WriteComment';
+import DeleteComment from './CommentAPIs/DeleteComment';
 
-function WriteComment({ user, handleCommentSubmit }) { // id 전달 부분 삭제 , props에 유저 id정보 가져오는 부분 추가해야함
+function CommentWriter({ user, handleCommentSubmit }) { // id 전달 부분 삭제 , props에 유저 id정보 가져오는 부분 추가해야함
 
     const [comment, setComment] = useState("");
 
@@ -169,6 +172,9 @@ function CommentBlock() {
     //새로고침시 댓글리스트 가져오기
     useEffect(() => {
         getData(3); //id 값에 해당하는 거로 상위 컴포넌트의 props를 가져오기
+        // let result = GetCommentList(3);
+        // console.log("온 결과", result);
+        // setDatas([result]);
     }, []);
     /*
       useEffect(() => {
@@ -218,7 +224,7 @@ function CommentBlock() {
     var modal_props = { onRemove: onRemove, handlePasswordSubmit: handlePasswordSubmit, Comment_id: 6 } //삭제 타겟 수정해야
     return (
         <div>
-            <WriteComment handleCommentSubmit={handleCommentSubmit} />
+            <CommentWriter handleCommentSubmit={handleCommentSubmit} />
             <CommentBoard datas={datas} onRemove={onRemove} props={modal_props} />
         </div>
     );

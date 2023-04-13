@@ -5,9 +5,10 @@ import Simpleinfo from './SearchAPIs/Simpleinfo';
 import Detailinfo from './SearchAPIs/Detailinfo';
 import Searchquery from './SearchAPIs/Searchquery';
 import DeleteComment from './CommentAPIs/DeleteComment';
+import GetCommentList from './CommentAPIs/GetCommentList';
 
 const Apitest = () => {
-  
+  const [comments, setComments] = useState([]);
   const [data, setData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [simpleinfo, setSimpleinfo] = useState('');
@@ -15,10 +16,20 @@ const Apitest = () => {
   const [queryResult, setQueryResult] = useState([]);
 
   useEffect(()=>{
-    checkToken();
-    
+    getComments();
   },[]);
 
+
+  const getComments = async () =>{
+    try {
+      const res = await GetCommentList({Compare_id:3});
+      console.log("함수 실행 완료!!");
+      console.log(res.data);
+      setComments(res.data);
+    } catch (error) {
+        console.error(error);
+    }
+  }
 
   //비동기적으로 get요청을 하고 데이터를 받아온다.
   const onClick = async ()=> {
@@ -80,7 +91,8 @@ const Apitest = () => {
                                   <div>{plant['Plant_id']}</div>
                                   <div>{plant['Genus_name']}</div>
                                   <div>{plant['Family_name']}</div></li>)
-
+  const commentList = comments.map((comment, index) => <li key={index}>
+      <div>{comment['Contents']}</div></li>)
 
   /**
    * <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
@@ -98,6 +110,8 @@ const Apitest = () => {
       <div>{detailinfo['Describe']}</div>
    * 
    */
+
+  
   return (
     <div>
       <div>
@@ -122,9 +136,9 @@ const Apitest = () => {
       <div>{simpleinfo['Genus_name']}</div>
       <div>{simpleinfo['Family_name']}</div>
       <ul>{plantList}</ul>
-
+      
       <button onClick={onRemove}>댓글 지우기</button>
-
+      {commentList}
     </div>
   );
 
