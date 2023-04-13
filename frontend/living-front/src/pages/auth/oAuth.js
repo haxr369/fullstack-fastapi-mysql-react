@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const oAuth  =  async() => {
+const oAuth  =  async () => {
 
     //`.env.local` 파일을 통해 환경 변수를 사용할 수 있음 --> NEXT_PUBLIC으로 시작해야 next app이 인식을 함
     const OAUTH_TOKEN_ENDPOINT = "/api/v1/login/access-token"
@@ -24,20 +24,30 @@ const oAuth  =  async() => {
         username : "haxr",
         password : "1234"
     };
+    try {
+        const token = localStorage.getItem('access_token');
+        if(token){  //토큰이 존재하면 삭제.
+            localStorage.removeItem('access_token'); 
+        }
+        const resp = await axios.post(
+            OAUTH_TOKEN_ENDPOINT,formdata,{
+                headers
+            }).then((json) => {
+                //console.log("token받고 난후!!"+json);
+                //console.log(json.data['access_token']);
+                if(json.data['access_token']){
+                    console.log("토큰 저장!!")
+                    localStorage.setItem('access_token',json.data['access_token']);
+                }
+            });
+        
+        return resp;
+    }
+    catch (ex) {
+        console.log(ex);
+        return -1;
+    }
     
-    const resp = await axios.post(
-        OAUTH_TOKEN_ENDPOINT,formdata,{
-            headers
-        }).then((json) => {
-            //console.log("token받고 난후!!"+json);
-            //console.log(json.data['access_token']);
-            if(json.data['access_token']){
-                console.log("토큰 저장!!")
-                localStorage.setItem('access_token',json.data['access_token']);
-            }
-        });
-    
-    return resp;
     
 }
 

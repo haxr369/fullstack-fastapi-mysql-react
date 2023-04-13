@@ -14,8 +14,6 @@ const SelectImg = () => {
   const [imgFile, setImgFile] = useState(folder);   //보여주는 데이터
 
   async function handleImage(imageFile) {
-
-  
     const options = {
       maxSizeMB: 0.2,
       maxWidthOrHeight: 1000
@@ -24,12 +22,10 @@ const SelectImg = () => {
       const compressedFile = await imageCompression(imageFile, options);
       //const objectURL = URL.createObjectURL(compressedFile)
       return compressedFile;
-
     } catch (error) {
       console.log(error);
       return 0;
     }
-  
   }
   
 
@@ -68,6 +64,19 @@ const SelectImg = () => {
 
   const [ ip , setIp ] = useState('initalIp');
 
+  const checkLogin = async () => {
+    const rep = await checkToken();
+    if(rep === -1){ //토큰이 없거나 checkToken API에 에러가 발생한 경우
+      navigate('/');
+    }
+    else if (rep.data.User_nickname === -1){ // 토큰의 유효기간이 만료된 경우.
+      navigate('/');
+    }
+    else{
+      return rep;
+    }
+  }
+
   useEffect(() => {
     axios.get('https://geolocation-db.com/json/')
     .then((res) => {
@@ -75,9 +84,7 @@ const SelectImg = () => {
       
       //console.log(ip);
     });
-
-    checkToken();
-    
+    checkLogin();
   },[]);
 
 
@@ -91,16 +98,18 @@ const sendImg = async () => {
   console.log("보내는 파일 이름"+files.name);
   console.log("유저 id : "+decodedIdToken['sub']);
   formData.append('file', files,files.name);
-  formData.append('metadata', parseInt(decodedIdToken['sub']));
+  //formData.append('file', files[0]);
+  //formData.append('UserNickName', decodedIdToken['sub']);
   
   const item = await axios({
     method: 'post',
-    url: '/api/v1/items/uploadImg',
+    url: `/api/v1/items/uploadImg?UserNickName=${decodedIdToken['sub']}`,
     data: formData,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-  }).then(() => {
+  }).then(res => {
+    console.log(res);
     console.log('이미지 업로드 성공');
   }).catch((err) => {
     console.log('이미지 업로드 실패');

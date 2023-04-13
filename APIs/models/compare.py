@@ -7,6 +7,7 @@ from db.base_class import Base
 import pandas as pd
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+import datetime
 
 class PlantCompare(Base):
     Compare_id = Column(Integer, autoincrement=True, 
@@ -20,6 +21,9 @@ class CompareComment(Base):
     Comment_id = Column(Integer, autoincrement=True, 
                     primary_key=True, index=True)
     Compare_id = Column(Integer,  
-                    ForeignKey('plantCompare.Compare_id')
+                    ForeignKey('plantcompare.Compare_id'))
+    User_id = Column(Integer,ForeignKey('userlist.User_id'))
     Contents = Column(TEXT)
     Write_time = Column(DateTime, default=datetime.datetime.now())
+
+Base.metadata.create_all(bind=engine)

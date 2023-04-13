@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PlantList from './PlantList';         //plants 데이터 리스트를 이용해서 식물 막대표를 그리는 컴포넌트.
-import SearchPlantAPI from '../APIs/SearchPlantAPI';
+import SearchPlantAPI from '../SearchAPIs/SearchPlantAPI';
 //import Pagination from './Pagination';    
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';

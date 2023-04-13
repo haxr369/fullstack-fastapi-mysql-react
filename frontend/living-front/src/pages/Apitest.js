@@ -1,9 +1,10 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import checkToken from "./auth/checkToken";
-import Simpleinfo from './APIs/Simpleinfo';
-import Detailinfo from './APIs/Detailinfo';
-import Searchquery from './APIs/Searchquery';
+import Simpleinfo from './SearchAPIs/Simpleinfo';
+import Detailinfo from './SearchAPIs/Detailinfo';
+import Searchquery from './SearchAPIs/Searchquery';
+import DeleteComment from './CommentAPIs/DeleteComment';
 
 const Apitest = () => {
   
@@ -63,13 +64,16 @@ const Apitest = () => {
     console.log(simpleinfo);
   }
 
-const handleDataQuery = (queryResult) => {
-    console.log('apitest');
-    setQueryResult(queryResult);
-    console.log(queryResult[0]);
+  const handleDataQuery = (queryResult) => {
+      console.log('apitest');
+      setQueryResult(queryResult);
+      console.log(queryResult[0]);
+    }
+
+  const onRemove = async () => {
+    const rep = await DeleteComment({Comment_id : 19, WriteUser_id : 1});
+    alert(rep.message);
   }
-
-
 
   const plantList = queryResult.map((plant, index) => <li key={index}>
                                   <div>{plant['Species_name']}</div>
@@ -119,7 +123,7 @@ const handleDataQuery = (queryResult) => {
       <div>{simpleinfo['Family_name']}</div>
       <ul>{plantList}</ul>
 
-      
+      <button onClick={onRemove}>댓글 지우기</button>
 
     </div>
   );
