@@ -215,7 +215,7 @@ function CommentBlock() {
     };
 
 
-    var modal_props = { onRemove: onRemove, handlePasswordSubmit: handlePasswordSubmit, Comment_id: 1 } //삭제 타겟 수정해야
+    var modal_props = { onRemove: onRemove, handlePasswordSubmit: handlePasswordSubmit, Comment_id: 6 } //삭제 타겟 수정해야
     return (
         <div>
             <WriteComment handleCommentSubmit={handleCommentSubmit} />

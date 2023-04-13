@@ -71,7 +71,7 @@ const Apitest = () => {
     }
 
   const onRemove = async () => {
-    const rep = await DeleteComment({Comment_id : 18, WriteUser_id : 1});
+    const rep = await DeleteComment({Comment_id : 19, WriteUser_id : 1});
     alert(rep.message);
   }
 

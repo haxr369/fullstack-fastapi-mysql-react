@@ -11,7 +11,17 @@ const DeleteComment = async props => {
  * 
  * 정상적인 유저는 checkToken에서
  * User_id(int), User_nickname(str), Access_count(int)를 출력한다.
+ * 
+ * 
+ * 아래 코드처럼 다른 컴포넌트에서 onRemove를 실행시키면 
+ * DeleteComment 함수를 실행할 수 있다.
+ * const onRemove = async () => {
+    const rep = await DeleteComment({Comment_id : 19, WriteUser_id : 1});
+    alert(rep.message);
+  }
+ * 
  */
+
     const {Comment_id, WriteUser_id} = props;
 
     try{

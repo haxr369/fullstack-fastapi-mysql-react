@@ -25,6 +25,10 @@ const oAuth  =  async () => {
         password : "1234"
     };
     try {
+        const token = localStorage.getItem('access_token');
+        if(token){  //토큰이 존재하면 삭제.
+            localStorage.removeItem('access_token'); 
+        }
         const resp = await axios.post(
             OAUTH_TOKEN_ENDPOINT,formdata,{
                 headers
