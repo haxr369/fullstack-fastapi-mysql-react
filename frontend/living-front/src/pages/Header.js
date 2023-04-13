@@ -23,9 +23,9 @@ const Header = () =>{
                 setIsLoggedIn(false);
                 setUserNickName("");
 
-                //아래 두줄은 나중에 지워야함.
-                oAuth(); //로그인함.
-                window.location.replace('/');
+                //아래 나중에 지워야함.
+                oAuth(); //로그인함.#################### 지워야합니다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
             }
         } catch (error) {
             console.error(error);
