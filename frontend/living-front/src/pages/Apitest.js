@@ -108,6 +108,8 @@ const Apitest = () => {
       <div>{detailinfo['Plant_id']}</div>
       <div>{detailinfo['Bear_fail']}</div>
       <div>{detailinfo['Describe']}</div>
+      <div>---------댓글선------------</div>
+      {commentList}
    * 
    */
 
@@ -138,7 +140,17 @@ const Apitest = () => {
       <ul>{plantList}</ul>
       
       <button onClick={onRemove}>댓글 지우기</button>
-      {commentList}
+      
+
+      <div className='sendiago_zoo'>
+        <div>
+          <div className='footer'>
+                <span  class="e1_1062">© 2023 서울시립대학교</span>
+                <span  class="e1_1063">리빙랩</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 

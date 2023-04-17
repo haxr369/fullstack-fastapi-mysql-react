@@ -158,8 +158,6 @@ const IdentyResult =() =>{
         return (
         
             <div>
-                <li className="nav-item"><Link to="/">홈</Link></li>
-                <button onClick={handlehomeClick}>홈으로 이동.</button>
                 <div className='userContain'>
                     <h2 className = 'userImgTitle'>식별 식물</h2>
                     <div className='userImgContain'>

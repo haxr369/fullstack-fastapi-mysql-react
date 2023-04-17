@@ -3,7 +3,7 @@ FROM node:16
 # 경로 설정하기
 WORKDIR /code
 # package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
-COPY package.json .
+COPY ./living-front/package.json .
 
 RUN npm install
 
