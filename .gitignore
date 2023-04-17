@@ -2,3 +2,13 @@ APIs/Sample_images/
 APIs/Uploaded_images/
 APIs/ML/models/outside
 APIs/api/api_v1/endpoints/auth.py
+APIs/__pycache__
+APIs/api/__pycache__
+APIs/api/api_v1/__pycache__
+APIs/api/api_v1/endpoints/__pycache__
+APIs/core/__pycache__
+APIs/crud/__pycache__
+APIs/db/__pycache__
+APIs/ML/__pycache__
+APIs/models/__pycache__
+APIs/schemas/__pycache__
