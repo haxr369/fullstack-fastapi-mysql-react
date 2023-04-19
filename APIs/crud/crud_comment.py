@@ -5,14 +5,14 @@ from crud.base import CRUDBase
 from models.compare import PlantCompare, CompareComment
 from schemas.comment_sch import CommentCreateSCH, CommentSCH, CommentDeleteSCH, CommentClearSCH
 from schemas.user_sch import UserShowSCH
-
+import datetime
 class  CRUDComment(CRUDBase[CompareComment, CommentCreateSCH, CommentDeleteSCH]):
 
     def get_comments_by_compare(self, db: Session, *, Compare_id: int
         )-> List[CompareComment]:
         comment_list = db.query(CompareComment)\
             .filter(CompareComment.Compare_id == Compare_id)\
-            .order_by(CompareComment.Write_time.asc())\
+            .order_by(CompareComment.Write_time.desc())\
             .all() 
         return comment_list
 
@@ -21,7 +21,8 @@ class  CRUDComment(CRUDBase[CompareComment, CommentCreateSCH, CommentDeleteSCH])
         Comment_create: CommentCreateSCH, User_id: int) -> CompareComment:
         db_comment = CompareComment(Contents=Comment_create.Contents,
                             Compare_id=Comment_create.Compare_id,
-                            User_id = User_id)
+                            User_id = User_id,
+                            Write_time= datetime.datetime.now())
         db.add(db_comment)
         db.commit()
         return db_comment

@@ -4,11 +4,12 @@ import checkToken from "./auth/checkToken";
 import Simpleinfo from './SearchAPIs/Simpleinfo';
 import Detailinfo from './SearchAPIs/Detailinfo';
 import Searchquery from './SearchAPIs/Searchquery';
-import DeleteComment from './CommentAPIs/DeleteComment';
-import GetCommentList from './CommentAPIs/GetCommentList';
+import {DeleteComment,GetCommentList, WriteComment} from './CommentAPIs';
 
 const Apitest = () => {
   const [comments, setComments] = useState([]);
+  const [userComment, setUserComment] = useState('');
+  const [flagComment, setFlagComment] = useState(0);
   const [data, setData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [simpleinfo, setSimpleinfo] = useState('');
@@ -16,9 +17,25 @@ const Apitest = () => {
   const [queryResult, setQueryResult] = useState([]);
 
   useEffect(()=>{
+    setFlagComment(0);
     getComments();
-  },[]);
+  },[flagComment]);
 
+  const handlePasswordChange = (event) => {
+    setUserComment(event.target.value);
+  };
+
+  const onConfirm = async ()=>{
+    try{
+      const res = await WriteComment({ comment: userComment, Compare_id: 3 });
+      console.log(res.data);
+      setUserComment('');
+    }
+    catch (error){
+      console.error(error);
+    }
+    setFlagComment(1);
+  }
 
   const getComments = async () =>{
     try {
@@ -82,8 +99,9 @@ const Apitest = () => {
     }
 
   const onRemove = async () => {
-    const rep = await DeleteComment({Comment_id : 19, WriteUser_id : 1});
-    alert(rep.message);
+    const deletNumb = 54;
+    const rep = await DeleteComment({Comment_id : deletNumb, WriteUser_id : 1});
+    alert(deletNumb +"th "+ rep.message);
   }
 
   const plantList = queryResult.map((plant, index) => <li key={index}>
@@ -91,9 +109,15 @@ const Apitest = () => {
                                   <div>{plant['Plant_id']}</div>
                                   <div>{plant['Genus_name']}</div>
                                   <div>{plant['Family_name']}</div></li>)
-  const commentList = comments.map((comment, index) => <li key={index}>
-      <div>{comment['Contents']}</div></li>)
+  const commentList = comments.map((comment, index) => 
+    <li key={index}>
+      <div>
+        {index}<p/>
+        {comment['Contents']}<p/>
+      </div>
+    </li>)
 
+  
   /**
    * <Simpleinfo Species = '가막살나무' onSearchSimple={handleDataSimple} />
       <Detailinfo Species = '가막살나무' onSearchDetail={handleDataDetail} />
@@ -110,6 +134,7 @@ const Apitest = () => {
       <div>{detailinfo['Describe']}</div>
       <div>---------댓글선------------</div>
       {commentList}
+      
    * 
    */
 
@@ -139,8 +164,10 @@ const Apitest = () => {
       <div>{simpleinfo['Family_name']}</div>
       <ul>{plantList}</ul>
       
-      <button onClick={onRemove}>댓글 지우기</button>
-      
+      <button onClick={onRemove}>하드코딩으로 댓글 지우기</button>
+      <input type="text" placeholder="댓글" value={userComment} onChange={handlePasswordChange} />
+      <button onClick={onConfirm}>댓글 입력!</button>
+      {commentList}
 
       <div className='sendiago_zoo'>
         <div>
