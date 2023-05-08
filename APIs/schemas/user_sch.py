@@ -21,9 +21,6 @@ class UserShowSCH(BaseModel):
 class UserListSCHCreate(UserListSCHBase):
     User_nickname : str = None
     User_password : str = None
-    Is_superuser: bool = False
-    createtime : datetime = None
-    Access_count : int = 0
     
 
 # Properties to receive via API on update

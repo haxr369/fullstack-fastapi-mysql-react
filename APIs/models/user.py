@@ -41,6 +41,7 @@ class UserCollect(Base):
     Collected_plant = Column(String(255), nullable=False )
     Collect_time = Column(DateTime, default=datetime.datetime.now())
 
+Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -59,5 +60,3 @@ except IntegrityError:
 session.close()
 
 
-
-Base.metadata.create_all(bind=engine)

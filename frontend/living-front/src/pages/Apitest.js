@@ -16,6 +16,7 @@ const Apitest = () => {
   const [detailinfo, setDetailinfo] = useState('');
   const [queryResult, setQueryResult] = useState([]);
 
+
   useEffect(()=>{
     setFlagComment(0);
     getComments();
@@ -164,6 +165,8 @@ const Apitest = () => {
       <div>{simpleinfo['Family_name']}</div>
       <ul>{plantList}</ul>
       
+      <p/>
+      <div>현재 비교페이지 없기 때문에 댓글 작성과 삭제는 불가능</div>
       <button onClick={onRemove}>하드코딩으로 댓글 지우기</button>
       <input type="text" placeholder="댓글" value={userComment} onChange={handlePasswordChange} />
       <button onClick={onConfirm}>댓글 입력!</button>

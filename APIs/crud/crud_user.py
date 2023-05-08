@@ -6,7 +6,7 @@ from crud.base import CRUDBase
 from models.user import UserList
 from schemas.user_sch import UserListSCHCreate, UserListSCHUpdate, UserShowSCH
 from core.security import get_password_hash, verify_password
-
+import datetime
 
 
 class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
@@ -16,12 +16,16 @@ class CRUDUser(CRUDBase[UserList, UserListSCHCreate, UserListSCHUpdate]):
     #C
     def create(self, db: Session, *, obj_in: UserListSCHCreate) -> UserList:
         db_obj = UserList(
-            User_id = obj_in.User_id
+            User_id = 0,
+            User_nickname = obj_in.User_nickname,
+            User_password = get_password_hash(obj_in.User_password),
+            Is_superuser = False,
+            Createtime = datetime.datetime.now()
         )
         db.add(db_obj)
         db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        #db.refresh(db_obj)
+        return obj_in
 
     #R
     def get_by_nickname(self, db: Session, *, nickname: str

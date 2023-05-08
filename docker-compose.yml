@@ -61,7 +61,6 @@ services:
     container_name: livinglab-db
     networks:
       - appnet
-    command: --init-file /db-data/init.sql
     environment:
       - MYSQL_DATABASE=plantLab
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
@@ -74,7 +73,6 @@ services:
       retries: 5
       start_period: 30s
     volumes:
-      - /home/data/LivingLab/db/init.sql:/db-data/init.sql
       - /home/data/LivingLab/db:/db-data
 
 networks:

@@ -48,6 +48,8 @@ def give_access_token(
     }
 
 
+
+
 @router.post("/usetoken", response_model=user_sch.User)
 def use_token(db: Session = Depends(deps.get_db), 
             current_user: Union[user.UserList, None] = Depends(deps.get_current_user)
@@ -97,3 +99,27 @@ def test_token(current_user: Union[user.UserList, None] = Depends(deps.get_curre
                                 Access_count=0)
         print(response)
         return response
+
+@router.post("/joinService", response_model= user_sch.UserShowSCH)
+def create_user(
+    *,
+    db: Session = Depends(deps.get_db),
+    user_in: user_sch.UserListSCHCreate,       #닉네임과 패스워드를 쿼리객체로 받는다.
+    ):
+    
+    #Create new user.
+    print("받은 유저 정보",user_in)
+    crud = crud_user.user
+    user = crud.get_by_nickname(db, nickname=user_in.User_nickname)
+    if user:    #이미 DB에 닉네임이 존재할 경우
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this username already exists in the system.",
+        )
+    user_info = crud.create(db, obj_in=user_in) #user DB에 입력한 이메일과 패스워드를 저장한다.
+    
+    return user_sch.UserShowSCH(
+        User_id=user_info.User_id,
+        User_nickname=user_info.User_nickname,
+        Access_count=user_info.Access_count
+    )
